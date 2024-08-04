@@ -10,12 +10,10 @@ class IOInteractBase(ABC):
 
     @abstractmethod
     def start(self):
-        """このメソッドはサブクラスで実装する必要があります。"""
         pass
 
     @abstractmethod
     def stop(self):
-        """このメソッドはサブクラスで実装する必要があります。"""
         pass
 
     @abstractmethod
@@ -32,7 +30,7 @@ class IOInteractBase(ABC):
 
     def run_command(
             self,
-            cmd: str = "",
+            command: str = "",
             expect: str = "",
             timeout_sec: float = 0.2,
             attempts: int = 1) -> str:
@@ -43,7 +41,7 @@ class IOInteractBase(ABC):
         if self.wait_for_prompt() is False:
             raise Exception("Prompt does not appear")
 
-        self.send_command(cmd)
+        self.send_command(command)
         return self.wait_for(expect, timeout_sec=timeout_sec)
 
     def wait_for_prompt(self, timeout_sec: float = 3.0) -> bool:
