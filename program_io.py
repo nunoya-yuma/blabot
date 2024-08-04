@@ -5,9 +5,11 @@ import pexpect
 
 
 class ProgramIO(io_interact.IOInteractBase):
-    def __init__(self, spawn_command: str):
+    def __init__(self, start_command: str):
         super().__init__()
-        self.start_command = spawn_command
+        self.prompt: str = "> "
+        self.newline: str = "\n"
+        self.start_command = start_command
 
     def start(self):
         if self.process:
@@ -33,7 +35,12 @@ class ProgramIO(io_interact.IOInteractBase):
         if not self.process:
             raise RuntimeError("Process not started")
 
-        index = self.process.expect(expect, timeout=timeout_sec)
+        expect_list = [
+            pexpect.EOF,
+            pexpect.TIMEOUT,
+        ]
+        expect_list.append(expect)
+        index = self.process.expect(expect_list, timeout=timeout_sec)
 
         match = None
         print(self.process.before.decode("utf-8"), end="")
@@ -50,21 +57,6 @@ class ProgramIO(io_interact.IOInteractBase):
             print(match, end="")
 
         return match
-
-    def run_command(
-            self,
-            cmd: str = "",
-            expect: str = "",
-            timeout_sec: float = 0.2,
-            attempts: int = 1) -> str:
-
-        expect_list = [
-            pexpect.EOF,
-            pexpect.TIMEOUT,
-        ]
-        expect_list.append(expect)
-
-        return super().run_command(cmd, expect_list, timeout_sec, attempts)
 
 
 if __name__ == "__main__":

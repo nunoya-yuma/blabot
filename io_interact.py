@@ -36,5 +36,23 @@ class IOInteractBase(ABC):
         if not self.process:
             raise RuntimeError("Process not started")
 
+        if self.wait_for_prompt() is False:
+            raise Exception("Prompt does not appear")
+
         self.send_command(cmd)
         return self.wait_for(expect, timeout_sec=timeout_sec)
+
+    def wait_for_prompt(self, timeout_sec: float = 3.0) -> bool:
+        # If prompt is not set, ignore it
+        if self.prompt is None:
+            return True
+
+        first_timeout = 0.5
+        res = self.wait_for(self.prompt, first_timeout)
+        if res == self.prompt:
+            return True
+
+        # Send a new line and try again
+        self.send_command(self.newline)
+        res = self.wait_for(self.prompt, timeout_sec)
+        return res == self.prompt
