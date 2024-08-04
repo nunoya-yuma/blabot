@@ -58,19 +58,13 @@ class ProgramIO(io_interact.IOInteractBase):
             timeout_sec: float = 0.2,
             attempts: int = 1) -> str:
 
-        if not self.process:
-            raise RuntimeError("Process not started")
-
         expect_list = [
             pexpect.EOF,
             pexpect.TIMEOUT,
         ]
         expect_list.append(expect)
 
-        self.send_command(cmd)
-        match = self.wait_for(expect_list, timeout_sec=timeout_sec)
-
-        return match
+        return super().run_command(cmd, expect_list, timeout_sec, attempts)
 
 
 if __name__ == "__main__":
