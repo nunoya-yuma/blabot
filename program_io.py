@@ -26,6 +26,9 @@ class ProgramIO(io_interact.IOInteractBase):
         # self.process.kill()
         self.process.wait()
 
+    def send_command(self, command) -> None:
+        self.process.sendline(command)
+
     def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
         if not self.process:
             raise RuntimeError("Process not started")
@@ -64,7 +67,7 @@ class ProgramIO(io_interact.IOInteractBase):
         ]
         expect_list.append(expect)
 
-        self.process.sendline(cmd)
+        self.send_command(cmd)
         match = self.wait_for(expect_list, timeout_sec=timeout_sec)
 
         return match
