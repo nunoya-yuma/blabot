@@ -19,6 +19,10 @@ class IOInteractBase(ABC):
         pass
 
     @abstractmethod
+    def send_command(self, command) -> None:
+        pass
+
+    @abstractmethod
     def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
         pass
 
