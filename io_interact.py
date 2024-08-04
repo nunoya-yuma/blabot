@@ -3,6 +3,10 @@ from abc import abstractmethod
 
 
 class IOInteractBase(ABC):
+    def __init__(self):
+        self.process = None
+        self.prompt: str = None
+        self.newline: str = None
 
     @abstractmethod
     def start(self):
@@ -12,6 +16,10 @@ class IOInteractBase(ABC):
     @abstractmethod
     def stop(self):
         """このメソッドはサブクラスで実装する必要があります。"""
+        pass
+
+    @abstractmethod
+    def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
         pass
 
     @abstractmethod
