@@ -60,14 +60,14 @@ class ProgramIO(io_interact.IOInteractBase):
 if __name__ == "__main__":
     inst = ProgramIO("./sample.py")
     inst.start()
-    ret = inst.run_command("test", "aaa")
-    print(f"\n\nresult: {ret}")
+    ret = inst.run_command("test", "aaa", attempts=3)
+    print(f"\n === result: {ret} ===")
 
     print("Restart!")
     inst.restart()
     ret = inst.run_command("test", "2nd")
-    print(f"\n\nresult: {ret}")
+    print(f"\n === result: {ret} ===")
 
     ret = inst.run_command("test")
-    print(f"\n\nresult: {ret}")
+    print(f"\n === result: {ret} ===")
     inst.stop()
