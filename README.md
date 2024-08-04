@@ -1,1 +1,7 @@
-# nn_io_interact
+# nn-io-interact
+
+```shell
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
