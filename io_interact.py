@@ -26,6 +26,10 @@ class IOInteractBase(ABC):
     def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
         pass
 
+    def restart(self):
+        self.stop()
+        self.start()
+
     def run_command(
             self,
             cmd: str = "",

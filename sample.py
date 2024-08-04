@@ -4,7 +4,7 @@ import time
 
 if __name__ == "__main__":
     prompt = "> "
-    time.sleep(2)
+    time.sleep(1)
     while True:
         cmd = input(prompt)
 

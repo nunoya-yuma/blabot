@@ -21,12 +21,10 @@ class ProgramIO(io_interact.IOInteractBase):
         if not self.process:
             raise RuntimeError("Process not started")
 
-        self.process.stdin.close()
-        self.process.stdout.close()
-        self.process.stderr.close()
         self.process.terminate()
         # self.process.kill()
         self.process.wait()
+        self.process = None
 
     def send_command(self, command) -> None:
         self.process.sendline(command)
@@ -64,7 +62,12 @@ if __name__ == "__main__":
     inst.start()
     ret = inst.run_command("test", "aaa")
     print(f"\n\nresult: {ret}")
+
+    print("Restart!")
+    inst.restart()
     ret = inst.run_command("test", "2nd")
     print(f"\n\nresult: {ret}")
+
     ret = inst.run_command("test")
     print(f"\n\nresult: {ret}")
+    inst.stop()
