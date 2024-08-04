@@ -6,9 +6,13 @@ import pexpect
 
 class ProgramIO(io_interact.IOInteractBase):
     def __init__(self, spawn_command: str):
+        super().__init__()
         self.start_command = spawn_command
 
     def start(self):
+        if self.process:
+            raise RuntimeError("Process has already started")
+
         self.process = pexpect.spawn(self.start_command)
 
     def stop(self):
@@ -21,6 +25,28 @@ class ProgramIO(io_interact.IOInteractBase):
         self.process.terminate()
         # self.process.kill()
         self.process.wait()
+
+    def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
+        if not self.process:
+            raise RuntimeError("Process not started")
+
+        index = self.process.expect(expect, timeout=timeout_sec)
+
+        match = None
+        print(self.process.before.decode("utf-8"), end="")
+        if index == 0:
+            # pexpect.EOF is output
+            # TODO: Consider handling in this case
+            pass
+        elif index == 1:
+            # pexpect.TIMEOUT is output
+            # This means that no matching string was output until the timeout.
+            pass
+        else:
+            match = self.process.after.decode("utf-8")
+            print(match, end="")
+
+        return match
 
     def run_command(
             self,
@@ -39,21 +65,8 @@ class ProgramIO(io_interact.IOInteractBase):
         expect_list.append(expect)
 
         self.process.sendline(cmd)
-        index = self.process.expect(expect_list, timeout=timeout_sec)
+        match = self.wait_for(expect_list, timeout_sec=timeout_sec)
 
-        match = None
-        if index == 0:
-            # pexpect.EOF is output
-            # TODO: Consider handling in this case
-            pass
-        elif index == 1:
-            # pexpect.TIMEOUT is output
-            # This means that no matching string was output until the timeout.
-            pass
-        else:
-            match = self.process.after.decode("utf-8")
-
-        print(self.process.before.decode("utf-8"))
         return match
 
 
@@ -61,8 +74,8 @@ if __name__ == "__main__":
     inst = ProgramIO("./sample.py")
     inst.start()
     ret = inst.run_command("test", "aaa")
-    print(f"result: {ret}")
+    print(f"\n\nresult: {ret}")
     ret = inst.run_command("test", "2nd")
-    print(f"result: {ret}")
+    print(f"\n\nresult: {ret}")
     ret = inst.run_command("test")
-    print(f"result: {ret}")
+    print(f"\n\nresult: {ret}")
