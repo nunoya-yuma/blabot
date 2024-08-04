@@ -2,6 +2,7 @@
 
 import io_interact
 import pexpect
+import sys
 
 
 class ProgramIO(io_interact.IOInteractBase):
@@ -16,6 +17,7 @@ class ProgramIO(io_interact.IOInteractBase):
             raise RuntimeError("Process has already started")
 
         self.process = pexpect.spawn(self.start_command)
+        self.process.logfile = sys.stdout.buffer
 
     def stop(self):
         if not self.process:
@@ -41,7 +43,6 @@ class ProgramIO(io_interact.IOInteractBase):
         index = self.process.expect(expect_list, timeout=timeout_sec)
 
         match = None
-        print(self.process.before.decode("utf-8"), end="")
         if index == 0:
             # pexpect.EOF is output
             # TODO: Consider handling in this case
@@ -52,7 +53,6 @@ class ProgramIO(io_interact.IOInteractBase):
             pass
         else:
             match = self.process.after.decode("utf-8")
-            print(match, end="")
 
         return match
 
