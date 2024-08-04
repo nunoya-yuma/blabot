@@ -26,11 +26,15 @@ class IOInteractBase(ABC):
     def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
         pass
 
-    @abstractmethod
     def run_command(
             self,
             cmd: str = "",
             expect: str = "",
             timeout_sec: float = 0.2,
             attempts: int = 1) -> str:
-        pass
+
+        if not self.process:
+            raise RuntimeError("Process not started")
+
+        self.send_command(cmd)
+        return self.wait_for(expect, timeout_sec=timeout_sec)
