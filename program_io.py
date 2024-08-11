@@ -1,6 +1,6 @@
 #!/bin/python3
 
-import io_interact
+from . import io_interact
 import pexpect
 import sys
 
@@ -55,19 +55,3 @@ class ProgramIO(io_interact.IOInteractBase):
             match = self.process.after.decode("utf-8")
 
         return match
-
-
-if __name__ == "__main__":
-    inst = ProgramIO("./sample.py")
-    inst.start()
-    ret = inst.run_command("test", "aaa", attempts=3)
-    print(f"\n === result: {ret} ===")
-
-    print("Restart!")
-    inst.restart()
-    ret = inst.run_command("test", "2nd")
-    print(f"\n === result: {ret} ===")
-
-    ret = inst.run_command("test")
-    print(f"\n === result: {ret} ===")
-    inst.stop()
