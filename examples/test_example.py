@@ -29,7 +29,3 @@ def test_startup():
 
     status = example_cli.status_show()
     assert status == "invalid", f"status is {status}"
-
-
-if __name__ == "__main__":
-    test_startup()
