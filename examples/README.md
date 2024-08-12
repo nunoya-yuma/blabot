@@ -10,5 +10,7 @@ An example is shown using pytest.
 
 ```shell
 cd ${NN_IO_INTERACT}/examples/
-pytest -v -s tests
+
+pytest -v -s tests -m easy
+pytest -v -s tests -m hard
 ```
