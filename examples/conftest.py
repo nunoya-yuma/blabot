@@ -1,4 +1,5 @@
 from nn_io_interact import program_io
+import pytest
 import re
 
 
@@ -18,14 +19,9 @@ class process_cli(program_io.ProgramIO):
         return res
 
 
-def test_startup():
+@pytest.fixture
+def example_cli():
     start_command = "python3 example.py"
     example_cli = process_cli(start_command)
-    example_cli.start()
-
-    assert example_cli.wait_for("Initializing...")
-
-    assert example_cli.wait_for("Complete startup sequence")
-
-    status = example_cli.status_show()
-    assert status == "invalid", f"status is {status}"
+    yield example_cli
+    example_cli.stop()

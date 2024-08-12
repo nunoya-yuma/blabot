@@ -10,5 +10,5 @@ An example is shown using pytest.
 
 ```shell
 cd ${NN_IO_INTERACT}/examples/
-pytest -v -s --ignore=nn_io_interact
+pytest -v -s tests
 ```
