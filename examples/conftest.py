@@ -18,8 +18,12 @@ class process_cli(program_io.ProgramIO):
         res = match.group(1) if match else None
         return res
 
+    def SendOnOff(self, command: str):
+        pattern = "Sample status"
+        return self.run_command(f"sample-ctrl {command}", pattern)
 
-@pytest.fixture
+
+@pytest.fixture(scope="session")
 def example_cli():
     start_command = "python3 example.py"
     example_cli = process_cli(start_command)
