@@ -1,6 +1,8 @@
 import pytest
 
 
+@pytest.mark.easy
+@pytest.mark.hard
 @pytest.mark.order("first")
 def test_startup(example_cli):
     example_cli.start()
