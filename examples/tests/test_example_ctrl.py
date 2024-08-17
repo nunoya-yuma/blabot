@@ -1,4 +1,5 @@
 import pytest
+import sys
 
 
 @pytest.mark.parametrize(
@@ -15,6 +16,8 @@ def test_control_command(example_cli, attempts):
         print(f"Attempt: {attempt+1}/{attempts}")
         print("=========================")
         print("")
+        sys.stdout.flush()
+
         assert example_cli.SendOnOff("on")
         assert example_cli.wait_for("changed to 'on'")
 
