@@ -60,6 +60,6 @@ class IOInteractBase(ABC):
             return True
 
         # Send a new line and try again
-        self.send_command(self.newline)
+        self.send_command("")
         res = self.wait_for(self.prompt, timeout_sec)
         return res == self.prompt
