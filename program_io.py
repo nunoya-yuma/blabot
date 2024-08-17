@@ -1,5 +1,3 @@
-#!/bin/python3
-
 from . import io_interact
 import pexpect
 import sys
@@ -9,7 +7,7 @@ class ProgramIO(io_interact.IOInteractBase):
     def __init__(self, start_command: str):
         super().__init__()
         self.prompt: str = "> "
-        self.newline: str = "\n"
+        self.newline: str = ""
         self.start_command = start_command
 
     def start(self):
@@ -29,7 +27,8 @@ class ProgramIO(io_interact.IOInteractBase):
         self.process = None
 
     def send_command(self, command) -> None:
-        self.process.sendline(command)
+        output_line = command + self.newline
+        self.process.sendline(output_line)
 
     def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
         if not self.process:
