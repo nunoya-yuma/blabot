@@ -4,10 +4,8 @@ import sys
 
 
 class ProgramIO(io_interact.IOInteractBase):
-    def __init__(self, start_command: str):
-        super().__init__()
-        self.prompt: str = "> "
-        self.newline: str = ""
+    def __init__(self, start_command: str = "", prompt: str = "> ", newline: str = ""):
+        super().__init__(prompt, newline)
         self.start_command = start_command
 
     def start(self):

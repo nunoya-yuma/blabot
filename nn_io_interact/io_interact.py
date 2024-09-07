@@ -3,10 +3,10 @@ from abc import abstractmethod
 
 
 class IOInteractBase(ABC):
-    def __init__(self):
+    def __init__(self, prompt: str = None, newline: str = None):
         self.process = None
-        self.prompt: str = None
-        self.newline: str = None
+        self.prompt = prompt
+        self.newline = newline
 
     @abstractmethod
     def start(self):
