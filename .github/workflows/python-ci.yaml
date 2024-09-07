@@ -22,15 +22,17 @@ jobs:
           pip install flake8
       - name: Analyzing the code with flake8
         run: |
-          flake8 -v .
+          flake8 -v --max-line-length=100 .
       - name: Install dependencies for example tests
         run: |
           pip install -r requirements.txt
       - name: Run example tests(easy)
         run: |
           cd examples/
-          pytest -v -s -m easy tests
+          pytest -v -s -m "easy and simple_process_test" tests/
       - name: Run example tests(hard)
         run: |
           cd examples/
-          pytest -v -s -m hard tests
+          pytest -v -s -m "hard and simple_process_test" tests/
+
+      # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
