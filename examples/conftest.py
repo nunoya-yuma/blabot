@@ -1,4 +1,4 @@
-from nn_io_interact import program_io
+from nn_io_interact.nn_io_interact import program_io
 import pytest
 import re
 
