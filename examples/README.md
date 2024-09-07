@@ -14,6 +14,7 @@ An example is shown using pytest.
 cd ${NN_IO_INTERACT}/examples/
 
 # Run all tests
+# It is necessary to set environment variables in `ssh-related testing`, so please do so as well.
 pytest -v -s tests/
 
 # Run partial tests
