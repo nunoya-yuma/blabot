@@ -13,7 +13,7 @@ DST_DIR_PATH = "/tmp/"
 @pytest.fixture
 def ssh_config():
     ssh_config = {}
-    ssh_config["user_name"] = os.environ.get("REMOTE_USER_NAME")
+    ssh_config["user_name"] = os.environ.get("USER")
     ssh_config["host_name"] = os.environ.get("REMOTE_HOST_NAME")
     ssh_config["key_path"] = os.environ.get("REMOTE_KEY_PATH")
 
@@ -46,6 +46,7 @@ def ssh_io_cli(ssh_config):
     ssh_io_cli.stop()
 
 
+@pytest.mark.ssh_test
 def test_ssh(ssh_config, transfer_example, ssh_io_cli):
     assert ssh_io_cli.wait_for("Initializing...")
     assert ssh_io_cli.wait_for("Complete startup sequence")

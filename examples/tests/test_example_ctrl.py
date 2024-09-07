@@ -8,6 +8,7 @@ import sys
         pytest.param(5, marks=pytest.mark.hard),
     ]
 )
+@pytest.mark.simple_process_test
 def test_control_command(example_cli, attempts):
     print(attempts)
     for attempt in range(attempts):
