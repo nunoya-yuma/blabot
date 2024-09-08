@@ -50,3 +50,5 @@ def ssh_io_cli(ssh_config):
 def test_ssh(ssh_config, transfer_example, ssh_io_cli):
     assert ssh_io_cli.wait_for("Initializing...")
     assert ssh_io_cli.wait_for("Complete startup sequence")
+
+    assert ssh_io_cli.run_command("sample-ctrl on", "Sample status changed to 'on'")
