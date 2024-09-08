@@ -2,7 +2,7 @@
 
 Examples are provided in this directory to demonstrate the use of classes.
 
-A program that runs on a simple CLI and files to test it.
+`exmaple.py` is a simple CLI and used to explain the use of the classes.
 
 This sample shows an example where a symbolic link refers to this project itself and is used as a submodule.
 

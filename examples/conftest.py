@@ -1,9 +1,9 @@
-from nn_io_interact.nn_io_interact import program_io
+from nn_io_interact.nn_io_interact.process_io import ProcessIO
 import pytest
 import re
 
 
-class process_cli(program_io.ProgramIO):
+class process_cli(ProcessIO):
     def __init__(self, start_command: str):
         super().__init__(start_command)
 

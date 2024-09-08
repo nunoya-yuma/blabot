@@ -2,7 +2,14 @@ from abc import ABC
 from abc import abstractmethod
 
 
-class IOInteractBase(ABC):
+class TemplatedIO(ABC):
+    """
+    This class provides the ability to exchange input and output with other processes.
+
+    This class is assumed to be inherited.
+    Some methods should be implemented by the inheritor in a form suitable for the target.
+    """
+
     def __init__(self, prompt: str = None, newline: str = None):
         self.process = None
         self.prompt = prompt
@@ -10,18 +17,38 @@ class IOInteractBase(ABC):
 
     @abstractmethod
     def start(self):
+        """
+        This is the method used to initiate an incoming/outgoing call to/from a process
+
+        This method should be implemented by the inheritor in a form suitable for the target.
+        """
         pass
 
     @abstractmethod
     def stop(self):
+        """
+        This is the method used to terminate the process.
+
+        This method should be implemented by the inheritor in a form suitable for the target.
+        """
         pass
 
     @abstractmethod
     def send_command(self, command) -> None:
+        """
+        This is the method used to send the string to the process.
+
+        This method should be implemented by the inheritor in a form suitable for the target.
+        """
         pass
 
     @abstractmethod
     def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
+        """
+        This method is used to wait for the expected string to arrive from the process.
+
+        This method should be implemented by the inheritor in a form suitable for the target.
+        """
         pass
 
     def restart(self):

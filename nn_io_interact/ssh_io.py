@@ -1,9 +1,9 @@
-from . import program_io
+from .process_io import ProcessIO
 import pexpect
 import sys
 
 
-class SSHProcessIO(program_io.ProgramIO):
+class SSHProcessIO(ProcessIO):
     def __init__(
             self,
             user_name: str = "",
