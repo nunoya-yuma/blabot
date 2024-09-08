@@ -3,7 +3,7 @@ import pytest
 import re
 
 
-class process_cli(ProcessIO):
+class ExampleCli(ProcessIO):
     def __init__(self, start_command: str):
         super().__init__(start_command)
 
@@ -26,6 +26,6 @@ class process_cli(ProcessIO):
 @pytest.fixture(scope="session")
 def example_cli():
     start_command = "python3 example.py"
-    example_cli = process_cli(start_command)
+    example_cli = ExampleCli(start_command)
     yield example_cli
     example_cli.stop()
