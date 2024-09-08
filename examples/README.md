@@ -18,8 +18,8 @@ cd ${NN_IO_INTERACT}/examples/
 pytest -v -s tests/
 
 # Run partial tests
-pytest -v -s -m "easy and simple_process_test" tests/
-pytest -v -s -m "hard and simple_process_test" tests/
+pytest -v -s -m "simple_process_test and easy" tests/
+pytest -v -s -m "simple_process_test and hard" tests/
 ```
 
 > ssh-related testing
