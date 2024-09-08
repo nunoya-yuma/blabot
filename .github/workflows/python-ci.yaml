@@ -29,10 +29,10 @@ jobs:
       - name: Run example tests(easy)
         run: |
           cd examples/
-          pytest -v -s -m "easy and simple_process_test" tests/
+          pytest -v -s -m "simple_process_test and easy" tests/
       - name: Run example tests(hard)
         run: |
           cd examples/
-          pytest -v -s -m "hard and simple_process_test" tests/
+          pytest -v -s -m "simple_process_test and hard" tests/
 
       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.

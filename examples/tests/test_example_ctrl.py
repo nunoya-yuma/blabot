@@ -3,18 +3,17 @@ import sys
 
 
 @pytest.mark.parametrize(
-    ("attempts"), [
+    ("test_iterations"), [
         pytest.param(1, marks=pytest.mark.easy),
         pytest.param(5, marks=pytest.mark.hard),
     ]
 )
 @pytest.mark.simple_process_test
-def test_control_command(example_cli, attempts):
-    print(attempts)
-    for attempt in range(attempts):
+def test_control_command(example_cli, test_iterations):
+    for run_count in range(test_iterations):
         print("")
         print("=========================")
-        print(f"Attempt: {attempt+1}/{attempts}")
+        print(f"Test Run: {run_count+1}/{test_iterations}")
         print("=========================")
         print("")
         sys.stdout.flush()
