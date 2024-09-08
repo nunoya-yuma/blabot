@@ -61,6 +61,16 @@ class TemplatedIO(ABC):
             expect: str = "",
             timeout_sec: float = 0.2,
             attempts: int = 1) -> str:
+        """
+        This is the method used to send the string to the process and wait for expected string
+
+        This method waits for a prompt and then sends the command.
+        If the expected string is returned, an object containing the string is returned.
+
+        If the expected string is not included, the string is not consumed and will be parsed again
+        at the next opportunity.
+        If you want to prevent this, use the `wait_and_consume_logs` method.
+        """
 
         if not self.process:
             raise RuntimeError("Process not started")
@@ -90,3 +100,6 @@ class TemplatedIO(ABC):
         self.send_command("")
         res = self.wait_for(self.prompt, timeout_sec)
         return res == self.prompt
+
+    def wait_and_consume_logs(self, timeout_sec: float = 3.0) -> None:
+        self.wait_for(".*", timeout_sec)
