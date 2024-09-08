@@ -1,9 +1,20 @@
-from . import io_interact
+from .templated_io import TemplatedIO
 import pexpect
 import sys
 
 
-class ProgramIO(io_interact.IOInteractBase):
+class ProcessIO(TemplatedIO):
+    """
+    This class provides the ability to exchange input and output
+    with other processes in the same machine.
+
+    This class inherits from TemplatedIO class and implements the necessary methods
+    so that it can actually communicate with the target process.
+    This class uses `pexpect` to manage startup and input/output.
+    This class itself only interacts with processes in the same machine, but may be applied to
+    other targets by generating other classes that inherit from this class.
+    """
+
     def __init__(self, start_command: str = "", prompt: str = "> ", newline: str = ""):
         super().__init__(prompt, newline)
         self.start_command = start_command
