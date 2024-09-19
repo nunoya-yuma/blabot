@@ -13,7 +13,7 @@ DST_DIR_PATH = "/tmp/"
 @pytest.fixture
 def ssh_config():
     ssh_config = {}
-    ssh_config["user_name"] = os.environ.get("USER")
+    ssh_config["user_name"] = os.environ.get("REMOTE_USER_NAME")
     ssh_config["host_name"] = os.environ.get("REMOTE_HOST_NAME")
     ssh_config["key_path"] = os.environ.get("REMOTE_KEY_PATH")
 
@@ -27,7 +27,7 @@ def ssh_config():
 def transfer_example(ssh_config):
     assert os.path.exists(SRC_FILE_PATH), "Example file does not exist"
 
-    # e.g.) scp -i path/to/key/id_rsa_hoge path/to/example.py hoge@hostname:/tmp/
+    # e.g.) scp -i path/to/key/id_fugafuga path/to/example.py hoge@192.168.100.2:/tmp/
     transfer_cmd = [
         "scp", "-i", ssh_config['key_path'], SRC_FILE_PATH,
         f"{ssh_config['user_name']}@{ssh_config['host_name']}:{DST_DIR_PATH}"
