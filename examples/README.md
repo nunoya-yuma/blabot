@@ -26,8 +26,11 @@ pytest -v -s -m "simple_process_test and hard" tests/
 
 This is a test of the class that does the input at the ssh destination, but for that test, it enters itself via ssh and performs the test.
 
+If you want to try it manually on a remote machine, set the environment variables as follows.
+
 ```shell
-export REMOTE_HOST_NAME="localhost"
-export REMOTE_KEY_PATH="$your_key" # Prepare a key to login your computer itself
+export REMOTE_USER_NAME="hogehoge"
+export REMOTE_HOST_NAME="192.168.100.2"
+export REMOTE_KEY_PATH="${HOME}/.ssh/id_fugafuga" # Prepare a key to login
 pytest -v -s -m "ssh_test" tests/
 ```
