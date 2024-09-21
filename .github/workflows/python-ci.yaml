@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies for example tests
         run: |
           pip install -r requirements.txt
+
       - name: Run example tests(easy)
         run: |
           cd examples/
@@ -34,5 +35,14 @@ jobs:
         run: |
           cd examples/
           pytest -v -s -m "simple_process_test and hard" tests/
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build the Docker image
+        run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
+      - name: Run docker related tests
+        run: |
+          cd examples/
+          pytest -v -s -m "docker_test" tests/
 
       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
