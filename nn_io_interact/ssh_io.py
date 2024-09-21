@@ -1,20 +1,21 @@
-from .process_io import ProcessIO
 import pexpect
 import sys
+
+from .process_io import ProcessIO
 
 
 class SSHProcessIO(ProcessIO):
     def __init__(
             self,
-            user_name: str = "",
-            host_name: str = "",
-            key_path: str = "",
-            start_command: str = ""):
+            start_command: str,
+            user_name: str,
+            host_name: str,
+            key_path: str,
+            prompt: str = "",
+            newline: str = ""
+    ):
 
-        if user_name == "" or host_name == "" or key_path == "":
-            raise ValueError("Input is empty")
-
-        super().__init__(start_command=start_command)
+        super().__init__(start_command, prompt, newline)
         self.user_name = user_name
         self.host_name = host_name
         self.key_path = key_path

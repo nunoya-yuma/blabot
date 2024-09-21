@@ -10,7 +10,7 @@ class TemplatedIO(ABC):
     Some methods should be implemented by the inheritor in a form suitable for the target.
     """
 
-    def __init__(self, prompt: str = None, newline: str = None):
+    def __init__(self, prompt: str = "", newline: str = ""):
         self.process = None
         self.prompt = prompt
         self.newline = newline
@@ -34,7 +34,7 @@ class TemplatedIO(ABC):
         pass
 
     @abstractmethod
-    def send_command(self, command) -> None:
+    def send_command(self, command: str) -> None:
         """
         This is the method used to send the string to the process.
 
@@ -43,7 +43,7 @@ class TemplatedIO(ABC):
         pass
 
     @abstractmethod
-    def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
+    def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
         """
         This method is used to wait for the expected string to arrive from the process.
 
@@ -57,7 +57,7 @@ class TemplatedIO(ABC):
 
     def run_command(
             self,
-            command: str = "",
+            command: str,
             expect: str = "",
             timeout_sec: float = 0.2,
             attempts: int = 1) -> str:
@@ -97,7 +97,7 @@ class TemplatedIO(ABC):
             return True
 
         # Send a new line and try again
-        self.send_command("")
+        self.send_command(self.newline)
         res = self.wait_for(self.prompt, timeout_sec)
         return res == self.prompt
 

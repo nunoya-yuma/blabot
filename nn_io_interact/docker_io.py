@@ -1,6 +1,7 @@
-from .process_io import ProcessIO
 import pexpect
 import sys
+
+from .process_io import ProcessIO
 
 
 class DockerProcessIO(ProcessIO):
@@ -18,12 +19,15 @@ class DockerProcessIO(ProcessIO):
 
     def __init__(
             self,
+            start_command: str,
             docker_image_name: str,
             docker_container_name: str = "",
             need_docker_run: bool = True,
-            start_command: str = ""):
+            prompt: str = "",
+            newline: str = ""
+    ):
 
-        super().__init__(start_command=start_command)
+        super().__init__(start_command, prompt, newline)
         self.docker_image_name = docker_image_name
         self.docker_container_name = docker_container_name
         self.need_docker_run = need_docker_run

@@ -1,6 +1,7 @@
-from nn_io_interact.nn_io_interact.docker_io import DockerProcessIO
 import pytest
 import subprocess
+
+from nn_io_interact.nn_io_interact.docker_io import DockerProcessIO
 
 START_COMMAND = "python3 /app/example.py"
 DOCKER_IMAGE_NAME = "nn/example-app:latest"
@@ -9,11 +10,13 @@ DOCKER_CONTAINER_NAME = "example_app"
 
 @pytest.fixture
 def docker_io_cli():
+    PROMPT = "> "
     docker_io_cli = DockerProcessIO(
+        START_COMMAND,
         DOCKER_IMAGE_NAME,
         DOCKER_CONTAINER_NAME,
-        True,
-        START_COMMAND)
+        prompt=PROMPT,
+    )
     docker_io_cli.start()
     yield docker_io_cli
     docker_io_cli.stop()
@@ -36,11 +39,14 @@ def docker_io_exec_cli():
     res_ls = subprocess.run(docker_exec_command)
     assert res_ls.returncode == 0, "Failed to run docker sample command"
 
+    PROMPT = "> "
     docker_io_exec_cli = DockerProcessIO(
+        START_COMMAND,
         DOCKER_IMAGE_NAME,
         DOCKER_CONTAINER_NAME,
         False,
-        START_COMMAND)
+        prompt=PROMPT
+    )
 
     docker_io_exec_cli.start()
     yield docker_io_exec_cli

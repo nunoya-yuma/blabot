@@ -1,6 +1,7 @@
-from .templated_io import TemplatedIO
 import pexpect
 import sys
+
+from .templated_io import TemplatedIO
 
 
 class ProcessIO(TemplatedIO):
@@ -15,7 +16,7 @@ class ProcessIO(TemplatedIO):
     other targets by generating other classes that inherit from this class.
     """
 
-    def __init__(self, start_command: str = "", prompt: str = "> ", newline: str = ""):
+    def __init__(self, start_command: str, prompt: str = "", newline: str = ""):
         super().__init__(prompt, newline)
         self.start_command = start_command
 
@@ -35,11 +36,11 @@ class ProcessIO(TemplatedIO):
         self.process.wait()
         self.process = None
 
-    def send_command(self, command) -> None:
+    def send_command(self, command: str) -> None:
         output_line = command + self.newline
         self.process.sendline(output_line)
 
-    def wait_for(self, expect, timeout_sec: float = 3.0) -> str:
+    def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
         if not self.process:
             raise RuntimeError("Process not started")
 
