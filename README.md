@@ -17,7 +17,7 @@ graph LR
     CLI_Module -->|Print: result| Developer
 
     CLI_Module -->|Trigger| Module_A
-    Module_A -->|Print: Result| CLI_Module
+    Module_A -->|Print: result| CLI_Module
 ```
 
 Our project can automatically control and check inputs and outputs instead of developer.
@@ -35,7 +35,7 @@ graph LR
     CLI_Module -->|Print: result| This_Project
 
     CLI_Module -->|Trigger| Module_A
-    Module_A -->|Print: Result| CLI_Module
+    Module_A -->|Print: result| CLI_Module
 ```
 
 ## Environment
@@ -49,3 +49,15 @@ pip install -r requirements.txt
 ## Examples
 
 [Examples](./examples/README.md) are prepared. Please see it if necessary.
+
+## CI
+
+Currently, GitHub Actions is executed at the time the PR is created.
+In this flow, the format is checked and pytest is performed.
+
+If you want to run GitHub Actions in your local environment, you can use [act command](https://github.com/nektos/act)
+
+```shell
+# e.g.)
+act -j flake8_and_pytest
+```
