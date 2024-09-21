@@ -1,7 +1,8 @@
-from nn_io_interact.nn_io_interact.ssh_io import SSHProcessIO
 import os
 import pytest
 import subprocess
+
+from nn_io_interact.nn_io_interact.ssh_io import SSHProcessIO
 
 PARENT_DIR = os.path.dirname(os.path.dirname(__file__))
 SRC_FILE_PATH = os.path.join(PARENT_DIR, "example.py")
@@ -39,8 +40,14 @@ def transfer_example(ssh_config):
 @pytest.fixture
 def ssh_io_cli(ssh_config):
     start_command = "python3 /tmp/example.py"
-    ssh_io_cli = SSHProcessIO(ssh_config["user_name"], ssh_config["host_name"],
-                              ssh_config["key_path"], start_command)
+    prompt = "> "
+    ssh_io_cli = SSHProcessIO(
+        start_command,
+        ssh_config["user_name"],
+        ssh_config["host_name"],
+        ssh_config["key_path"],
+        prompt=prompt
+    )
     ssh_io_cli.start()
     yield ssh_io_cli
     ssh_io_cli.stop()

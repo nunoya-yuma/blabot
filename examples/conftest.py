@@ -1,11 +1,12 @@
-from nn_io_interact.nn_io_interact.process_io import ProcessIO
 import pytest
 import re
 
+from nn_io_interact.nn_io_interact.process_io import ProcessIO
+
 
 class ExampleCli(ProcessIO):
-    def __init__(self, start_command: str):
-        super().__init__(start_command)
+    def __init__(self, start_command: str, prompt="> "):
+        super().__init__(start_command, prompt)
 
     def status_show(self):
         pattern = "Sample status: (invalid|on|off)"
