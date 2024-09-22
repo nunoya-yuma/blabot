@@ -62,3 +62,20 @@ docker build -f examples/Dockerfile -t nn/example-app:latest ./
 cd ${NN_IO_INTERACT}/examples/
 pytest -v -s -m "docker_test" tests/
 ```
+
+## ProcessIO(in the docker container)
+
+This is for cases where the files of this project have been copied or mounted in a docker container.
+In this case, it is not necessary to use `DockerProcessIO`, but it is sufficient to start up `ProcessIO` in the container.
+
+```shell
+# Build docker image
+cd ${NN_IO_INTERACT}
+docker build -f examples/Dockerfile -t nn/example-app:latest ./
+
+# Start docker images and mount
+docker run -it --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest bash
+
+pytest -v -s -m "docker_inner_test" tests/
+# exit or ctrl+D
+```
