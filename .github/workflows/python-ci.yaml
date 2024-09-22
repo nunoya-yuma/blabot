@@ -40,9 +40,13 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build the Docker image
         run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
-      - name: Run docker related tests
+      - name: Run docker related tests(from outside)
         run: |
           cd examples/
           pytest -v -s -m "docker_test" tests/
+      - name: Run docker and mount files and run tests(from inside)
+        run: |
+          START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
+          docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest ${START_PYTEST_CMD}
 
       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
