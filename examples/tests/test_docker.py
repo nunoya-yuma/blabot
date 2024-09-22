@@ -2,6 +2,7 @@ import pytest
 import subprocess
 
 from nn_io_interact.nn_io_interact.docker_io import DockerProcessIO
+from nn_io_interact.nn_io_interact.process_io import ProcessIO
 
 START_COMMAND = "python3 /app/example.py"
 DOCKER_IMAGE_NAME = "nn/example-app:latest"
@@ -59,6 +60,15 @@ def docker_io_exec_cli():
     assert res_remove.returncode == 0, "Failed to remove docker container"
 
 
+@pytest.fixture
+def docker_io_inner_cli():
+    PROMPT = "> "
+    docker_io_inner_cli = ProcessIO(START_COMMAND, PROMPT)
+    docker_io_inner_cli.start()
+    yield docker_io_inner_cli
+    docker_io_inner_cli.stop()
+
+
 @pytest.mark.docker_test
 def test_docker_simple(docker_io_cli):
     assert docker_io_cli.wait_for("Initializing...")
@@ -73,3 +83,11 @@ def test_docker_exec(docker_io_exec_cli):
     assert docker_io_exec_cli.wait_for("Complete startup sequence")
 
     assert docker_io_exec_cli.run_command("sample-ctrl off", "Sample status changed to 'off'")
+
+
+@pytest.mark.docker_inner_test
+def test_docker_inner(docker_io_inner_cli):
+    assert docker_io_inner_cli.wait_for("Initializing...")
+    assert docker_io_inner_cli.wait_for("Complete startup sequence")
+
+    assert docker_io_inner_cli.run_command("sample-ctrl on", "Sample status changed to 'on'")
