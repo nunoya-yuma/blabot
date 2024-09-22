@@ -53,12 +53,6 @@ def docker_io_exec_cli():
     yield docker_io_exec_cli
     docker_io_exec_cli.stop()
 
-    docker_remove_command = [
-        "docker", "rm", "-f", DOCKER_CONTAINER_NAME
-    ]
-    res_remove = subprocess.run(docker_remove_command, stdout=subprocess.DEVNULL)
-    assert res_remove.returncode == 0, "Failed to remove docker container"
-
 
 @pytest.fixture
 def docker_io_inner_cli():
