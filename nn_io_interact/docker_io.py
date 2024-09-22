@@ -13,7 +13,7 @@ class DockerProcessIO(ProcessIO):
     Although a docker image must be available on the host PC, this class also has the ability to
     automatically launch containers.
     If you need to work in the container in advance, do it and detach from the container so that
-    this class can resume it with the docker exec command and set the need_docker_run argument to
+    this class can resume it with the docker exec command and set the use_docker_exec argument to
     False.
     """
 
@@ -22,15 +22,17 @@ class DockerProcessIO(ProcessIO):
             start_command: str,
             docker_image_name: str,
             docker_container_name: str = "",
-            need_docker_run: bool = True,
+            use_docker_exec: bool = False,
             prompt: str = "",
             newline: str = ""
     ):
+        if use_docker_exec and docker_container_name == "":
+            raise ValueError("If use_docker_exec is True, docker_container_name must be passed")
 
         super().__init__(start_command, prompt, newline)
         self.docker_image_name = docker_image_name
         self.docker_container_name = docker_container_name
-        self.need_docker_run = need_docker_run
+        self.use_docker_exec = use_docker_exec
 
     def start(self):
         if self.process:
@@ -38,7 +40,10 @@ class DockerProcessIO(ProcessIO):
 
         spawn_command = ""
 
-        if self.need_docker_run:
+        if self.use_docker_exec:
+            docker_exec_command = f"docker exec -it {self.docker_container_name} bash"
+            spawn_command = docker_exec_command
+        else:
             docker_run_command = "docker run -it --rm"
             if self.docker_container_name:
                 docker_run_command += f" --name {self.docker_container_name}"
@@ -46,13 +51,9 @@ class DockerProcessIO(ProcessIO):
             docker_run_command += f" {self.docker_image_name} bash"
             # e.g.) docker run -it --rm --name testtest nn/iointeract:1.0 bash
             spawn_command = docker_run_command
-        else:
-            docker_exec_command = f"docker exec -it {self.docker_container_name} bash"
-            spawn_command = docker_exec_command
 
         self.process = pexpect.spawn(spawn_command)
         self.process.logfile = sys.stdout.buffer
-        self.process.echo = False
 
         # Wait for login to complete
         assert self.wait_for(r"#"), "Failed to start docker"

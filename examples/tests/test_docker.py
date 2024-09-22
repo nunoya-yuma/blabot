@@ -45,7 +45,7 @@ def docker_io_exec_cli():
         START_COMMAND,
         DOCKER_IMAGE_NAME,
         DOCKER_CONTAINER_NAME,
-        False,
+        True,
         prompt=PROMPT
     )
 
