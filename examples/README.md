@@ -32,6 +32,24 @@ pytest -v -s -m "simple_process_test and hard" tests/
 
 ## SSHProcessIO
 
+```mermaid
+graph LR
+    subgraph HostPC["Host PC"]
+        Software["Software"]
+        SSHIO["SSHProcessIO"]
+    end
+
+    subgraph RemotePC["Remote PC"]
+        Software_copied["Software (copied)"]
+    end
+
+    Software -.->|Copy| Software_copied
+    SSHIO <-->|"Send command
+                +
+                Receive result
+                (via SSH)"| Software_copied
+```
+
 A class named `SSHProcessIO` is provided in the file `ssh_io.py`.
 
 This class is to run a process in the remote machine via ssh.
@@ -50,6 +68,25 @@ pytest -v -s -m "ssh_test" tests/
 
 ## DockerProcessIO
 
+```mermaid
+graph LR
+    subgraph HostPC["Host PC"]
+        Software["Software"]
+        DockerIO["DockerProcessIO
+                  (No need to be
+                  in container)"]
+    end
+
+    subgraph Container["Docker container"]
+        Software_copied["Software (copied)"]
+    end
+
+    Software -.->|Copy or mount| Software_copied
+    DockerIO <-->|"Send command
+                   +
+                   Receive result"| Software_copied
+```
+
 A class named `DockerProcessIO` is provided in the file `docker_io.py`.
 
 This class is to run a process in the docker container.
@@ -64,6 +101,24 @@ pytest -v -s -m "docker_test" tests/
 ```
 
 ## ProcessIO(in the docker container)
+
+```mermaid
+graph LR
+    subgraph HostPC["Host PC"]
+        Software["Software"]
+    end
+
+    subgraph Container["Docker container"]
+        Software_copied["Software (copied)"]
+        ProcessIO["ProcessIO"]
+    end
+
+    HostPC -.->|Copy or mount| ProcessIO
+    Software -.->|Copy or mount| Software_copied
+    ProcessIO <-->|"Send command
+                   +
+                   Receive result"| Software_copied
+```
 
 This is for cases where the files of this project have been copied or mounted in a docker container.
 In this case, it is not necessary to use `DockerProcessIO`, but it is sufficient to start up `ProcessIO` in the container.
