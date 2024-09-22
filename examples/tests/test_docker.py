@@ -1,8 +1,9 @@
 import pytest
 import subprocess
 
-from nn_io_interact.nn_io_interact.docker_io import DockerProcessIO
-from nn_io_interact.nn_io_interact.process_io import ProcessIO
+from cli.example_cli import ExampleCli
+from cli.nn_io_interact.nn_io_interact.docker_io import DockerProcessIO
+from cli.nn_io_interact.nn_io_interact.process_io import ProcessIO
 
 START_COMMAND = "python3 /app/example.py"
 DOCKER_IMAGE_NAME = "nn/example-app:latest"
@@ -12,12 +13,14 @@ DOCKER_CONTAINER_NAME = "example_app"
 @pytest.fixture
 def docker_io_cli():
     PROMPT = "> "
-    docker_io_cli = DockerProcessIO(
+    io_interact = DockerProcessIO(
         START_COMMAND,
         DOCKER_IMAGE_NAME,
         DOCKER_CONTAINER_NAME,
         prompt=PROMPT,
     )
+
+    docker_io_cli = ExampleCli(io_interact)
     docker_io_cli.start()
     yield docker_io_cli
     docker_io_cli.stop()
@@ -41,7 +44,7 @@ def docker_io_exec_cli():
     assert res_ls.returncode == 0, "Failed to run docker sample command"
 
     PROMPT = "> "
-    docker_io_exec_cli = DockerProcessIO(
+    io_interact = DockerProcessIO(
         START_COMMAND,
         DOCKER_IMAGE_NAME,
         DOCKER_CONTAINER_NAME,
@@ -49,6 +52,7 @@ def docker_io_exec_cli():
         prompt=PROMPT
     )
 
+    docker_io_exec_cli = ExampleCli(io_interact)
     docker_io_exec_cli.start()
     yield docker_io_exec_cli
     docker_io_exec_cli.stop()
@@ -57,7 +61,9 @@ def docker_io_exec_cli():
 @pytest.fixture
 def docker_io_inner_cli():
     PROMPT = "> "
-    docker_io_inner_cli = ProcessIO(START_COMMAND, PROMPT)
+    io_interact = ProcessIO(START_COMMAND, PROMPT)
+
+    docker_io_inner_cli = ExampleCli(io_interact)
     docker_io_inner_cli.start()
     yield docker_io_inner_cli
     docker_io_inner_cli.stop()
@@ -65,23 +71,14 @@ def docker_io_inner_cli():
 
 @pytest.mark.docker_test
 def test_docker_simple(docker_io_cli):
-    assert docker_io_cli.wait_for("Initializing...")
-    assert docker_io_cli.wait_for("Complete startup sequence")
-
-    assert docker_io_cli.run_command("sample-ctrl on", "Sample status changed to 'on'")
+    docker_io_cli.check_startup()
 
 
 @pytest.mark.docker_test
 def test_docker_exec(docker_io_exec_cli):
-    assert docker_io_exec_cli.wait_for("Initializing...")
-    assert docker_io_exec_cli.wait_for("Complete startup sequence")
-
-    assert docker_io_exec_cli.run_command("sample-ctrl off", "Sample status changed to 'off'")
+    docker_io_exec_cli.check_startup()
 
 
 @pytest.mark.docker_inner_test
 def test_docker_inner(docker_io_inner_cli):
-    assert docker_io_inner_cli.wait_for("Initializing...")
-    assert docker_io_inner_cli.wait_for("Complete startup sequence")
-
-    assert docker_io_inner_cli.run_command("sample-ctrl on", "Sample status changed to 'on'")
+    docker_io_inner_cli.check_startup()

@@ -6,14 +6,7 @@ import pytest
 @pytest.mark.simple_process_test
 @pytest.mark.order("first")
 def test_startup(example_cli):
-    example_cli.start()
-
-    assert example_cli.wait_for("Initializing...")
-
-    assert example_cli.wait_for("Complete startup sequence")
-
-    status = example_cli.status_show()
-    assert status == "invalid", f"status is {status}"
+    example_cli.check_startup()
 
 
 @pytest.mark.easy

@@ -2,7 +2,8 @@ import os
 import pytest
 import subprocess
 
-from nn_io_interact.nn_io_interact.ssh_io import SSHProcessIO
+from cli.example_cli import ExampleCli
+from cli.nn_io_interact.nn_io_interact.ssh_io import SSHProcessIO
 
 PARENT_DIR = os.path.dirname(os.path.dirname(__file__))
 SRC_FILE_PATH = os.path.join(PARENT_DIR, "example.py")
@@ -41,13 +42,15 @@ def transfer_example(ssh_config):
 def ssh_io_cli(ssh_config):
     start_command = "python3 /tmp/example.py"
     prompt = "> "
-    ssh_io_cli = SSHProcessIO(
+    io_interact = SSHProcessIO(
         start_command,
         ssh_config["user_name"],
         ssh_config["host_name"],
         ssh_config["key_path"],
         prompt=prompt
     )
+
+    ssh_io_cli = ExampleCli(io_interact)
     ssh_io_cli.start()
     yield ssh_io_cli
     ssh_io_cli.stop()
@@ -55,7 +58,4 @@ def ssh_io_cli(ssh_config):
 
 @pytest.mark.ssh_test
 def test_ssh(ssh_config, transfer_example, ssh_io_cli):
-    assert ssh_io_cli.wait_for("Initializing...")
-    assert ssh_io_cli.wait_for("Complete startup sequence")
-
-    assert ssh_io_cli.run_command("sample-ctrl on", "Sample status changed to 'on'")
+    ssh_io_cli.check_startup()
