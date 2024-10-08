@@ -2,9 +2,21 @@
 
 Examples are provided in this directory to demonstrate the use of classes.
 
-`exmaple.py` is a simple CLI and used to explain the use of the classes.
+`example.py` is a virtual development target software with simple CLI and used to explain the use of the classes.
 
-This sample shows an example where a symbolic link refers to this project itself and is used as a submodule.
+It is recommended that it be used alone once.
+
+```shell
+cd ${NN_IO_INTERACT}/examples/
+./example.py
+
+# sample commands
+> sample-status
+> sample-ctrl on
+> sample-ctrl off
+```
+
+This sample directory shows an example where a symbolic link refers to this project itself and is used as a submodule.
 
 An example is provided in combination with pytest.
 
@@ -28,6 +40,32 @@ cd ${NN_IO_INTERACT}/examples/
 # Run partial tests
 pytest -v -s -m "simple_process_test and easy" tests/
 pytest -v -s -m "simple_process_test and hard" tests/
+```
+
+## DeviceIO
+
+A class named `DeviceIO` is provided in the file `device_io.py`.
+
+This class is to communicate with serial device such as /dev/ttyUSB0.
+
+By following the steps below, you can try it virtually with socat.
+
+```shell
+# Prepare virtual device
+socat PTY,link=/tmp/ttyV0,echo=0 PTY,link=/tmp/ttyV1,echo=0 &
+
+# Run example.py with input/output set to /tmp/ttyV0
+cd ${NN_IO_INTERACT}/examples/
+./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
+
+# Run example test (In a terminal different from the terminal where example.py is executed.)
+cd ${NN_IO_INTERACT}/examples/
+pytest -v -s -m "device_test" tests/
+
+# optional)
+# Input/Output can be confirmed by minicom, and other tools.
+# e.g)
+minicom -D /tmp/ttyV1 # Exit: ctrl+a -> x
 ```
 
 ## SSHProcessIO

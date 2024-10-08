@@ -1,3 +1,4 @@
 pexpect
+pexpect_serial
 pytest
 pytest-order
