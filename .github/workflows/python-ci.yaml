@@ -38,6 +38,8 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Remove the previous docker container
+        run: docker rm -f example_app
       - name: Build the Docker image
         run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
       - name: Run docker related tests(from outside)
@@ -48,5 +50,8 @@ jobs:
         run: |
           START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
           docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest ${START_PYTEST_CMD}
+      # This test must be run inside a container, because tty does not work well in GitHub Actions.
+      - name: Run serial device tests
+        run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest bash scripts/run_device_test.sh
 
       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
