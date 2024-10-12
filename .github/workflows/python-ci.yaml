@@ -21,11 +21,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8
       - name: Analyzing the code with flake8
-        run: |
-          flake8 -v --max-line-length=100 .
+        run: flake8 -v --max-line-length=100 .
       - name: Install dependencies for example tests
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run example tests(easy)
         run: |
