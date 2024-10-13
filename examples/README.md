@@ -24,7 +24,8 @@ An example is provided in combination with pytest.
 cd ${NN_IO_INTERACT}/examples/
 
 # Run all tests
-# It is necessary to set environment variables in `SSHProcessIO`, so please do so as well.
+# Some preliminary preparation is required, but if the following steps have been properly configured,
+# the test can be run with the following command.
 pytest -v -s tests/
 ```
 
@@ -44,14 +45,36 @@ pytest -v -s -m "simple_process_test and hard" tests/
 
 ## DeviceIO
 
+```mermaid
+graph LR
+    subgraph HostPC["Host PC"]
+        Software["Software"]
+        DeviceIO["DeviceIO"]
+    end
+
+    subgraph SerialDev["Serial Device"]
+        SoftwareDev["Software (flashed)"]
+    end
+
+    Software -.->|flash| SoftwareDev
+    DeviceIO <-->|"Send command
+                  +
+                  Receive result
+                  (via serial device,
+                  /dev/ttyUSB0, ...)"| SoftwareDev
+```
+
 A class named `DeviceIO` is provided in the file `device_io.py`.
 
 This class is to communicate with serial device such as /dev/ttyUSB0.
 
 By following the steps below, you can try it virtually with socat.
 
+And the following procedure is the same as executing the `${NN_IO_INTERACT}/examples/scripts/run_device_test.sh` file, so you may execute that one.
+
 ```shell
 # Prepare virtual device
+sudo apt install socat # if socat is not installed in your environment
 socat PTY,link=/tmp/ttyV0,echo=0 PTY,link=/tmp/ttyV1,echo=0 &
 
 # Run example.py with input/output set to /tmp/ttyV0
@@ -65,6 +88,7 @@ pytest -v -s -m "device_test" tests/
 # optional)
 # Input/Output can be confirmed by minicom, and other tools.
 # e.g)
+sudo apt install minicom # if minicom is not installed in your environment
 minicom -D /tmp/ttyV1 # Exit: ctrl+a -> x
 ```
 

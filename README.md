@@ -17,6 +17,7 @@ graph LR
     CLI_Module -->|Print: result| Developer
 
     CLI_Module -->|Trigger| Module_A
+    Module_A -->|Take action| Module_A
     Module_A -->|Print: result| CLI_Module
 ```
 
@@ -35,6 +36,7 @@ graph LR
     CLI_Module -->|Print: result| This_Project
 
     CLI_Module -->|Trigger| Module_A
+    Module_A -->|Take action| Module_A
     Module_A -->|Print: result| CLI_Module
 ```
 
@@ -54,6 +56,8 @@ pip install -r requirements.txt
 ## Examples
 
 [Examples](./examples/README.md) are prepared. Please see it if necessary.
+
+An overview description of each class is also available there, so I recommend taking a look at it.
 
 ## CI
 
