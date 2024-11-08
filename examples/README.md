@@ -18,7 +18,12 @@ cd ${BLABOT}/examples/
 
 This sample directory shows an example where a symbolic link refers to this project itself and is used as a submodule.
 
-An example is provided in combination with pytest.
+The samples are provided in two major formats: Pytest and a single python script file.
+
+```shell
+cd ${BLABOT}/examples/
+./example_usage.py
+```
 
 ```shell
 cd ${BLABOT}/examples/
