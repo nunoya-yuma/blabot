@@ -7,13 +7,13 @@ Prepare virtual device
 $ socat PTY,link=/tmp/ttyV0 PTY,link=/tmp/ttyV1 &
 
 Run example.py with input/output set to /tmp/ttyV0
-$ cd ${NN_IO_INTERACT}/examples/
+$ cd ${BLABOT}/examples/
 $ ./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 """
 import pytest
 
 from cli.example_cli import ExampleCli
-from cli.nn_io_interact.nn_io_interact.device_io import DeviceIO
+from cli.blabot.blabot.device_io import DeviceIO
 
 
 @pytest.fixture

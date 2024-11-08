@@ -3,7 +3,7 @@ import pytest
 import subprocess
 
 from cli.example_cli import ExampleCli
-from cli.nn_io_interact.nn_io_interact.ssh_io import SSHProcessIO
+from cli.blabot.blabot.ssh_io import SSHProcessIO
 
 PARENT_DIR = os.path.dirname(os.path.dirname(__file__))
 SRC_FILE_PATH = os.path.join(PARENT_DIR, "example.py")

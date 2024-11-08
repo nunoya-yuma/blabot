@@ -2,8 +2,8 @@ import pytest
 import subprocess
 
 from cli.example_cli import ExampleCli
-from cli.nn_io_interact.nn_io_interact.docker_io import DockerProcessIO
-from cli.nn_io_interact.nn_io_interact.process_io import ProcessIO
+from cli.blabot.blabot.docker_io import DockerProcessIO
+from cli.blabot.blabot.process_io import ProcessIO
 
 START_COMMAND = "python3 /app/example.py"
 DOCKER_IMAGE_NAME = "nn/example-app:latest"
