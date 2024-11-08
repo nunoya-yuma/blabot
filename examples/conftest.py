@@ -1,6 +1,6 @@
 import pytest
 
-from cli.nn_io_interact.nn_io_interact.process_io import ProcessIO
+from cli.blabot.blabot.process_io import ProcessIO
 from cli.example_cli import ExampleCli
 
 

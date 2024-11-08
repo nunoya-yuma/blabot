@@ -1,6 +1,6 @@
 import re
 
-from .nn_io_interact.nn_io_interact.templated_io import TemplatedIO
+from .blabot.blabot.templated_io import TemplatedIO
 
 
 class ExampleCliBase():

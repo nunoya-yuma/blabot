@@ -7,7 +7,7 @@ Examples are provided in this directory to demonstrate the use of classes.
 It is recommended that it be used alone once.
 
 ```shell
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 ./example.py
 
 # sample commands
@@ -21,7 +21,7 @@ This sample directory shows an example where a symbolic link refers to this proj
 An example is provided in combination with pytest.
 
 ```shell
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 
 # Run all tests
 # Some preliminary preparation is required, but if the following steps have been properly configured,
@@ -36,7 +36,7 @@ A class named `ProcessIO` is provided in the file `process_io.py`.
 This class is a basic class that launches the process you want to run, sends commands to it, and analyzes the logs.
 
 ```shell
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 
 # Run partial tests
 pytest -v -s -m "simple_process_test and easy" tests/
@@ -70,7 +70,7 @@ This class is to communicate with serial device such as /dev/ttyUSB0.
 
 By following the steps below, you can try it virtually with socat.
 
-And the following procedure is the same as executing the `${NN_IO_INTERACT}/examples/scripts/run_device_test.sh` file, so you may execute that one.
+And the following procedure is the same as executing the `${BLABOT}/examples/scripts/run_device_test.sh` file, so you may execute that one.
 
 ```shell
 # Prepare virtual device
@@ -78,11 +78,11 @@ sudo apt install socat # if socat is not installed in your environment
 socat PTY,link=/tmp/ttyV0,echo=0 PTY,link=/tmp/ttyV1,echo=0 &
 
 # Run example.py with input/output set to /tmp/ttyV0
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 ./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 
 # Run example test (In a terminal different from the terminal where example.py is executed.)
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 pytest -v -s -m "device_test" tests/
 
 # optional)
@@ -124,7 +124,7 @@ export REMOTE_USER_NAME="hogehoge"
 export REMOTE_HOST_NAME="192.168.100.2"
 export REMOTE_KEY_PATH="${HOME}/.ssh/id_fugafuga" # Prepare a key to login
 
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 pytest -v -s -m "ssh_test" tests/
 ```
 
@@ -155,10 +155,10 @@ This class is to run a process in the docker container.
 
 ```shell
 # Build docker image
-cd ${NN_IO_INTERACT}
+cd ${BLABOT}
 docker build -f examples/Dockerfile -t nn/example-app:latest ./
 
-cd ${NN_IO_INTERACT}/examples/
+cd ${BLABOT}/examples/
 pytest -v -s -m "docker_test" tests/
 ```
 
@@ -187,7 +187,7 @@ In this case, it is not necessary to use `DockerProcessIO`, but it is sufficient
 
 ```shell
 # Build docker image
-cd ${NN_IO_INTERACT}
+cd ${BLABOT}
 docker build -f examples/Dockerfile -t nn/example-app:latest ./
 
 # Start docker images and mount
