@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 import sys
 import time
+from pathlib import Path
+
+EXAMPLE_PROMPT = "> "
+EXAMPLE_FILE_PATH = Path(__file__)
+EXAMPLE_START_COMMAND = f"python3 {EXAMPLE_FILE_PATH}"
 
 
 class SampleCli():
@@ -14,19 +19,19 @@ class SampleCli():
 
     def HandleInput(self, input):
         if input == "sample-status":
-            self.__ShowStatus()
+            self._ShowStatus()
         elif input == "sample-ctrl on":
-            self.__ControlStatus("on")
+            self._ControlStatus("on")
         elif input == "sample-ctrl off":
-            self.__ControlStatus("off")
+            self._ControlStatus("off")
         else:
             sys.stderr.write(f"Invalid command: {input}\n")
             sys.stderr.flush()
 
-    def __ShowStatus(self):
+    def _ShowStatus(self):
         print(f"Sample status: {self.status}")
 
-    def __ControlStatus(self, command):
+    def _ControlStatus(self, command):
         if command not in self.status_list:
             sys.stderr.write("Invalid status command\n")
             sys.stderr.flush()
@@ -40,7 +45,6 @@ class SampleCli():
 
 
 if __name__ == "__main__":
-    prompt = "> "
     example_process = SampleCli()
 
     # Imitate program startup
@@ -49,5 +53,5 @@ if __name__ == "__main__":
     print("Complete startup sequence")
 
     while True:
-        cmd = input(prompt)
+        cmd = input(EXAMPLE_PROMPT)
         example_process.HandleInput(cmd)
