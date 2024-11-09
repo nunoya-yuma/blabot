@@ -10,18 +10,12 @@ Basically, the usage is the same with respect to other classes.
 Hopefully this sample will be useful for those of you who use it in your own projects.
 """
 
-from pathlib import Path
 from cli.blabot.blabot.process_io import ProcessIO
+from example import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
 
 
 def main():
-    CURRENT_DIR = Path(__file__).parent
-    EXAMPLE_FILE_NAME = 'example.py'
-    FILE_PATH = CURRENT_DIR / EXAMPLE_FILE_NAME
-
-    PROMPT = "> "
-    START_CMD = f"python3 {FILE_PATH}"
-    example_cli = ProcessIO(START_CMD, PROMPT)
+    example_cli = ProcessIO(EXAMPLE_START_COMMAND, EXAMPLE_PROMPT)
 
     example_cli.start()
 
