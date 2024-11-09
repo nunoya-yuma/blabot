@@ -1,13 +1,13 @@
 import pytest
 import subprocess
 
-from cli.example_cli import ExampleCli
-from cli.blabot.blabot.docker_io import DockerExecIO
-from cli.blabot.blabot.docker_io import DockerRunIO
-from cli.blabot.blabot.process_io import ProcessIO
+from ..cli.example_cli import ExampleCli
+from ..cli.blabot.blabot.docker_io import DockerExecIO
+from ..cli.blabot.blabot.docker_io import DockerRunIO
+from ..cli.blabot.blabot.process_io import ProcessIO
+from ..example import EXAMPLE_PROMPT
 
 START_COMMAND = "python3 /app/example.py"
-PROMPT = "> "
 DOCKER_IMAGE_NAME = "nn/example-app:latest"
 DOCKER_CONTAINER_NAME = "example_app"
 
@@ -18,7 +18,7 @@ def docker_io_cli():
         START_COMMAND,
         DOCKER_IMAGE_NAME,
         DOCKER_CONTAINER_NAME,
-        prompt=PROMPT,
+        prompt=EXAMPLE_PROMPT,
     )
 
     docker_io_cli = ExampleCli(docker_io)
@@ -47,7 +47,7 @@ def docker_io_exec_cli():
     io_interact = DockerExecIO(
         START_COMMAND,
         DOCKER_CONTAINER_NAME,
-        prompt=PROMPT
+        prompt=EXAMPLE_PROMPT
     )
 
     docker_io_exec_cli = ExampleCli(io_interact)
@@ -58,8 +58,7 @@ def docker_io_exec_cli():
 
 @pytest.fixture
 def docker_io_inner_cli():
-    PROMPT = "> "
-    io_interact = ProcessIO(START_COMMAND, PROMPT)
+    io_interact = ProcessIO(START_COMMAND, EXAMPLE_PROMPT)
 
     docker_io_inner_cli = ExampleCli(io_interact)
     docker_io_inner_cli.start()

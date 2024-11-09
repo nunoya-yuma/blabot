@@ -2,11 +2,9 @@ import os
 import pytest
 import subprocess
 
-from cli.example_cli import ExampleCli
-from cli.blabot.blabot.ssh_io import SSHProcessIO
-
-PARENT_DIR = os.path.dirname(os.path.dirname(__file__))
-SRC_FILE_PATH = os.path.join(PARENT_DIR, "example.py")
+from ..cli.example_cli import ExampleCli
+from ..cli.blabot.blabot.ssh_io import SSHProcessIO
+from ..example import EXAMPLE_FILE_PATH
 
 # This is a remote machine's path
 DST_DIR_PATH = "/tmp/"
@@ -19,19 +17,17 @@ def ssh_config():
     ssh_config["host_name"] = os.environ.get("REMOTE_HOST_NAME")
     ssh_config["key_path"] = os.environ.get("REMOTE_KEY_PATH")
 
-    assert ssh_config["user_name"] is not None and ssh_config["host_name"] is not None and \
-        ssh_config["key_path"] is not None, "Set environment variables"
+    assert (ssh_config["user_name"] is not None and ssh_config["host_name"] is not None and
+            ssh_config["key_path"] is not None), "Set environment variables"
 
     return ssh_config
 
 
 @pytest.fixture
 def transfer_example(ssh_config):
-    assert os.path.exists(SRC_FILE_PATH), "Example file does not exist"
-
     # e.g.) scp -i path/to/key/id_fugafuga path/to/example.py hoge@192.168.100.2:/tmp/
     transfer_cmd = [
-        "scp", "-i", ssh_config['key_path'], SRC_FILE_PATH,
+        "scp", "-i", ssh_config['key_path'], EXAMPLE_FILE_PATH,
         f"{ssh_config['user_name']}@{ssh_config['host_name']}:{DST_DIR_PATH}"
     ]
 
