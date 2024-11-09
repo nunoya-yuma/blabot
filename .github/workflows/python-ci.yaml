@@ -25,11 +25,16 @@ jobs:
       - name: Install dependencies for example tests
         run: pip install -r requirements.txt
 
-      - name: Run example tests(easy)
+      - name: Run example usage
+        run: |
+          cd examples/
+          ./example_usage.py
+
+      - name: Run example pytests(easy)
         run: |
           cd examples/
           pytest -v -s -m "simple_process_test and easy" tests/
-      - name: Run example tests(hard)
+      - name: Run example pytests(hard)
         run: |
           cd examples/
           pytest -v -s -m "simple_process_test and hard" tests/
@@ -40,16 +45,16 @@ jobs:
         run: docker rm -f example_app
       - name: Build the Docker image
         run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
-      - name: Run docker related tests(from outside)
+      - name: Run docker related pytests(from outside)
         run: |
           cd examples/
           pytest -v -s -m "docker_test" tests/
-      - name: Run docker and mount files and run tests(from inside)
+      - name: Run docker and mount files and run pytests(from inside)
         run: |
           START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
           docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest ${START_PYTEST_CMD}
       # This test must be run inside a container, because tty does not work well in GitHub Actions.
-      - name: Run serial device tests
+      - name: Run serial device pytests
         run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest bash scripts/run_device_test.sh
 
       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
