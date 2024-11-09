@@ -12,15 +12,15 @@ $ ./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 """
 import pytest
 
-from cli.example_cli import ExampleCli
-from cli.blabot.blabot.device_io import DeviceIO
+from ..cli.example_cli import ExampleCli
+from ..cli.blabot.blabot.device_io import DeviceIO
+from ..example import EXAMPLE_PROMPT
 
 
 @pytest.fixture
 def device_io_cli():
     DEVICE_PORT = "/tmp/ttyV1"
-    prompt = "> "
-    io_interact = DeviceIO(DEVICE_PORT, prompt=prompt)
+    io_interact = DeviceIO(DEVICE_PORT, prompt=EXAMPLE_PROMPT)
 
     device_io_cli = ExampleCli(io_interact)
     device_io_cli.start()
