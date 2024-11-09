@@ -133,13 +133,13 @@ cd ${BLABOT}/examples/
 pytest -v -s -m "ssh_test" tests/
 ```
 
-## DockerProcessIO
+## DockerIO(DockerRunIO + DockerExecIO)
 
 ```mermaid
 graph LR
     subgraph HostPC["Host PC"]
         Software["Software"]
-        DockerIO["DockerProcessIO
+        DockerIO["DockerIO
                   (No need to be
                   in container)"]
     end
@@ -154,9 +154,9 @@ graph LR
                    Receive result"| Software_copied
 ```
 
-A class named `DockerProcessIO` is provided in the file `docker_io.py`.
+`DockerRunIO` and `DockerExecIO` are provided in the file `docker_io.py`.
 
-This class is to run a process in the docker container.
+These classes are to run a process in the docker container.
 
 ```shell
 # Build docker image
@@ -188,7 +188,7 @@ graph LR
 ```
 
 This is for cases where the files of this project have been copied or mounted in a docker container.
-In this case, it is not necessary to use `DockerProcessIO`, but it is sufficient to start up `ProcessIO` in the container.
+In this case, it is not necessary to use `DockerRunIO` or `DockerExecIO`, but it is sufficient to start up `ProcessIO` in the container.
 
 ```shell
 # Build docker image
