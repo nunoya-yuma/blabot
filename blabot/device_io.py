@@ -42,7 +42,10 @@ class DeviceIO(TemplatedIO):
         self.process = None
 
     def send_command(self, command: str) -> None:
-        output_line = command + self.newline
+        if not self.process:
+            raise RuntimeError("Process not started")
+
+        output_line = command + self._newline
         self.process.sendline(output_line)
 
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
