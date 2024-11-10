@@ -1,0 +1,42 @@
+@startuml ProcessIO
+title ProcessIO
+
+hide footbox
+
+Participant Client as C
+Participant ProcessIO as P
+Participant TargetProcess as T
+
+
+== Initialize ==
+autonumber
+
+activate C
+C -> P : ProcessIO(): Generate instance
+activate P
+C -> P: start()
+    P -> T: activate process
+    activate T
+
+== run_command() ==
+
+C -> P: run_command(command, expected_logs)
+    P -> T: send command
+    T --> P: output logs
+P --> C: send result and output logs
+
+== wait_for() ==
+
+C -> P: wait_for(expected_logs)
+    P -> T: wait and observe output logs
+    T --> P: output logs
+P --> C: send result and output logs
+
+== End ==
+C -> P: stop()
+    P -> T: kill process
+    deactivate T
+    deactivate P
+    deactivate C
+
+@enduml
