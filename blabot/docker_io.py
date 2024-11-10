@@ -15,7 +15,33 @@ import subprocess
 from .process_io import ProcessIO
 
 
-class DockerRunIO(ProcessIO):
+class DockerIOBase(ProcessIO):
+    """
+    This class has parts in common with other classes in the same module.
+
+    In this module, there are classes `DockerRunIO` and `DockerExecIO`.
+    If there are common parts among them, this class will hold them
+    and share them by inheritance.
+    This class is intended to be used only within this module
+    and is not intended to be used externally.
+    """
+
+    def _start_docker_and_process(self, docker_activate_command: str):
+
+        self.process = pexpect.spawn(docker_activate_command)
+        self.process.logfile = sys.stdout.buffer
+
+        # Wait for login to complete
+        assert self.wait_for(r"#"), "Failed to start docker"
+
+        # Do not use `run_command` method here.
+        # For example, if "> " is assigned to the self.prompt, the log immediately
+        # after login does not contain this.
+        # This self.prompt is for test target process.
+        self.send_command(self._start_command)
+
+
+class DockerRunIO(DockerIOBase):
     """
     This class provides the ability to exchange input and output
     with other processes in the docker container using `docker run` command.
@@ -45,18 +71,7 @@ class DockerRunIO(ProcessIO):
             raise RuntimeError("Process has already started")
 
         docker_run_command = self._build_command()
-
-        self.process = pexpect.spawn(docker_run_command)
-        self.process.logfile = sys.stdout.buffer
-
-        # Wait for login to complete
-        assert self.wait_for(r"#"), "Failed to start docker"
-
-        # Do not use `run_command` method here.
-        # For example, if "> " is assigned to the self.prompt, the log immediately
-        # after login does not contain this.
-        # This self.prompt is for test target process.
-        self.send_command(self._start_command)
+        self._start_docker_and_process(docker_run_command)
 
     def _build_command(self):
         docker_run_command = "docker run -it"
@@ -72,7 +87,7 @@ class DockerRunIO(ProcessIO):
         return docker_run_command
 
 
-class DockerExecIO(ProcessIO):
+class DockerExecIO(DockerIOBase):
     """
     This class provides the ability to exchange input and output
     with other processes in the docker container using `docker exec` command.
@@ -99,18 +114,7 @@ class DockerExecIO(ProcessIO):
             raise RuntimeError("Process has already started")
 
         docker_exec_command = f"docker exec -it {self._docker_container_name} bash"
-
-        self.process = pexpect.spawn(docker_exec_command)
-        self.process.logfile = sys.stdout.buffer
-
-        # Wait for login to complete
-        assert self.wait_for(r"#"), "Failed to start docker"
-
-        # Do not use `run_command` method here.
-        # For example, if "> " is assigned to the self.prompt, the log immediately
-        # after login does not contain this.
-        # This self.prompt is for test target process.
-        self.send_command(self._start_command)
+        self._start_docker_and_process(docker_exec_command)
 
     def stop(self):
         super().stop()
