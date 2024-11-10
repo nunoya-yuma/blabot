@@ -10,8 +10,8 @@ EXAMPLE_START_COMMAND = f"python3 {EXAMPLE_FILE_PATH}"
 
 class SampleCli():
     def __init__(self):
-        self.status = "invalid"
-        self.status_list = (
+        self._status = "invalid"
+        self._status_list = (
             "invalid",
             "on",
             "off",
@@ -29,19 +29,19 @@ class SampleCli():
             sys.stderr.flush()
 
     def _ShowStatus(self):
-        print(f"Sample status: {self.status}")
+        print(f"Sample status: {self._status}")
 
     def _ControlStatus(self, command):
-        if command not in self.status_list:
+        if command not in self._status_list:
             sys.stderr.write("Invalid status command\n")
             sys.stderr.flush()
             return
 
-        if command == self.status:
-            print(f"Sample status does not change: '{self.status}'")
+        if command == self._status:
+            print(f"Sample status does not change: '{self._status}'")
         else:
-            self.status = command
-            print(f"Sample status changed to '{self.status}'")
+            self._status = command
+            print(f"Sample status changed to '{self._status}'")
 
 
 if __name__ == "__main__":

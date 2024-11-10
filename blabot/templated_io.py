@@ -12,8 +12,8 @@ class TemplatedIO(ABC):
 
     def __init__(self, prompt: str = "", newline: str = ""):
         self.process = None
-        self.prompt = prompt
-        self.newline = newline
+        self._prompt = prompt
+        self._newline = newline
 
     @abstractmethod
     def start(self):
@@ -88,18 +88,18 @@ class TemplatedIO(ABC):
 
     def wait_for_prompt(self, timeout_sec: float = 3.0) -> bool:
         # If prompt is not set, ignore it
-        if self.prompt is None:
+        if self._prompt is None:
             return True
 
-        first_timeout = 0.5
-        res = self.wait_for(self.prompt, first_timeout)
-        if res == self.prompt:
+        FIRST_TIMEOUT_SEC = 0.5
+        res = self.wait_for(self._prompt, FIRST_TIMEOUT_SEC)
+        if res == self._prompt:
             return True
 
         # Send a new line and try again
-        self.send_command(self.newline)
-        res = self.wait_for(self.prompt, timeout_sec)
-        return res == self.prompt
+        self.send_command(self._newline)
+        res = self.wait_for(self._prompt, timeout_sec)
+        return res == self._prompt
 
     def wait_and_consume_logs(self, timeout_sec: float = 3.0) -> None:
         self.wait_for(".*", timeout_sec)

@@ -4,7 +4,7 @@ import subprocess
 
 from ..cli.example_cli import ExampleCli
 from ..cli.blabot.blabot.ssh_io import SSHProcessIO
-from ..example import EXAMPLE_FILE_PATH
+from ..example import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
 
 # This is a remote machine's path
 DST_DIR_PATH = "/tmp/"
@@ -36,14 +36,13 @@ def transfer_example(ssh_config):
 
 @pytest.fixture
 def ssh_io_cli(ssh_config):
-    start_command = "python3 /tmp/example.py"
-    prompt = "> "
+    START_COMMAND = "python3 /tmp/example.py"
     io_interact = SSHProcessIO(
-        start_command,
+        START_COMMAND,
         ssh_config["user_name"],
         ssh_config["host_name"],
         ssh_config["key_path"],
-        prompt=prompt
+        prompt=EXAMPLE_PROMPT
     )
 
     ssh_io_cli = ExampleCli(io_interact)

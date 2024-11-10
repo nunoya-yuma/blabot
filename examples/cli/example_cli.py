@@ -5,7 +5,7 @@ from .blabot.blabot.templated_io import TemplatedIO
 
 class ExampleCliBase():
     def __init__(self, io_interact: TemplatedIO):
-        self.io_interact = io_interact
+        self._io_interact = io_interact
 
     def __getattr__(self, name):
         """
@@ -15,22 +15,22 @@ class ExampleCliBase():
         e.g.) self.run_command(...)
         You don't have to call self.io_interact.run_command(...)
         """
-        return getattr(self.io_interact, name)
+        return getattr(self._io_interact, name)
 
     def status_show(self):
-        pattern = "Sample status: (invalid|on|off)"
+        PATTERN = "Sample status: (invalid|on|off)"
 
-        output = self.run_command("sample-status", pattern)
+        output = self.run_command("sample-status", PATTERN)
         if output is None:
             return None
 
-        match = re.search(pattern, output)
+        match = re.search(PATTERN, output)
         res = match.group(1) if match else None
         return res
 
     def send_on_off(self, command: str):
-        pattern = "Sample status"
-        return self.run_command(f"sample-ctrl {command}", pattern)
+        PATTERN = "Sample status"
+        return self.run_command(f"sample-ctrl {command}", PATTERN)
 
 
 class ExampleCli(ExampleCliBase):

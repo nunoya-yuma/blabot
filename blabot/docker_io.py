@@ -36,9 +36,9 @@ class DockerRunIO(ProcessIO):
             newline: str = ""
     ):
         super().__init__(start_command, prompt, newline)
-        self.docker_image_name = docker_image_name
-        self.docker_container_name = docker_container_name
-        self.remove_container = remove_container
+        self._docker_image_name = docker_image_name
+        self._docker_container_name = docker_container_name
+        self._remove_container = remove_container
 
     def start(self):
         if self.process:
@@ -56,18 +56,18 @@ class DockerRunIO(ProcessIO):
         # For example, if "> " is assigned to the self.prompt, the log immediately
         # after login does not contain this.
         # This self.prompt is for test target process.
-        self.send_command(self.start_command)
+        self.send_command(self._start_command)
 
     def _build_command(self):
         docker_run_command = "docker run -it"
-        if self.remove_container:
+        if self._remove_container:
             docker_run_command += " --rm"
 
-        if self.docker_container_name:
-            docker_run_command += f" --name {self.docker_container_name}"
+        if self._docker_container_name:
+            docker_run_command += f" --name {self._docker_container_name}"
 
         # e.g.) docker run -it --rm --name test_container nn/example-app:1.0 bash
-        docker_run_command += f" {self.docker_image_name} bash"
+        docker_run_command += f" {self._docker_image_name} bash"
 
         return docker_run_command
 
@@ -91,14 +91,14 @@ class DockerExecIO(ProcessIO):
             newline: str = ""
     ):
         super().__init__(start_command, prompt, newline)
-        self.docker_container_name = docker_container_name
-        self.remove_container = remove_container
+        self._docker_container_name = docker_container_name
+        self._remove_container = remove_container
 
     def start(self):
         if self.process:
             raise RuntimeError("Process has already started")
 
-        docker_exec_command = f"docker exec -it {self.docker_container_name} bash"
+        docker_exec_command = f"docker exec -it {self._docker_container_name} bash"
 
         self.process = pexpect.spawn(docker_exec_command)
         self.process.logfile = sys.stdout.buffer
@@ -110,17 +110,17 @@ class DockerExecIO(ProcessIO):
         # For example, if "> " is assigned to the self.prompt, the log immediately
         # after login does not contain this.
         # This self.prompt is for test target process.
-        self.send_command(self.start_command)
+        self.send_command(self._start_command)
 
     def stop(self):
         super().stop()
 
-        if not self.remove_container:
+        if not self._remove_container:
             return
 
-        if not self.docker_container_name:
+        if not self._docker_container_name:
             raise RuntimeError("Container name is lost")
 
-        docker_remove_command = ["docker", "rm", "-f", self.docker_container_name]
+        docker_remove_command = ["docker", "rm", "-f", self._docker_container_name]
         res_remove = subprocess.run(docker_remove_command, stdout=subprocess.DEVNULL)
         assert res_remove.returncode == 0, "Failed to remove docker container"
