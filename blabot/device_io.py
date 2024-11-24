@@ -53,7 +53,6 @@ class DeviceIO(TemplatedIO):
             raise RuntimeError("Process not started")
 
         expect_list = [
-            pexpect.EOF,
             pexpect.TIMEOUT,
         ]
         expect_list.append(expect)
@@ -61,10 +60,6 @@ class DeviceIO(TemplatedIO):
 
         match = None
         if index == 0:
-            # pexpect.EOF is output
-            # TODO: Consider handling in this case
-            pass
-        elif index == 1:
             # pexpect.TIMEOUT is output
             # This means that no matching string was output until the timeout.
             pass
