@@ -8,7 +8,7 @@ from ..cli.blabot.blabot.process_io import ProcessIO
 from ..example import EXAMPLE_PROMPT
 
 START_COMMAND = "python3 /app/example.py"
-DOCKER_IMAGE_NAME = "nn/example-app:latest"
+DOCKER_IMAGE_NAME = "ghcr.io/nunoya-yuma/blabot/example-app:latest"
 DOCKER_CONTAINER_NAME = "example_app"
 
 
