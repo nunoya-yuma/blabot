@@ -159,9 +159,12 @@ graph LR
 These classes are to run a process in the docker container.
 
 ```shell
-# Build docker image
+# Pull docker image
+docker pull ghcr.io/nunoya-yuma/blabot/example-app:latest
+
+# Build docker image by yourself(if necessary)
 cd ${BLABOT}
-docker build -f examples/Dockerfile -t nn/example-app:latest ./
+docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest ./
 
 cd ${BLABOT}/examples/
 pytest -v -s -m "docker_test" tests/
@@ -193,10 +196,10 @@ In this case, it is not necessary to use `DockerRunIO` or `DockerExecIO`, but it
 ```shell
 # Build docker image
 cd ${BLABOT}
-docker build -f examples/Dockerfile -t nn/example-app:latest ./
+docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest ./
 
 # Start docker images and mount
-docker run -it --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest bash
+docker run -it --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash
 
 pytest -v -s -m "docker_inner_test" tests/
 # exit or ctrl+D

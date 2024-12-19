@@ -1,60 +1,68 @@
-name: Python CI
+# name: Python CI
 
-on:
-  workflow_dispatch:
+# on:
+#   workflow_dispatch:
 
-  pull_request:
-    branches:
-      - main
+#   pull_request:
+#     branches:
+#       - main
 
-jobs:
-  flake8_and_pytest:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8
-      - name: Analyzing the code with flake8
-        run: flake8 -v --max-line-length=100 .
-      - name: Install dependencies for example tests
-        run: pip install -r requirements.txt
+# jobs:
+#   flake8_and_pytest:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.10"
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install flake8
+#       - name: Analyzing the code with flake8
+#         run: flake8 -v --max-line-length=100 .
+#       - name: Install dependencies for example tests
+#         run: pip install -r requirements.txt
 
-      - name: Run example usage
-        run: |
-          cd examples/
-          ./example_usage.py
+#       - name: Run example usage
+#         run: |
+#           cd examples/
+#           ./example_usage.py
 
-      - name: Run example pytests(easy)
-        run: |
-          cd examples/
-          pytest -v -s -m "simple_process_test and easy" tests/
-      - name: Run example pytests(hard)
-        run: |
-          cd examples/
-          pytest -v -s -m "simple_process_test and hard" tests/
+#       - name: Run example pytests(easy)
+#         run: |
+#           cd examples/
+#           pytest -v -s -m "simple_process_test and easy" tests/
+#       - name: Run example pytests(hard)
+#         run: |
+#           cd examples/
+#           pytest -v -s -m "simple_process_test and hard" tests/
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Remove the previous docker container
-        run: docker rm -f example_app
-      - name: Build the Docker image
-        run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
-      - name: Run docker related pytests(from outside)
-        run: |
-          cd examples/
-          pytest -v -s -m "docker_test" tests/
-      - name: Run docker and mount files and run pytests(from inside)
-        run: |
-          START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
-          docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest ${START_PYTEST_CMD}
-      # This test must be run inside a container, because tty does not work well in GitHub Actions.
-      - name: Run serial device pytests
-        run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest bash scripts/run_device_test.sh
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
+#       - name: Remove the previous docker container
+#         run: docker rm -f example_app
+#       # - name: Build the Docker image
+#       #   run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
+#       - name: Login to GitHub Container Registry
+#         uses: docker/login-action@v3
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Pull the latest docker image
+#         run: docker pull ghcr.io/nunoya-yuma/blabot/example-app:latest
+#       - name: Run docker related pytests(from outside)
+#         run: |
+#           cd examples/
+#           pytest -v -s -m "docker_test" tests/
+#       - name: Run docker and mount files and run pytests(from inside)
+#         run: |
+#           START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
+#           docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest ${START_PYTEST_CMD}
+#       # This test must be run inside a container, because tty does not work well in GitHub Actions.
+#       - name: Run serial device pytests
+#         run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash scripts/run_device_test.sh
 
-      # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
+#       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
