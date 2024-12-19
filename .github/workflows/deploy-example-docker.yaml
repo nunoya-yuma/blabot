@@ -1,0 +1,40 @@
+name: Deploy example docker image
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+    paths:
+      - examples/Dockerfile
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  deploy_example_docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Determine the image tag
+        id: determine_image_tag
+        run: |
+            COMMIT_HASH=$(git rev-parse --short HEAD)
+            BASE_VERSION=0.0.1
+            echo "IMAGE_TAG=${BASE_VERSION}-${COMMIT_HASH}" >> $GITHUB_OUTPUT
+      - name: Build the Docker image
+        run: |
+            docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest \
+            -t ghcr.io/nunoya-yuma/blabot/example-app:${{ steps.determine_image_tag.outputs.IMAGE_TAG }} ./
+      - name: Push the latest docker image
+        run: |
+            docker push ghcr.io/nunoya-yuma/blabot/example-app:${{ steps.determine_image_tag.outputs.IMAGE_TAG }}
+            docker push ghcr.io/nunoya-yuma/blabot/example-app:latest
