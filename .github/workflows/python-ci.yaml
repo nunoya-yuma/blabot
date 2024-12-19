@@ -43,8 +43,16 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Remove the previous docker container
         run: docker rm -f example_app
-      - name: Build the Docker image
-        run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
+      # - name: Build the Docker image
+      #   run: docker build -f examples/Dockerfile -t nn/example-app:latest ./
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull the latest docker image
+        run: docker pull ghcr.io/nunoya-yuma/blabot/example-app:latest
       - name: Run docker related pytests(from outside)
         run: |
           cd examples/
@@ -52,9 +60,9 @@ jobs:
       - name: Run docker and mount files and run pytests(from inside)
         run: |
           START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
-          docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest ${START_PYTEST_CMD}
+          docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest ${START_PYTEST_CMD}
       # This test must be run inside a container, because tty does not work well in GitHub Actions.
       - name: Run serial device pytests
-        run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app nn/example-app:latest bash scripts/run_device_test.sh
+        run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash scripts/run_device_test.sh
 
       # TODO: Investigate how to do testing on GitHub Actions regarding SSH.

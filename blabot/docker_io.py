@@ -81,7 +81,8 @@ class DockerRunIO(DockerIOBase):
         if self._docker_container_name:
             docker_run_command += f" --name {self._docker_container_name}"
 
-        # e.g.) docker run -it --rm --name test_container nn/example-app:1.0 bash
+        # e.g.) docker run -it --rm --name test_container
+        # ghcr.io/nunoya-yuma/blabot/example-app:latest bash
         docker_run_command += f" {self._docker_image_name} bash"
 
         return docker_run_command
