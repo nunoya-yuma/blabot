@@ -3,11 +3,9 @@ name: Deploy example docker image
 on:
   workflow_dispatch:
 
-  push:
+  pull_request:
     branches:
       - main
-    paths:
-      - examples/Dockerfile
 
 permissions:
   packages: write
