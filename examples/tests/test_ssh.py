@@ -1,9 +1,9 @@
+from blabot.ssh_io import SSHProcessIO
 import os
 import pytest
 import subprocess
 
-from ..cli.example_cli import ExampleCli
-from ..cli.blabot.blabot.ssh_io import SSHProcessIO
+from ..example_cli import ExampleCli
 from ..example import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
 
 # This is a remote machine's path

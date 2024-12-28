@@ -1,10 +1,10 @@
+from blabot.docker_io import DockerExecIO
+from blabot.docker_io import DockerRunIO
+from blabot.process_io import ProcessIO
 import pytest
 import subprocess
 
-from ..cli.example_cli import ExampleCli
-from ..cli.blabot.blabot.docker_io import DockerExecIO
-from ..cli.blabot.blabot.docker_io import DockerRunIO
-from ..cli.blabot.blabot.process_io import ProcessIO
+from ..example_cli import ExampleCli
 from ..example import EXAMPLE_PROMPT
 
 START_COMMAND = "python3 /app/example.py"

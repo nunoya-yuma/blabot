@@ -10,7 +10,7 @@ Basically, the usage is the same with respect to other classes.
 Hopefully this sample will be useful for those of you who use it in your own projects.
 """
 
-from cli.blabot.blabot.process_io import ProcessIO
+from blabot.process_io import ProcessIO
 from example import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
 
 
