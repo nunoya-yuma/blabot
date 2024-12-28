@@ -3,5 +3,6 @@ git+https://github.com/nunoya-yuma/blabot.git@main
 
 pexpect
 pexpect_serial
+poetry
 pytest
 pytest-order

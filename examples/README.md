@@ -199,8 +199,10 @@ cd ${BLABOT}
 docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest ./
 
 # Start docker images and mount
-docker run -it --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash
+docker run -it --rm -v $(pwd)/:/app/work -w /app/work --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash
 
+poetry install # If changes are added to blabot/ this line is necessary
+cd examples
 pytest -v -s -m "docker_inner_test" tests/
 # exit or ctrl+D
 ```
