@@ -42,20 +42,7 @@ graph LR
 
 ## Environment
 
-Please use either 1)poetry or 2)venv to build your environment.
-
-### 1) poetry
-
-```shell
-curl -sSL https://install.python-poetry.org | python3 -
-
-poetry install
-
-# Enter virtual environment
-poetry shell
-```
-
-### 2) venv
+poetry + venv environment is recommended.
 
 ```shell
 # Install python environment
@@ -66,6 +53,7 @@ sudo apt install -y python3 python3-venv python3-pip
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+poetry install
 ```
 
 ## Examples

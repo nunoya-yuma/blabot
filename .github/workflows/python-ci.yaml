@@ -25,7 +25,9 @@ jobs:
       - name: Analyzing the code with flake8
         run: flake8 -v --max-line-length=100 .
       - name: Install dependencies for example tests
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          poetry install
 
       - name: Run example usage
         run: |
@@ -74,8 +76,8 @@ jobs:
           pytest -v -s -m "docker_test" tests/
       - name: Run docker and mount files and run pytests(from inside)
         run: |
-          START_PYTEST_CMD="pytest -v -s -m docker_inner_test tests/"
-          docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest ${START_PYTEST_CMD}
+          DOCKER_COMMAND="poetry install && cd examples && pytest -v -s -m docker_inner_test tests/"
+          docker run -i --rm -v $(pwd)/:/app/work -w /app/work --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash -c "${DOCKER_COMMAND}"
       # This test must be run inside a container, because tty does not work well in GitHub Actions.
       - name: Run serial device pytests
         run: docker run -i --rm -v $(pwd)/:/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash scripts/run_device_test.sh
