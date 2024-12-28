@@ -8,6 +8,7 @@ on:
       - main
     paths:
       - examples/Dockerfile
+      - requirements.txt
 
 permissions:
   packages: write
