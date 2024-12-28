@@ -10,10 +10,10 @@ Run example.py with input/output set to /tmp/ttyV0
 $ cd ${BLABOT}/examples/
 $ ./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 """
+from blabot.device_io import DeviceIO
 import pytest
 
-from ..cli.example_cli import ExampleCli
-from ..cli.blabot.blabot.device_io import DeviceIO
+from ..example_cli import ExampleCli
 from ..example import EXAMPLE_PROMPT
 
 

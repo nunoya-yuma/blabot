@@ -1,7 +1,8 @@
+from blabot.process_io import ProcessIO
+
 import pytest
 
-from .cli.blabot.blabot.process_io import ProcessIO
-from .cli.example_cli import ExampleCli
+from .example_cli import ExampleCli
 from .example import EXAMPLE_START_COMMAND, EXAMPLE_PROMPT
 
 
