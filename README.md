@@ -42,18 +42,40 @@ graph LR
 
 ## Environment
 
-poetry + venv environment is recommended.
+`poetry` environment is recommended.
 
 ```shell
-# Install python environment
-## e.g.) Linux
+cd ${BLABOT}
+
+# If venv environment is necessary
 sudo apt update
 sudo apt install -y python3 python3-venv python3-pip
-
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+
+pip install poetry
 poetry install
+
+# Enter virtual environment
+poetry shell
+```
+
+## Use in other projects
+
+There are several ways to use this package in other projects, but here are two examples.
+
+### Download from GitHub
+
+```shell
+pip install git+https://github.com/nunoya-yuma/blabot.git@main
+```
+
+### Build from local source code
+
+```shell
+cd ${BLABOT}
+poetry build
+pip install dist/blabot-0.0.1-py3-none-any.whl
 ```
 
 ## Examples
