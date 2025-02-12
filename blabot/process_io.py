@@ -39,7 +39,6 @@ class ProcessIO(TemplatedIO):
             raise RuntimeError("Process not started")
 
         self.process.terminate()
-        # self.process.kill()
         self.process.wait()
         self.process = None
 
