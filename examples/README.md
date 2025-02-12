@@ -16,22 +16,13 @@ cd ${BLABOT}/examples/
 > sample-ctrl off
 ```
 
-This sample directory shows an example where a symbolic link refers to this project itself and is used as a submodule.
-
 The samples are provided in two major formats: Pytest and a single python script file.
+
+## Single python script
 
 ```shell
 cd ${BLABOT}/examples/
 ./example_usage.py
-```
-
-```shell
-cd ${BLABOT}/examples/
-
-# Run all tests
-# Some preliminary preparation is required, but if the following steps have been properly configured,
-# the test can be run with the following command.
-pytest -v -s tests/
 ```
 
 ## ProcessIO
