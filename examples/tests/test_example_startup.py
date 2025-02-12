@@ -20,4 +20,5 @@ def test_consume_logs(example_cli):
 
     example_cli.wait_and_consume_logs(1)
 
-    assert example_cli.wait_for("Invalid command: ", 1) is None, "Output logs are not consumed"
+    assert example_cli.wait_for("Invalid command: ", 1) is None, (
+        "Output logs are not consumed")

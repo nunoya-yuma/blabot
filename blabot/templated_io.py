@@ -4,10 +4,12 @@ from abc import abstractmethod
 
 class TemplatedIO(ABC):
     """
-    This class provides the ability to exchange input and output with other processes.
+    This class provides the ability to exchange input
+    and output with other processes.
 
     This class is assumed to be inherited.
-    Some methods should be implemented by the inheritor in a form suitable for the target.
+    Some methods should be implemented by the inheritor in a form suitable
+    for the target.
     """
 
     def __init__(self, prompt: str = "", newline: str = ""):
@@ -18,9 +20,11 @@ class TemplatedIO(ABC):
     @abstractmethod
     def start(self):
         """
-        This is the method used to initiate an incoming/outgoing call to/from a process
+        This is the method used to initiate an incoming/outgoing call
+        to/from a process
 
-        This method should be implemented by the inheritor in a form suitable for the target.
+        This method should be implemented by the inheritor in a form suitable
+        for the target.
         """
         pass
 
@@ -29,7 +33,8 @@ class TemplatedIO(ABC):
         """
         This is the method used to terminate the process.
 
-        This method should be implemented by the inheritor in a form suitable for the target.
+        This method should be implemented by the inheritor in a form suitable
+        for the target.
         """
         pass
 
@@ -38,16 +43,19 @@ class TemplatedIO(ABC):
         """
         This is the method used to send the string to the process.
 
-        This method should be implemented by the inheritor in a form suitable for the target.
+        This method should be implemented by the inheritor in a form suitable
+        for the target.
         """
         pass
 
     @abstractmethod
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
         """
-        This method is used to wait for the expected string to arrive from the process.
+        This method is used to wait for the expected string to arrive
+        from the process.
 
-        This method should be implemented by the inheritor in a form suitable for the target.
+        This method should be implemented by the inheritor in a form suitable
+        for the target.
         """
         pass
 
@@ -62,13 +70,15 @@ class TemplatedIO(ABC):
             timeout_sec: float = 0.2,
             attempts: int = 1) -> str:
         """
-        This is the method used to send the string to the process and wait for expected string
+        This is the method used to send the string to the process and wait
+        for expected string
 
         This method waits for a prompt and then sends the command.
-        If the expected string is returned, an object containing the string is returned.
+        If the expected string is returned, an object containing
+        the string is returned.
 
-        If the expected string is not included, the string is not consumed and will be parsed again
-        at the next opportunity.
+        If the expected string is not included, the string is not consumed
+        and will be parsed again at the next opportunity.
         If you want to prevent this, use the `wait_and_consume_logs` method.
         """
 
