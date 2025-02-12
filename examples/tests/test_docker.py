@@ -40,7 +40,14 @@ def docker_io_exec_cli():
     res_run = subprocess.run(docker_run_command)
     assert res_run.returncode == 0, "Failed to run docker container"
 
-    docker_exec_command = ["docker", "exec", "-i", DOCKER_CONTAINER_NAME, "ls", "-a"]
+    docker_exec_command = [
+        "docker",
+        "exec",
+        "-i",
+        DOCKER_CONTAINER_NAME,
+        "ls",
+        "-a"
+    ]
     res_ls = subprocess.run(docker_exec_command)
     assert res_ls.returncode == 0, "Failed to run docker sample command"
 

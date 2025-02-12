@@ -2,7 +2,8 @@
 This module provides the ability to exchange input and output
 with other processes in the docker container
 
-This module controls the input/output of processes in the container from the host PC.
+This module controls the input/output of processes in the container
+from the host PC.
 To realize this function, `DockerRunIO` using `docker run` command and
 `DockerExecIO` using `docker exec` command are available.
 Please use the appropriate class for your purpose.
@@ -35,8 +36,8 @@ class DockerIOBase(ProcessIO):
         assert self.wait_for(r"#"), "Failed to start docker"
 
         # Do not use `run_command` method here.
-        # For example, if "> " is assigned to the self.prompt, the log immediately
-        # after login does not contain this.
+        # For example, if "> " is assigned to the self.prompt,
+        # the log immediately after login does not contain this.
         # This self.prompt is for test target process.
         self.send_command(self._start_command)
 
@@ -46,9 +47,10 @@ class DockerRunIO(DockerIOBase):
     This class provides the ability to exchange input and output
     with other processes in the docker container using `docker run` command.
 
-    This class controls the input/output of processes in the container from the host PC.
-    Although a docker image must be available on the host PC, this class also has the ability to
-    automatically launch containers.
+    This class controls the input/output of processes in the container
+    from the host PC.
+    Although a docker image must be available on the host PC,
+    this class also has the ability to automatically launch containers.
     If you need to work in the container in advance, use `DockerExecIO` class.
     """
 
@@ -93,9 +95,10 @@ class DockerExecIO(DockerIOBase):
     This class provides the ability to exchange input and output
     with other processes in the docker container using `docker exec` command.
 
-    This class controls the input/output of processes in the container from the host PC.
-    Also, this class assumes that the container is running in advance, so please start it
-    before using this class.
+    This class controls the input/output of processes in the container
+    from the host PC.
+    Also, this class assumes that the container is running in advance,
+    so please start it before using this class.
     """
 
     def __init__(
@@ -114,7 +117,8 @@ class DockerExecIO(DockerIOBase):
         if self.process:
             raise RuntimeError("Process has already started")
 
-        docker_exec_command = f"docker exec -it {self._docker_container_name} bash"
+        docker_exec_command = (
+            f"docker exec -it {self._docker_container_name} bash")
         self._start_docker_and_process(docker_exec_command)
 
     def stop(self):
@@ -126,6 +130,9 @@ class DockerExecIO(DockerIOBase):
         if not self._docker_container_name:
             raise RuntimeError("Container name is lost")
 
-        docker_remove_command = ["docker", "rm", "-f", self._docker_container_name]
-        res_remove = subprocess.run(docker_remove_command, stdout=subprocess.DEVNULL)
+        docker_remove_command = [
+            "docker", "rm", "-f", self._docker_container_name]
+        res_remove = subprocess.run(
+            docker_remove_command,
+            stdout=subprocess.DEVNULL)
         assert res_remove.returncode == 0, "Failed to remove docker container"

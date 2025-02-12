@@ -11,12 +11,18 @@ class DeviceIO(TemplatedIO):
     This class provides the ability to exchange input and output
     with other device(e.g. /dev/ttyUSB0).
 
-    This class inherits from TemplatedIO class and implements the necessary methods
-    so that it can actually communicate with the target device.
+    This class inherits from TemplatedIO class and implements the necessary
+    methods so that it can actually communicate with the target device.
     This class uses `pexpect` to manage startup and input/output.
     """
 
-    def __init__(self, port: str, baudrate: int = 9600, prompt: str = "", newline: str = ""):
+    def __init__(
+            self,
+            port: str,
+            baudrate: int = 9600,
+            prompt: str = "",
+            newline: str = ""
+    ):
         super().__init__(prompt, newline)
         self.device = serial.Serial(port, baudrate, timeout=1)
 

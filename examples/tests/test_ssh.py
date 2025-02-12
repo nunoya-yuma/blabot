@@ -17,15 +17,19 @@ def ssh_config():
     ssh_config["host_name"] = os.environ.get("REMOTE_HOST_NAME")
     ssh_config["key_path"] = os.environ.get("REMOTE_KEY_PATH")
 
-    assert (ssh_config["user_name"] is not None and ssh_config["host_name"] is not None and
-            ssh_config["key_path"] is not None), "Set environment variables"
+    assert (
+        ssh_config["user_name"] is not None
+        and ssh_config["host_name"] is not None
+        and ssh_config["key_path"] is not None
+    ), "Set environment variables"
 
     return ssh_config
 
 
 @pytest.fixture
 def transfer_example(ssh_config):
-    # e.g.) scp -i path/to/key/id_fugafuga path/to/example.py hoge@192.168.100.2:/tmp/
+    # e.g.)
+    # scp -i path/to/key/id_fugafuga path/to/example.py hoge@192.168.100.2:/tmp/ # noqa: E501
     transfer_cmd = [
         "scp", "-i", ssh_config['key_path'], EXAMPLE_FILE_PATH,
         f"{ssh_config['user_name']}@{ssh_config['host_name']}:{DST_DIR_PATH}"

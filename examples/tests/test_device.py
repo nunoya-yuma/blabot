@@ -1,6 +1,7 @@
 """
 This file is a test for input/output and exchange of device type files.
-Before running this test, follow the README and prepare the process for testing.
+Before running this test, follow the README
+and prepare the process for testing.
 
 The following is an example command.
 Prepare virtual device
@@ -30,7 +31,8 @@ def device_io_cli():
 
 @pytest.mark.device_test
 def test_device(device_io_cli):
-    # At the very beginning, the following logs will appear and should be ignored.
+    # At the very beginning, the following logs will appear
+    # and should be ignored.
     # > Invalid command:
 
     # The first state should be OFF for sure.
