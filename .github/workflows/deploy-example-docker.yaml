@@ -7,8 +7,10 @@ on:
     branches:
       - main
     paths:
-      - examples/Dockerfile
       - blabot/**/*
+      - examples/Dockerfile
+      - examples/example_app.py
+      - pyproject.toml
 
 permissions:
   packages: write
@@ -30,12 +32,12 @@ jobs:
         run: |
             COMMIT_HASH=$(git rev-parse --short HEAD)
             BASE_VERSION=0.0.1
-            echo "IMAGE_TAG=${BASE_VERSION}-${COMMIT_HASH}" >> $GITHUB_OUTPUT
+            echo "IMAGE_TAG=${BASE_VERSION}-${COMMIT_HASH}" >> $GITHUB_ENV
       - name: Build the Docker image
         run: |
             docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest \
-            -t ghcr.io/nunoya-yuma/blabot/example-app:${{ steps.determine_image_tag.outputs.IMAGE_TAG }} ./
+            -t ghcr.io/nunoya-yuma/blabot/example-app:$IMAGE_TAG ./
       - name: Push the latest docker image
         run: |
-            docker push ghcr.io/nunoya-yuma/blabot/example-app:${{ steps.determine_image_tag.outputs.IMAGE_TAG }}
+            docker push ghcr.io/nunoya-yuma/blabot/example-app:$IMAGE_TAG
             docker push ghcr.io/nunoya-yuma/blabot/example-app:latest
