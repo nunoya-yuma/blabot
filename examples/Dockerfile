@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY ./examples/example.py ./
+COPY ./examples/example_app.py ./
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends socat && \

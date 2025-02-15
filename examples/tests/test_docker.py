@@ -5,9 +5,9 @@ import pytest
 import subprocess
 
 from ..example_cli import ExampleCli
-from ..example import EXAMPLE_PROMPT
+from ..example_app import EXAMPLE_PROMPT
 
-START_COMMAND = "python3 /app/example.py"
+START_COMMAND = "python3 /app/example_app.py"
 DOCKER_IMAGE_NAME = "ghcr.io/nunoya-yuma/blabot/example-app:latest"
 DOCKER_CONTAINER_NAME = "example_app"
 

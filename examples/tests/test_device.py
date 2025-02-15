@@ -7,15 +7,15 @@ The following is an example command.
 Prepare virtual device
 $ socat PTY,link=/tmp/ttyV0 PTY,link=/tmp/ttyV1 &
 
-Run example.py with input/output set to /tmp/ttyV0
+Run example_app.py with input/output set to /tmp/ttyV0
 $ cd ${BLABOT}/examples/
-$ ./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
+$ ./example_app.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 """
 from blabot.device_io import DeviceIO
 import pytest
 
 from ..example_cli import ExampleCli
-from ..example import EXAMPLE_PROMPT
+from ..example_app import EXAMPLE_PROMPT
 
 
 @pytest.fixture

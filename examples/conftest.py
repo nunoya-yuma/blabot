@@ -3,7 +3,7 @@ from blabot.process_io import ProcessIO
 import pytest
 
 from .example_cli import ExampleCli
-from .example import EXAMPLE_START_COMMAND, EXAMPLE_PROMPT
+from .example_app import EXAMPLE_START_COMMAND, EXAMPLE_PROMPT
 
 
 @pytest.fixture(scope="session")

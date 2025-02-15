@@ -4,7 +4,7 @@ import pytest
 import subprocess
 
 from ..example_cli import ExampleCli
-from ..example import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
+from ..example_app import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
 
 # This is a remote machine's path
 DST_DIR_PATH = "/tmp/"
@@ -29,7 +29,7 @@ def ssh_config():
 @pytest.fixture
 def transfer_example(ssh_config):
     # e.g.)
-    # scp -i path/to/key/id_fugafuga path/to/example.py hoge@192.168.100.2:/tmp/ # noqa: E501
+    # scp -i path/to/key/id_fugafuga path/to/example_app.py hoge@192.168.100.2:/tmp/ # noqa: E501
     transfer_cmd = [
         "scp", "-i", ssh_config['key_path'], EXAMPLE_FILE_PATH,
         f"{ssh_config['user_name']}@{ssh_config['host_name']}:{DST_DIR_PATH}"
@@ -40,7 +40,7 @@ def transfer_example(ssh_config):
 
 @pytest.fixture
 def ssh_io_cli(ssh_config):
-    START_COMMAND = "python3 /tmp/example.py"
+    START_COMMAND = "python3 /tmp/example_app.py"
     io_interact = SSHProcessIO(
         START_COMMAND,
         ssh_config["user_name"],
