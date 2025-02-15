@@ -31,7 +31,7 @@ jobs:
         id: determine_image_tag
         run: |
             COMMIT_HASH=$(git rev-parse --short HEAD)
-            BASE_VERSION=0.0.1
+            BASE_VERSION=0.1.0
             echo "IMAGE_TAG=${BASE_VERSION}-${COMMIT_HASH}" >> $GITHUB_ENV
       - name: Build the Docker image
         run: |
