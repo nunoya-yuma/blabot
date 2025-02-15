@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "blabot"
-version = "0.0.1"
+version = "0.1.0"
 description = "A sample project that communicates interactively with CLI process"
 authors = [ "Nunoya Yuma <nuno.yu.3838@gmail.com>"]
 license = "MIT"

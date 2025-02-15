@@ -75,7 +75,7 @@ pip install git+https://github.com/nunoya-yuma/blabot.git@main
 ```shell
 cd ${BLABOT}
 poetry build
-pip install dist/blabot-0.0.1-py3-none-any.whl
+pip install dist/blabot-0.1.0-py3-none-any.whl
 ```
 
 ## Examples
