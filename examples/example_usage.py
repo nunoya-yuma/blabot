@@ -5,7 +5,7 @@ This file provides a sample of how to use the package's features.
 
 This file introduces the usage of `process_io`, one of the classes provided
 by this package.
-In this sample, example.py in the same directory that mimic the software
+In this sample, example_app.py in the same directory that mimic the software
 to be tested are started, and commands are sent and received.
 Basically, the usage is the same with respect to other classes.
 Hopefully this sample will be useful for those of you who use it
@@ -13,7 +13,7 @@ in your own projects.
 """
 
 from blabot.process_io import ProcessIO
-from example import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
+from example_app import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
 
 
 def main():

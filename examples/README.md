@@ -2,13 +2,13 @@
 
 Examples are provided in this directory to demonstrate the use of classes.
 
-`example.py` is a virtual development target software with simple CLI and used to explain the use of the classes.
+`example_app.py` is a virtual development target software with simple CLI and used to explain the use of the classes.
 
 It is recommended that it be used alone once.
 
 ```shell
 cd ${BLABOT}/examples/
-./example.py
+./example_app.py
 
 # sample commands
 > sample-status
@@ -73,11 +73,11 @@ And the following procedure is the same as executing the `${BLABOT}/examples/scr
 sudo apt install socat # if socat is not installed in your environment
 socat PTY,link=/tmp/ttyV0,echo=0 PTY,link=/tmp/ttyV1,echo=0 &
 
-# Run example.py with input/output set to /tmp/ttyV0
+# Run example_app.py with input/output set to /tmp/ttyV0
 cd ${BLABOT}/examples/
-./example.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
+./example_app.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 
-# Run example test (In a terminal different from the terminal where example.py is executed.)
+# Run example test (In a terminal different from the terminal where example_app.py is executed.)
 cd ${BLABOT}/examples/
 pytest -v -s -m "device_test" tests/
 
