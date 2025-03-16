@@ -84,6 +84,25 @@ pip install dist/blabot-0.1.0-py3-none-any.whl
 
 An overview description of each class is also available there, so I recommend taking a look at it.
 
+## Format check
+
+### Python
+
+```shell
+cd ${BLABOT}
+flake8 -v .
+```
+
+### GitHub Actions(Yaml)
+
+```shell
+# Install
+cd ${BLABOT}
+yarn add -D prettier
+
+yarn prettier --write .github/workflows/*
+```
+
 ## CI
 
 Currently, GitHub Actions is executed at the time the PR is created.
