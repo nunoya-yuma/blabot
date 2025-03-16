@@ -30,14 +30,14 @@ jobs:
       - name: Determine the image tag
         id: determine_image_tag
         run: |
-            COMMIT_HASH=$(git rev-parse --short HEAD)
-            BASE_VERSION=0.1.0
-            echo "IMAGE_TAG=${BASE_VERSION}-${COMMIT_HASH}" >> $GITHUB_ENV
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          BASE_VERSION=0.1.0
+          echo "IMAGE_TAG=${BASE_VERSION}-${COMMIT_HASH}" >> $GITHUB_ENV
       - name: Build the Docker image
         run: |
-            docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest \
-            -t ghcr.io/nunoya-yuma/blabot/example-app:$IMAGE_TAG ./
+          docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest \
+          -t ghcr.io/nunoya-yuma/blabot/example-app:$IMAGE_TAG ./
       - name: Push the latest docker image
         run: |
-            docker push ghcr.io/nunoya-yuma/blabot/example-app:$IMAGE_TAG
-            docker push ghcr.io/nunoya-yuma/blabot/example-app:latest
+          docker push ghcr.io/nunoya-yuma/blabot/example-app:$IMAGE_TAG
+          docker push ghcr.io/nunoya-yuma/blabot/example-app:latest
