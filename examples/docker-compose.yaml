@@ -1,0 +1,12 @@
+services:
+  example-app:
+    build:
+      context: ..
+      dockerfile: examples/Dockerfile
+    image: ghcr.io/nunoya-yuma/blabot/example-app:latest
+    container_name: example_app
+    volumes:
+      - ..:/app/work
+    working_dir: /app/work/examples
+    tty: true # for interactive testing
+    stdin_open: true # for interactive testing

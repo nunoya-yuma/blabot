@@ -153,7 +153,11 @@ These classes are to run a process in the docker container.
 # Pull docker image
 docker pull ghcr.io/nunoya-yuma/blabot/example-app:latest
 
-# Build docker image by yourself(if necessary)
+# Build using Docker Compose (Recommended)
+cd ${BLABOT}/examples
+docker compose build
+
+# Or build using plain Docker
 cd ${BLABOT}
 docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest ./
 
@@ -185,12 +189,12 @@ This is for cases where the files of this project have been copied or mounted in
 In this case, it is not necessary to use `DockerRunIO` or `DockerExecIO`, but it is sufficient to start up `ProcessIO` in the container.
 
 ```shell
-# Build docker image
+# Build and run using Docker Compose (Recommended)
+cd ${BLABOT}/examples/
+docker compose run --rm example-app pytest -v -s -m docker_inner_test tests/
+
+# Alternative: Using plain Docker
 cd ${BLABOT}
 docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest ./
-
-# Start docker images and mount
-docker run -it --rm -v $(pwd):/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest bash
-pytest -v -s -m "docker_inner_test" tests/
-# exit or ctrl+D
+docker run -it --rm -v $(pwd):/app/work -w /app/work/examples --name example_app ghcr.io/nunoya-yuma/blabot/example-app:latest pytest -v -s -m docker_inner_test tests/
 ```
