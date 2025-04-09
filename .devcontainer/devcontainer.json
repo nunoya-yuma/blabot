@@ -1,0 +1,8 @@
+{
+    "name": "Blabot Development Environment",
+    "dockerComposeFile": [
+        "../examples/docker-compose.yaml"
+    ],
+    "service": "example-app",
+    "workspaceFolder": "/app/work"
+}
