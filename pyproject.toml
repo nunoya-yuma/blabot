@@ -12,6 +12,13 @@ dependencies = [
     "pexpect_serial",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-order", 
+    "ruff",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
