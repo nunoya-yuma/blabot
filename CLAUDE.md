@@ -4,11 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Setup
 
-This project uses Poetry for dependency management:
+This project uses uv for dependency management:
 
 ```bash
-poetry install
-poetry shell
+uv sync --dev
 ```
 
 ## Common Commands
@@ -32,7 +31,7 @@ docker compose run --rm example-app pytest -v -s -m docker_inner_test tests/
 
 ### Building and Installation
 ```bash
-poetry build
+uv build
 pip install dist/blabot-0.1.0-py3-none-any.whl
 ```
 
