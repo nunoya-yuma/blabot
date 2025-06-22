@@ -131,6 +131,8 @@ class DockerExecIO(DockerIOBase):
 
         docker_remove_command = ["docker", "rm", "-f", self._docker_container_name]
         res_remove = subprocess.run(
-            docker_remove_command, check=False, stdout=subprocess.DEVNULL
+            docker_remove_command,
+            check=False,
+            stdout=subprocess.DEVNULL,
         )
         assert res_remove.returncode == 0, "Failed to remove docker container"
