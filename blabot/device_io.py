@@ -1,6 +1,7 @@
+import sys
+
 import pexpect
 import serial
-import sys
 from pexpect_serial import SerialSpawn
 
 from .templated_io import TemplatedIO
@@ -17,11 +18,11 @@ class DeviceIO(TemplatedIO):
     """
 
     def __init__(
-            self,
-            port: str,
-            baudrate: int = 9600,
-            prompt: str = "",
-            newline: str = ""
+        self,
+        port: str,
+        baudrate: int = 9600,
+        prompt: str = "",
+        newline: str = "",
     ):
         super().__init__(prompt, newline)
         self.device = serial.Serial(port, baudrate, timeout=1)

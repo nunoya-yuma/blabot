@@ -1,9 +1,9 @@
-from blabot.process_io import ProcessIO
-
 import pytest
 
+from blabot.process_io import ProcessIO
+
+from .example_app import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
 from .example_cli import ExampleCli
-from .example_app import EXAMPLE_START_COMMAND, EXAMPLE_PROMPT
 
 
 @pytest.fixture(scope="session")

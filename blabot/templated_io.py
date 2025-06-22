@@ -1,5 +1,4 @@
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 
 class TemplatedIO(ABC):
@@ -26,7 +25,6 @@ class TemplatedIO(ABC):
         This method should be implemented by the inheritor in a form suitable
         for the target.
         """
-        pass
 
     @abstractmethod
     def stop(self):
@@ -36,7 +34,6 @@ class TemplatedIO(ABC):
         This method should be implemented by the inheritor in a form suitable
         for the target.
         """
-        pass
 
     @abstractmethod
     def send_command(self, command: str) -> None:
@@ -46,7 +43,6 @@ class TemplatedIO(ABC):
         This method should be implemented by the inheritor in a form suitable
         for the target.
         """
-        pass
 
     @abstractmethod
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
@@ -57,18 +53,18 @@ class TemplatedIO(ABC):
         This method should be implemented by the inheritor in a form suitable
         for the target.
         """
-        pass
 
     def restart(self):
         self.stop()
         self.start()
 
     def run_command(
-            self,
-            command: str,
-            expect: str = "",
-            timeout_sec: float = 0.2,
-            attempts: int = 1) -> str:
+        self,
+        command: str,
+        expect: str = "",
+        timeout_sec: float = 0.2,
+        attempts: int = 1,
+    ) -> str:
         """
         This is the method used to send the string to the process and wait
         for expected string

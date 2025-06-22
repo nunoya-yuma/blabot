@@ -12,8 +12,9 @@ Hopefully this sample will be useful for those of you who use it
 in your own projects.
 """
 
-from blabot.process_io import ProcessIO
 from example_app import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
+
+from blabot.process_io import ProcessIO
 
 
 def main():
@@ -26,12 +27,10 @@ def main():
 
     assert example_cli.run_command("sample-status", "Sample status: invalid")
 
-    assert example_cli.run_command(
-        "sample-ctrl on", "Sample status changed to 'on'")
+    assert example_cli.run_command("sample-ctrl on", "Sample status changed to 'on'")
     assert example_cli.run_command("sample-status", "Sample status: on")
 
-    assert example_cli.run_command(
-        "sample-ctrl off", "Sample status changed to 'off'")
+    assert example_cli.run_command("sample-ctrl off", "Sample status changed to 'off'")
     assert example_cli.run_command("sample-status", "Sample status: off")
 
     example_cli.stop()

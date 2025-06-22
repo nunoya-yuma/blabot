@@ -8,7 +8,7 @@ EXAMPLE_FILE_PATH = Path(__file__)
 EXAMPLE_START_COMMAND = f"python3 {EXAMPLE_FILE_PATH}"
 
 
-class SampleCli():
+class SampleCli:
     def __init__(self):
         self._status = "invalid"
         self._status_list = (
