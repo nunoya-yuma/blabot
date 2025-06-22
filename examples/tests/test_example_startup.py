@@ -12,7 +12,6 @@ def test_startup(example_cli):
 @pytest.mark.easy
 @pytest.mark.simple_process_test
 def test_consume_logs(example_cli):
-
     # Output should be the following
     # > aaa
     # Invalid command: aaa
@@ -21,4 +20,5 @@ def test_consume_logs(example_cli):
     example_cli.wait_and_consume_logs(1)
 
     assert example_cli.wait_for("Invalid command: ", 1) is None, (
-        "Output logs are not consumed")
+        "Output logs are not consumed"
+    )

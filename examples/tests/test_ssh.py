@@ -1,10 +1,12 @@
-from blabot.ssh_io import SSHProcessIO
 import os
-import pytest
 import subprocess
 
-from ..example_cli import ExampleCli
+import pytest
+
+from blabot.ssh_io import SSHProcessIO
+
 from ..example_app import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
+from ..example_cli import ExampleCli
 
 # This is a remote machine's path
 DST_DIR_PATH = "/tmp/"
@@ -31,8 +33,11 @@ def transfer_example(ssh_config):
     # e.g.)
     # scp -i path/to/key/id_fugafuga path/to/example_app.py hoge@192.168.100.2:/tmp/ # noqa: E501
     transfer_cmd = [
-        "scp", "-i", ssh_config['key_path'], EXAMPLE_FILE_PATH,
-        f"{ssh_config['user_name']}@{ssh_config['host_name']}:{DST_DIR_PATH}"
+        "scp",
+        "-i",
+        ssh_config["key_path"],
+        EXAMPLE_FILE_PATH,
+        f"{ssh_config['user_name']}@{ssh_config['host_name']}:{DST_DIR_PATH}",
     ]
 
     subprocess.run(transfer_cmd, check=True)
@@ -46,7 +51,7 @@ def ssh_io_cli(ssh_config):
         ssh_config["user_name"],
         ssh_config["host_name"],
         ssh_config["key_path"],
-        prompt=EXAMPLE_PROMPT
+        prompt=EXAMPLE_PROMPT,
     )
 
     ssh_io_cli = ExampleCli(io_interact)

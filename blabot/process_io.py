@@ -1,5 +1,6 @@
-import pexpect
 import sys
+
+import pexpect
 
 from .templated_io import TemplatedIO
 
@@ -19,10 +20,10 @@ class ProcessIO(TemplatedIO):
     """
 
     def __init__(
-            self,
-            start_command: str,
-            prompt: str = "",
-            newline: str = ""
+        self,
+        start_command: str,
+        prompt: str = "",
+        newline: str = "",
     ):
         super().__init__(prompt, newline)
         self._start_command = start_command

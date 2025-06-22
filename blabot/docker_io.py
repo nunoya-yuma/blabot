@@ -9,9 +9,10 @@ To realize this function, `DockerRunIO` using `docker run` command and
 Please use the appropriate class for your purpose.
 """
 
-import pexpect
-import sys
 import subprocess
+import sys
+
+import pexpect
 
 from .process_io import ProcessIO
 
@@ -28,7 +29,6 @@ class DockerIOBase(ProcessIO):
     """
 
     def _start_docker_and_process(self, docker_activate_command: str):
-
         self.process = pexpect.spawn(docker_activate_command)
         self.process.logfile = sys.stdout.buffer
 
@@ -55,13 +55,13 @@ class DockerRunIO(DockerIOBase):
     """
 
     def __init__(
-            self,
-            start_command: str,
-            docker_image_name: str,
-            docker_container_name: str,
-            remove_container: bool = True,
-            prompt: str = "",
-            newline: str = ""
+        self,
+        start_command: str,
+        docker_image_name: str,
+        docker_container_name: str,
+        remove_container: bool = True,
+        prompt: str = "",
+        newline: str = "",
     ):
         super().__init__(start_command, prompt, newline)
         self._docker_image_name = docker_image_name
@@ -102,12 +102,12 @@ class DockerExecIO(DockerIOBase):
     """
 
     def __init__(
-            self,
-            start_command: str,
-            docker_container_name: str,
-            remove_container: bool = True,
-            prompt: str = "",
-            newline: str = ""
+        self,
+        start_command: str,
+        docker_container_name: str,
+        remove_container: bool = True,
+        prompt: str = "",
+        newline: str = "",
     ):
         super().__init__(start_command, prompt, newline)
         self._docker_container_name = docker_container_name
@@ -117,8 +117,7 @@ class DockerExecIO(DockerIOBase):
         if self.process:
             raise RuntimeError("Process has already started")
 
-        docker_exec_command = (
-            f"docker exec -it {self._docker_container_name} bash")
+        docker_exec_command = f"docker exec -it {self._docker_container_name} bash"
         self._start_docker_and_process(docker_exec_command)
 
     def stop(self):
@@ -130,9 +129,8 @@ class DockerExecIO(DockerIOBase):
         if not self._docker_container_name:
             raise RuntimeError("Container name is lost")
 
-        docker_remove_command = [
-            "docker", "rm", "-f", self._docker_container_name]
+        docker_remove_command = ["docker", "rm", "-f", self._docker_container_name]
         res_remove = subprocess.run(
-            docker_remove_command,
-            stdout=subprocess.DEVNULL)
+            docker_remove_command, check=False, stdout=subprocess.DEVNULL
+        )
         assert res_remove.returncode == 0, "Failed to remove docker container"

@@ -1,11 +1,12 @@
-from blabot.docker_io import DockerExecIO
-from blabot.docker_io import DockerRunIO
-from blabot.process_io import ProcessIO
-import pytest
 import subprocess
 
-from ..example_cli import ExampleCli
+import pytest
+
+from blabot.docker_io import DockerExecIO, DockerRunIO
+from blabot.process_io import ProcessIO
+
 from ..example_app import EXAMPLE_PROMPT
+from ..example_cli import ExampleCli
 
 START_COMMAND = "python3 /app/example_app.py"
 DOCKER_IMAGE_NAME = "ghcr.io/nunoya-yuma/blabot/example-app:latest"
@@ -36,8 +37,9 @@ def docker_io_exec_cli():
         "--name",
         DOCKER_CONTAINER_NAME,
         DOCKER_IMAGE_NAME,
-        "bash"]
-    res_run = subprocess.run(docker_run_command)
+        "bash",
+    ]
+    res_run = subprocess.run(docker_run_command, check=False)
     assert res_run.returncode == 0, "Failed to run docker container"
 
     docker_exec_command = [
@@ -46,15 +48,15 @@ def docker_io_exec_cli():
         "-i",
         DOCKER_CONTAINER_NAME,
         "ls",
-        "-a"
+        "-a",
     ]
-    res_ls = subprocess.run(docker_exec_command)
+    res_ls = subprocess.run(docker_exec_command, check=False)
     assert res_ls.returncode == 0, "Failed to run docker sample command"
 
     io_interact = DockerExecIO(
         START_COMMAND,
         DOCKER_CONTAINER_NAME,
-        prompt=EXAMPLE_PROMPT
+        prompt=EXAMPLE_PROMPT,
     )
 
     docker_io_exec_cli = ExampleCli(io_interact)

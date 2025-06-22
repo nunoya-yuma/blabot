@@ -1,8 +1,9 @@
-from blabot.templated_io import TemplatedIO
 import re
 
+from blabot.templated_io import TemplatedIO
 
-class ExampleCliBase():
+
+class ExampleCliBase:
     def __init__(self, io_interact: TemplatedIO):
         self._io_interact = io_interact
 
