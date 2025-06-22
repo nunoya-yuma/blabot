@@ -10,10 +10,9 @@ RUN apt-get update && \
 
 COPY ./blabot blabot/
 COPY pyproject.toml ./
+COPY uv.lock ./
 
-RUN pip install --no-cache-dir poetry && \
-    poetry config virtualenvs.create false && \
-    pip install --no-cache-dir . && \
-    poetry install --no-root
+RUN pip install --no-cache-dir uv && \
+    uv sync --dev
 
-RUN rm -rf blabot/ pyproject.toml poetry.lock
+RUN rm -rf blabot/ pyproject.toml uv.lock
