@@ -4,9 +4,8 @@ import pytest
 
 from blabot.docker_io import DockerExecIO, DockerRunIO
 from blabot.process_io import ProcessIO
-
-from ..example_app import EXAMPLE_PROMPT
-from ..example_cli import ExampleCli
+from examples.example_app import EXAMPLE_PROMPT
+from examples.example_cli import ExampleCli
 
 START_COMMAND = "python3 /app/example_app.py"
 DOCKER_IMAGE_NAME = "ghcr.io/nunoya-yuma/blabot/example-app:latest"
