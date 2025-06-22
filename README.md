@@ -42,22 +42,16 @@ graph LR
 
 ## Environment
 
-`poetry` environment is recommended.
+`uv` environment is recommended.
 
 ```shell
 cd ${BLABOT}
 
-# If venv environment is necessary
-sudo apt update
-sudo apt install -y python3 python3-venv python3-pip
-python3 -m venv venv
-source venv/bin/activate
+# Install uv if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-pip install poetry
-poetry install
-
-# Enter virtual environment
-poetry shell
+# Install dependencies and set up development environment
+uv sync --dev
 ```
 
 ## Use in other projects
@@ -74,7 +68,7 @@ pip install git+https://github.com/nunoya-yuma/blabot.git@main
 
 ```shell
 cd ${BLABOT}
-poetry build
+uv build
 pip install dist/blabot-0.1.0-py3-none-any.whl
 ```
 
