@@ -4,9 +4,8 @@ import subprocess
 import pytest
 
 from blabot.ssh_io import SSHProcessIO
-
-from ..example_app import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
-from ..example_cli import ExampleCli
+from examples.example_app import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
+from examples.example_cli import ExampleCli
 
 # This is a remote machine's path
 DST_DIR_PATH = "/tmp/"

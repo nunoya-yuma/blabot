@@ -15,9 +15,8 @@ $ ./example_app.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 import pytest
 
 from blabot.device_io import DeviceIO
-
-from ..example_app import EXAMPLE_PROMPT
-from ..example_cli import ExampleCli
+from examples.example_app import EXAMPLE_PROMPT
+from examples.example_cli import ExampleCli
 
 
 @pytest.fixture
