@@ -37,12 +37,14 @@ pip install dist/blabot-0.1.0-py3-none-any.whl
 
 ### Code Quality
 ```bash
-flake8
+# Lint and format with ruff
+uv run ruff check .
+uv run ruff format .
 ```
 
 ### Local CI Testing
 ```bash
-act -j flake8_and_pytest
+act -j ruff_and_pytest
 ```
 
 ## Architecture
@@ -79,6 +81,6 @@ sudo apt install socat
 
 ## Development Guidelines
 
-- Always run `flake8` and `pytest` after code changes
+- Always run `uv run ruff check .` and `pytest` after code changes
 - Use English for code comments and variable names
 - Create feature branches from main, then submit PRs for integration
