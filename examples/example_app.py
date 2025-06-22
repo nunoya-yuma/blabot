@@ -17,21 +17,21 @@ class SampleCli:
             "off",
         )
 
-    def HandleInput(self, input):
+    def handle_input(self, input):
         if input == "sample-status":
-            self._ShowStatus()
+            self._show_status()
         elif input == "sample-ctrl on":
-            self._ControlStatus("on")
+            self._control_status("on")
         elif input == "sample-ctrl off":
-            self._ControlStatus("off")
+            self._control_status("off")
         else:
             sys.stderr.write(f"Invalid command: {input}\n")
             sys.stderr.flush()
 
-    def _ShowStatus(self):
+    def _show_status(self):
         print(f"Sample status: {self._status}")
 
-    def _ControlStatus(self, command):
+    def _control_status(self, command):
         if command not in self._status_list:
             sys.stderr.write("Invalid status command\n")
             sys.stderr.flush()
@@ -54,4 +54,4 @@ if __name__ == "__main__":
 
     while True:
         cmd = input(EXAMPLE_PROMPT)
-        example_process.HandleInput(cmd)
+        example_process.handle_input(cmd)
