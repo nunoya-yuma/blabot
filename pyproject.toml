@@ -22,3 +22,32 @@ dev-dependencies = [
     "pytest-order",
     "ruff",
 ]
+
+[tool.ruff]
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",        # pydocstyle - docstring requirements
+    "ANN",      # type annotations - TODO: add in separate PR
+    "TRY003",   # exception message handling - TODO: fix in separate PR
+    "EM101",    # exception string literals - TODO: fix in separate PR
+    "N806",     # variable naming - TODO: fix in separate PR
+    "N802",     # function naming - TODO: fix in separate PR
+    "S",        # security warnings - TODO: review in separate PR
+    "ARG001",   # unused arguments - TODO: review in separate PR
+    "PT018",    # pytest assertion breakdown - TODO: review in separate PR
+    "PLR0913",  # too many arguments - TODO: refactor in separate PR
+    "FBT001",   # boolean positional argument - TODO: refactor in separate PR
+    "FBT002",   # boolean default positional argument - TODO: refactor in separate PR
+    "TRY002",   # create custom exception - TODO: fix in separate PR
+    "A002",     # shadowing builtin - TODO: fix in separate PR
+    "T201",     # print statements - TODO: review in separate PR
+    "RET504",   # unnecessary assignment - TODO: fix in separate PR
+    "COM812",   # trailing comma conflicts with formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]        # allow assert in tests
+"*/tests/*" = ["S101"]      # allow assert in nested test directories
