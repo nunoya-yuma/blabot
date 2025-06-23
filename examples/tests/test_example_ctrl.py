@@ -4,7 +4,7 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    ("test_iterations"),
+    "test_iterations",
     [
         pytest.param(1, marks=pytest.mark.easy),
         pytest.param(5, marks=pytest.mark.hard),
