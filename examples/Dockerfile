@@ -13,6 +13,6 @@ COPY pyproject.toml ./
 COPY uv.lock ./
 
 RUN pip install --no-cache-dir uv && \
-    uv sync --dev
+    uv sync
 
 RUN rm -rf blabot/ pyproject.toml uv.lock

@@ -51,7 +51,7 @@ cd ${BLABOT}
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Install dependencies and set up development environment
-uv sync --dev
+uv sync
 ```
 
 ## Use in other projects

@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This project uses uv for dependency management:
 
 ```bash
-uv sync --dev
+uv sync
 ```
 
 ## Common Commands
