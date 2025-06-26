@@ -87,5 +87,5 @@ If you want to run GitHub Actions in your local environment, you can use [act co
 
 ```shell
 # e.g.)
-act -j flake8_and_pytest
+act -j ruff_and_pytest
 ```

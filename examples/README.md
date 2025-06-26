@@ -8,7 +8,7 @@ It is recommended that it be used alone once.
 
 ```shell
 cd ${BLABOT}/examples/
-./example_app.py
+uv run python example_app.py
 
 # sample commands
 > sample-status
@@ -22,7 +22,7 @@ The samples are provided in two major formats: Pytest and a single python script
 
 ```shell
 cd ${BLABOT}/examples/
-./example_usage.py
+uv run python example_usage.py
 ```
 
 ## ProcessIO
@@ -35,8 +35,8 @@ This class is a basic class that launches the process you want to run, sends com
 cd ${BLABOT}/examples/
 
 # Run partial tests
-pytest -v -s -m "simple_process_test and easy" tests/
-pytest -v -s -m "simple_process_test and hard" tests/
+uv run pytest -v -s -m "simple_process_test and easy" tests/
+uv run pytest -v -s -m "simple_process_test and hard" tests/
 ```
 
 ## DeviceIO
@@ -75,11 +75,11 @@ socat PTY,link=/tmp/ttyV0,echo=0 PTY,link=/tmp/ttyV1,echo=0 &
 
 # Run example_app.py with input/output set to /tmp/ttyV0
 cd ${BLABOT}/examples/
-./example_app.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
+uv run python example_app.py < /tmp/ttyV0 > /tmp/ttyV0 2>&1
 
 # Run example test (In a terminal different from the terminal where example_app.py is executed.)
 cd ${BLABOT}/examples/
-pytest -v -s -m "device_test" tests/
+uv run pytest -v -s -m "device_test" tests/
 
 # optional)
 # Input/Output can be confirmed by minicom, and other tools.
@@ -121,7 +121,7 @@ export REMOTE_HOST_NAME="192.168.100.2"
 export REMOTE_KEY_PATH="${HOME}/.ssh/id_fugafuga" # Prepare a key to login
 
 cd ${BLABOT}/examples/
-pytest -v -s -m "ssh_test" tests/
+uv run pytest -v -s -m "ssh_test" tests/
 ```
 
 ## DockerIO(DockerRunIO + DockerExecIO)
@@ -162,7 +162,7 @@ cd ${BLABOT}
 docker build -f examples/Dockerfile -t ghcr.io/nunoya-yuma/blabot/example-app:latest ./
 
 cd ${BLABOT}/examples/
-pytest -v -s -m "docker_test" tests/
+uv run pytest -v -s -m "docker_test" tests/
 ```
 
 ## ProcessIO(in the docker container)

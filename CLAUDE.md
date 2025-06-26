@@ -54,7 +54,7 @@ act -j ruff_and_pytest
 - **TemplatedIO** (base class in `blabot/templated_io.py`) - Abstract interface for all I/O operations
 - **ProcessIO** (`blabot/process_io.py`) - Local process communication
 - **DeviceIO** (`blabot/device_io.py`) - Serial device communication
-- **SSHProcessIO** (`blabot/ssh_io.py`) - Remote SSH process communication  
+- **SSHProcessIO** (`blabot/ssh_io.py`) - Remote SSH process communication
 - **DockerRunIO/DockerExecIO** (`blabot/docker_io.py`) - Container process communication
 
 ## Test Environment Setup
@@ -63,7 +63,7 @@ act -j ruff_and_pytest
 Requires environment variables:
 ```bash
 export REMOTE_USER_NAME="username"
-export REMOTE_HOST_NAME="192.168.100.2" 
+export REMOTE_HOST_NAME="192.168.100.2"
 export REMOTE_KEY_PATH="${HOME}/.ssh/id_key"
 ```
 
