@@ -20,26 +20,26 @@ jobs:
         uses: astral-sh/setup-uv@v4
       - name: Install dependencies for example tests
         run: |
-          uv pip install --system -e .[dev]
+          uv sync --dev
 
       - name: Check code formatting with ruff
-        run: ruff format --check .
+        run: uv run ruff format --check .
       - name: Lint code with ruff
-        run: ruff check .
+        run: uv run ruff check .
 
       - name: Run example usage
         run: |
           cd examples/
-          ./example_usage.py
+          uv run python example_usage.py
 
       - name: Run example pytests(easy)
         run: |
           cd examples/
-          pytest -v -s -m "simple_process_test and easy" tests/
+          uv run pytest -v -s -m "simple_process_test and easy" tests/
       - name: Run example pytests(hard)
         run: |
           cd examples/
-          pytest -v -s -m "simple_process_test and hard" tests/
+          uv run pytest -v -s -m "simple_process_test and hard" tests/
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -53,12 +53,12 @@ jobs:
 
       - name: Run docker tests (from outside)
         working-directory: ./examples
-        run: pytest -v -s -m "docker_test" tests/
+        run: uv run pytest -v -s -m "docker_test" tests/
 
       - name: Run docker tests (from inside)
         working-directory: ./examples
         run: |
-          docker compose run --rm example-app pytest -v -s -m docker_inner_test tests/
+          docker compose run --rm example-app uv run pytest -v -s -m docker_inner_test tests/
 
       # Run device tests in container
       - name: Run serial device pytests
