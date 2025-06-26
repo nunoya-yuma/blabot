@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 This file provides a sample of how to use the package's features.
 
