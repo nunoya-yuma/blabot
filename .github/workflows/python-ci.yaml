@@ -20,7 +20,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
       - name: Install dependencies for example tests
         run: |
-          uv sync --dev
+          uv sync
 
       - name: Check code formatting with ruff
         run: uv run ruff format --check .
