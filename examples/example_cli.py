@@ -18,18 +18,18 @@ class ExampleCliBase:
         return getattr(self._io_interact, name)
 
     def status_show(self):
-        PATTERN = "Sample status: (invalid|on|off)"
+        pattern = "Sample status: (invalid|on|off)"
 
-        output = self.run_command("sample-status", PATTERN)
+        output = self.run_command("sample-status", pattern)
         if output is None:
             return None
 
-        match = re.search(PATTERN, output)
+        match = re.search(pattern, output)
         return match.group(1) if match else None
 
     def send_on_off(self, command: str):
-        PATTERN = "Sample status"
-        return self.run_command(f"sample-ctrl {command}", PATTERN)
+        pattern = "Sample status"
+        return self.run_command(f"sample-ctrl {command}", pattern)
 
 
 class ExampleCli(ExampleCliBase):

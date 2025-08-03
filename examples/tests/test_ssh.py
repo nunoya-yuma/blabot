@@ -44,9 +44,9 @@ def transfer_example(ssh_config):
 
 @pytest.fixture
 def ssh_io_cli(ssh_config):
-    START_COMMAND = "python3 /tmp/example_app.py"
+    start_command = "python3 /tmp/example_app.py"
     io_interact = SSHProcessIO(
-        START_COMMAND,
+        start_command,
         ssh_config["user_name"],
         ssh_config["host_name"],
         ssh_config["key_path"],

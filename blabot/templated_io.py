@@ -82,7 +82,7 @@ class TemplatedIO(ABC):
             raise RuntimeError("Process not started")
 
         if self.wait_for_prompt() is False:
-            raise Exception("Prompt does not appear")
+            raise RuntimeError("Prompt does not appear")
 
         for _ in range(attempts):
             self.send_command(command)
@@ -97,8 +97,8 @@ class TemplatedIO(ABC):
         if self._prompt is None:
             return True
 
-        FIRST_TIMEOUT_SEC = 0.5
-        res = self.wait_for(self._prompt, FIRST_TIMEOUT_SEC)
+        first_timeout_sec = 0.5
+        res = self.wait_for(self._prompt, first_timeout_sec)
         if res == self._prompt:
             return True
 
