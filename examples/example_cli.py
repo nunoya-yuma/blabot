@@ -25,8 +25,7 @@ class ExampleCliBase:
             return None
 
         match = re.search(PATTERN, output)
-        res = match.group(1) if match else None
-        return res
+        return match.group(1) if match else None
 
     def send_on_off(self, command: str):
         PATTERN = "Sample status"

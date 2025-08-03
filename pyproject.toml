@@ -43,8 +43,6 @@ ignore = [
     "FBT001",   # boolean positional argument - TODO: refactor in separate PR
     "FBT002",   # boolean default positional argument - TODO: refactor in separate PR
     "TRY002",   # create custom exception - TODO: fix in separate PR
-    "A002",     # shadowing builtin - TODO: fix in separate PR
-    "RET504",   # unnecessary assignment - TODO: fix in separate PR
     "COM812",   # trailing comma conflicts with formatter
 ]
 
