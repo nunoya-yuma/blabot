@@ -60,5 +60,6 @@ def ssh_io_cli(ssh_config):
 
 
 @pytest.mark.ssh_test
-def test_ssh(ssh_config, transfer_example, ssh_io_cli):
+@pytest.mark.usefixtures("ssh_config", "transfer_example")
+def test_ssh(ssh_io_cli):
     ssh_io_cli.check_startup()
