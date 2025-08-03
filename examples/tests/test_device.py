@@ -21,8 +21,8 @@ from examples.example_cli import ExampleCli
 
 @pytest.fixture
 def device_io_cli():
-    DEVICE_PORT = "/tmp/ttyV1"
-    io_interact = DeviceIO(DEVICE_PORT, prompt=EXAMPLE_PROMPT)
+    device_port = "/tmp/ttyV1"
+    io_interact = DeviceIO(device_port, prompt=EXAMPLE_PROMPT)
 
     device_io_cli = ExampleCli(io_interact)
     device_io_cli.start()
