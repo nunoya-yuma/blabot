@@ -19,15 +19,15 @@ class SampleCli:
             "off",
         )
 
-    def handle_input(self, input):
-        if input == "sample-status":
+    def handle_input(self, user_input):
+        if user_input == "sample-status":
             self._show_status()
-        elif input == "sample-ctrl on":
+        elif user_input == "sample-ctrl on":
             self._control_status("on")
-        elif input == "sample-ctrl off":
+        elif user_input == "sample-ctrl off":
             self._control_status("off")
         else:
-            sys.stderr.write(f"Invalid command: {input}\n")
+            sys.stderr.write(f"Invalid command: {user_input}\n")
             sys.stderr.flush()
 
     def _show_status(self):
