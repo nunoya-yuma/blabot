@@ -36,7 +36,6 @@ ignore = [
     "EM101",    # exception string literals - TODO: fix in separate PR
     "N802",     # function naming - TODO: fix in separate PR
     "S",        # security warnings - TODO: review in separate PR
-    "ARG001",   # unused arguments - TODO: review in separate PR
     "PT018",    # pytest assertion breakdown - TODO: review in separate PR
     "PLR0913",  # too many arguments - TODO: refactor in separate PR
     "FBT001",   # boolean positional argument - TODO: refactor in separate PR
