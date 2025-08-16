@@ -26,6 +26,7 @@ class ProcessIO(TemplatedIO):
         newline: str = "",
     ) -> None:
         super().__init__(prompt, newline)
+        self.process: pexpect.spawn | None = None
         self._start_command = start_command
 
     def start(self) -> None:
@@ -46,6 +47,10 @@ class ProcessIO(TemplatedIO):
         self.process = None
 
     def send_command(self, command: str) -> None:
+        if not self.process:
+            msg = "Process not started"
+            raise RuntimeError(msg)
+
         output_line = command + self._newline
         self.process.sendline(output_line)
 
