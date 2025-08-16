@@ -22,13 +22,13 @@ class SSHProcessIO(ProcessIO):
         ssh_config: SSHConfig,
         prompt: str = "",
         newline: str = "",
-    ):
+    ) -> None:
         super().__init__(start_command, prompt, newline)
         self._user_name = ssh_config.user_name
         self._host_name = ssh_config.host_name
         self._key_path = ssh_config.key_path
 
-    def start(self):
+    def start(self) -> None:
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
