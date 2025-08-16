@@ -38,7 +38,9 @@ class SSHProcessIO(ProcessIO):
         self.process.logfile = sys.stdout.buffer
 
         # Wait for login to complete
-        assert self.wait_for(r"\$", 15), "Failed to login"
+        if not self.wait_for(r"\$", 15):
+            msg = "Failed to login"
+            raise RuntimeError(msg)
 
         # Do not use `run_command` method here.
         # For example, if "> " is assigned to the self.prompt,
