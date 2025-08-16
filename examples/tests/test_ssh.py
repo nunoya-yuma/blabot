@@ -18,11 +18,15 @@ def ssh_config():
     ssh_config["host_name"] = os.environ.get("REMOTE_HOST_NAME")
     ssh_config["key_path"] = os.environ.get("REMOTE_KEY_PATH")
 
-    assert (
-        ssh_config["user_name"] is not None
-        and ssh_config["host_name"] is not None
-        and ssh_config["key_path"] is not None
-    ), "Set environment variables"
+    assert ssh_config["user_name"] is not None, (
+        "Set environment variable REMOTE_USER_NAME"
+    )
+    assert ssh_config["host_name"] is not None, (
+        "Set environment variable REMOTE_HOST_NAME"
+    )
+    assert ssh_config["key_path"] is not None, (
+        "Set environment variable REMOTE_KEY_PATH"
+    )
 
     return ssh_config
 
