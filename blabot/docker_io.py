@@ -51,7 +51,9 @@ class DockerIOBase(ProcessIO):
         self.process.logfile = sys.stdout.buffer
 
         # Wait for login to complete
-        assert self.wait_for(r"#"), "Failed to start docker"
+        if not self.wait_for(r"#"):
+            msg = "Failed to start docker"
+            raise RuntimeError(msg)
 
         # Do not use `run_command` method here.
         # For example, if "> " is assigned to the self.prompt,
@@ -153,4 +155,6 @@ class DockerExecIO(DockerIOBase):
             check=False,
             stdout=subprocess.DEVNULL,
         )
-        assert res_remove.returncode == 0, "Failed to remove docker container"
+        if res_remove.returncode != 0:
+            msg = f"Failed to remove docker container '{self._docker_container_name}'"
+            raise RuntimeError(msg)
