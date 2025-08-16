@@ -11,10 +11,28 @@ Please use the appropriate class for your purpose.
 
 import subprocess
 import sys
+from dataclasses import dataclass
 
 import pexpect
 
 from .process_io import ProcessIO
+
+
+@dataclass
+class DockerRunConfig:
+    """Configuration for Docker run command parameters."""
+
+    image_name: str
+    container_name: str
+    remove_container: bool = True
+
+
+@dataclass
+class DockerExecConfig:
+    """Configuration for Docker exec command parameters."""
+
+    container_name: str
+    remove_container: bool = True
 
 
 class DockerIOBase(ProcessIO):
@@ -57,16 +75,14 @@ class DockerRunIO(DockerIOBase):
     def __init__(
         self,
         start_command: str,
-        docker_image_name: str,
-        docker_container_name: str,
-        remove_container: bool = True,
+        docker_run_config: DockerRunConfig,
         prompt: str = "",
         newline: str = "",
     ):
         super().__init__(start_command, prompt, newline)
-        self._docker_image_name = docker_image_name
-        self._docker_container_name = docker_container_name
-        self._remove_container = remove_container
+        self._docker_image_name = docker_run_config.image_name
+        self._docker_container_name = docker_run_config.container_name
+        self._remove_container = docker_run_config.remove_container
 
     def start(self):
         if self.process:
@@ -105,14 +121,13 @@ class DockerExecIO(DockerIOBase):
     def __init__(
         self,
         start_command: str,
-        docker_container_name: str,
-        remove_container: bool = True,
+        docker_exec_config: DockerExecConfig,
         prompt: str = "",
         newline: str = "",
     ):
         super().__init__(start_command, prompt, newline)
-        self._docker_container_name = docker_container_name
-        self._remove_container = remove_container
+        self._docker_container_name = docker_exec_config.container_name
+        self._remove_container = docker_exec_config.remove_container
 
     def start(self):
         if self.process:

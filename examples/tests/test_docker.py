@@ -2,7 +2,12 @@ import subprocess
 
 import pytest
 
-from blabot.docker_io import DockerExecIO, DockerRunIO
+from blabot.docker_io import (
+    DockerExecConfig,
+    DockerExecIO,
+    DockerRunConfig,
+    DockerRunIO,
+)
 from blabot.process_io import ProcessIO
 from examples.example_app import EXAMPLE_PROMPT
 from examples.example_cli import ExampleCli
@@ -14,10 +19,13 @@ DOCKER_CONTAINER_NAME = "example_app"
 
 @pytest.fixture
 def docker_io_cli():
+    docker_run_config = DockerRunConfig(
+        image_name=DOCKER_IMAGE_NAME,
+        container_name=DOCKER_CONTAINER_NAME,
+    )
     docker_io = DockerRunIO(
         START_COMMAND,
-        DOCKER_IMAGE_NAME,
-        DOCKER_CONTAINER_NAME,
+        docker_run_config,
         prompt=EXAMPLE_PROMPT,
     )
 
@@ -52,9 +60,12 @@ def docker_io_exec_cli():
     res_ls = subprocess.run(docker_exec_command, check=False)
     assert res_ls.returncode == 0, "Failed to run docker sample command"
 
+    docker_exec_config = DockerExecConfig(
+        container_name=DOCKER_CONTAINER_NAME,
+    )
     io_interact = DockerExecIO(
         START_COMMAND,
-        DOCKER_CONTAINER_NAME,
+        docker_exec_config,
         prompt=EXAMPLE_PROMPT,
     )
 

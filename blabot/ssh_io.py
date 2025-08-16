@@ -1,24 +1,32 @@
 import sys
+from dataclasses import dataclass
 
 import pexpect
 
 from .process_io import ProcessIO
 
 
+@dataclass
+class SSHConfig:
+    """Configuration for SSH connection parameters."""
+
+    user_name: str
+    host_name: str
+    key_path: str
+
+
 class SSHProcessIO(ProcessIO):
     def __init__(
         self,
         start_command: str,
-        user_name: str,
-        host_name: str,
-        key_path: str,
+        ssh_config: SSHConfig,
         prompt: str = "",
         newline: str = "",
     ):
         super().__init__(start_command, prompt, newline)
-        self._user_name = user_name
-        self._host_name = host_name
-        self._key_path = key_path
+        self._user_name = ssh_config.user_name
+        self._host_name = ssh_config.host_name
+        self._key_path = ssh_config.key_path
 
     def start(self):
         if self.process:

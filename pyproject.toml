@@ -34,7 +34,6 @@ ignore = [
     "ANN",      # type annotations - TODO: add in separate PR
     "N802",     # function naming - TODO: fix in separate PR
     "S",        # security warnings - TODO: review in separate PR
-    "PLR0913",  # too many arguments - TODO: refactor in separate PR
     "FBT001",   # boolean positional argument - TODO: refactor in separate PR
     "FBT002",   # boolean default positional argument - TODO: refactor in separate PR
     "COM812",   # trailing comma conflicts with formatter
