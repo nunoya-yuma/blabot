@@ -22,7 +22,8 @@ class SSHProcessIO(ProcessIO):
 
     def start(self):
         if self.process:
-            raise RuntimeError("Process has already started")
+            msg = "Process has already started"
+            raise RuntimeError(msg)
 
         ssh_login_cmd = f"ssh -i {self._key_path} {self._user_name}@{self._host_name}"
         self.process = pexpect.spawn(ssh_login_cmd)

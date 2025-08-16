@@ -30,14 +30,16 @@ class ProcessIO(TemplatedIO):
 
     def start(self):
         if self.process:
-            raise RuntimeError("Process has already started")
+            msg = "Process has already started"
+            raise RuntimeError(msg)
 
         self.process = pexpect.spawn(self._start_command)
         self.process.logfile = sys.stdout.buffer
 
     def stop(self):
         if not self.process:
-            raise RuntimeError("Process not started")
+            msg = "Process not started"
+            raise RuntimeError(msg)
 
         self.process.terminate()
         self.process.wait()
@@ -49,7 +51,8 @@ class ProcessIO(TemplatedIO):
 
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
         if not self.process:
-            raise RuntimeError("Process not started")
+            msg = "Process not started"
+            raise RuntimeError(msg)
 
         expect_list = [
             pexpect.TIMEOUT,

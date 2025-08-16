@@ -29,7 +29,8 @@ class DeviceIO(TemplatedIO):
 
     def start(self):
         if self.process:
-            raise RuntimeError("Process has already started")
+            msg = "Process has already started"
+            raise RuntimeError(msg)
 
         if not self.device.is_open:
             self.device.open()
@@ -39,10 +40,12 @@ class DeviceIO(TemplatedIO):
 
     def stop(self):
         if not self.process:
-            raise RuntimeError("Process not started")
+            msg = "Process not started"
+            raise RuntimeError(msg)
 
         if not self.device.is_open:
-            raise RuntimeError("Device port is already closed")
+            msg = "Device port is already closed"
+            raise RuntimeError(msg)
 
         self.process.close()
         self.device.close()
@@ -50,14 +53,16 @@ class DeviceIO(TemplatedIO):
 
     def send_command(self, command: str) -> None:
         if not self.process:
-            raise RuntimeError("Process not started")
+            msg = "Process not started"
+            raise RuntimeError(msg)
 
         output_line = command + self._newline
         self.process.sendline(output_line)
 
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
         if not self.process:
-            raise RuntimeError("Process not started")
+            msg = "Process not started"
+            raise RuntimeError(msg)
 
         expect_list = [
             pexpect.TIMEOUT,
