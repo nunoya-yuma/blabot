@@ -3,7 +3,7 @@ import subprocess
 
 import pytest
 
-from blabot.ssh_io import SSHConfig, SSHProcessIO
+from blabot import SSHConfig, SSHProcessIO
 from examples.example_app import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
 from examples.example_cli import ExampleCli
 

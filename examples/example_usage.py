@@ -12,7 +12,7 @@ in your own projects.
 
 from example_app import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
 
-from blabot.process_io import ProcessIO
+from blabot import ProcessIO
 
 
 def main():
