@@ -3,7 +3,7 @@ import subprocess
 
 import pytest
 
-from blabot.ssh_io import SSHProcessIO
+from blabot.ssh_io import SSHConfig, SSHProcessIO
 from examples.example_app import EXAMPLE_FILE_PATH, EXAMPLE_PROMPT
 from examples.example_cli import ExampleCli
 
@@ -49,11 +49,14 @@ def transfer_example(ssh_config):
 @pytest.fixture
 def ssh_io_cli(ssh_config):
     start_command = "python3 /tmp/example_app.py"
+    ssh_config_obj = SSHConfig(
+        user_name=ssh_config["user_name"],
+        host_name=ssh_config["host_name"],
+        key_path=ssh_config["key_path"],
+    )
     io_interact = SSHProcessIO(
         start_command,
-        ssh_config["user_name"],
-        ssh_config["host_name"],
-        ssh_config["key_path"],
+        ssh_config_obj,
         prompt=EXAMPLE_PROMPT,
     )
 
