@@ -12,7 +12,6 @@ class TemplatedIO(ABC):
     """
 
     def __init__(self, prompt: str = "", newline: str = "") -> None:
-        self.process: object | None = None
         self._prompt = prompt
         self._newline = newline
 
@@ -52,6 +51,10 @@ class TemplatedIO(ABC):
 
         This method should be implemented by the inheritor in a form suitable
         for the target.
+
+        Returns:
+            str: The matched string if expected pattern is found
+            None: If timeout occurs before pattern is matched
         """
 
     def restart(self) -> None:
@@ -76,11 +79,12 @@ class TemplatedIO(ABC):
         If the expected string is not included, the string is not consumed
         and will be parsed again at the next opportunity.
         If you want to prevent this, use the `wait_and_consume_logs` method.
-        """
 
-        if not self.process:
-            msg = "Process not started"
-            raise RuntimeError(msg)
+        Returns:
+            str: The matched string if expected pattern is found
+            None: If timeout occurs or expected pattern is not matched after
+                  all attempts
+        """
 
         if self.wait_for_prompt() is False:
             msg = "Prompt does not appear"

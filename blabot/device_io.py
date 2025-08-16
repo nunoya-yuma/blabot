@@ -25,6 +25,7 @@ class DeviceIO(TemplatedIO):
         newline: str = "",
     ) -> None:
         super().__init__(prompt, newline)
+        self.process: SerialSpawn | None = None
         self.device = serial.Serial(port, baudrate, timeout=1)
 
     def start(self) -> None:
