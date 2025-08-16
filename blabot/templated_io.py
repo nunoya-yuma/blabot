@@ -79,10 +79,12 @@ class TemplatedIO(ABC):
         """
 
         if not self.process:
-            raise RuntimeError("Process not started")
+            msg = "Process not started"
+            raise RuntimeError(msg)
 
         if self.wait_for_prompt() is False:
-            raise RuntimeError("Prompt does not appear")
+            msg = "Prompt does not appear"
+            raise RuntimeError(msg)
 
         for _ in range(attempts):
             self.send_command(command)

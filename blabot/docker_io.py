@@ -70,7 +70,8 @@ class DockerRunIO(DockerIOBase):
 
     def start(self):
         if self.process:
-            raise RuntimeError("Process has already started")
+            msg = "Process has already started"
+            raise RuntimeError(msg)
 
         docker_run_command = self._build_command()
         self._start_docker_and_process(docker_run_command)
@@ -115,7 +116,8 @@ class DockerExecIO(DockerIOBase):
 
     def start(self):
         if self.process:
-            raise RuntimeError("Process has already started")
+            msg = "Process has already started"
+            raise RuntimeError(msg)
 
         docker_exec_command = f"docker exec -it {self._docker_container_name} bash"
         self._start_docker_and_process(docker_exec_command)
@@ -127,7 +129,8 @@ class DockerExecIO(DockerIOBase):
             return
 
         if not self._docker_container_name:
-            raise RuntimeError("Container name is lost")
+            msg = "Container name is lost"
+            raise RuntimeError(msg)
 
         docker_remove_command = ["docker", "rm", "-f", self._docker_container_name]
         res_remove = subprocess.run(

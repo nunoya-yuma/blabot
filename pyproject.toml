@@ -32,8 +32,6 @@ select = ["ALL"]
 ignore = [
     "D",        # pydocstyle - docstring requirements
     "ANN",      # type annotations - TODO: add in separate PR
-    "TRY003",   # exception message handling - TODO: fix in separate PR
-    "EM101",    # exception string literals - TODO: fix in separate PR
     "N802",     # function naming - TODO: fix in separate PR
     "S",        # security warnings - TODO: review in separate PR
     "PT018",    # pytest assertion breakdown - TODO: review in separate PR
