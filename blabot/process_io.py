@@ -24,11 +24,11 @@ class ProcessIO(TemplatedIO):
         start_command: str,
         prompt: str = "",
         newline: str = "",
-    ):
+    ) -> None:
         super().__init__(prompt, newline)
         self._start_command = start_command
 
-    def start(self):
+    def start(self) -> None:
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -36,7 +36,7 @@ class ProcessIO(TemplatedIO):
         self.process = pexpect.spawn(self._start_command)
         self.process.logfile = sys.stdout.buffer
 
-    def stop(self):
+    def stop(self) -> None:
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
@@ -49,7 +49,7 @@ class ProcessIO(TemplatedIO):
         output_line = command + self._newline
         self.process.sendline(output_line)
 
-    def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
+    def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str | None:
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)

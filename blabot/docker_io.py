@@ -46,7 +46,7 @@ class DockerIOBase(ProcessIO):
     and is not intended to be used externally.
     """
 
-    def _start_docker_and_process(self, docker_activate_command: str):
+    def _start_docker_and_process(self, docker_activate_command: str) -> None:
         self.process = pexpect.spawn(docker_activate_command)
         self.process.logfile = sys.stdout.buffer
 
@@ -80,13 +80,13 @@ class DockerRunIO(DockerIOBase):
         docker_run_config: DockerRunConfig,
         prompt: str = "",
         newline: str = "",
-    ):
+    ) -> None:
         super().__init__(start_command, prompt, newline)
         self._docker_image_name = docker_run_config.image_name
         self._docker_container_name = docker_run_config.container_name
         self._remove_container = docker_run_config.remove_container
 
-    def start(self):
+    def start(self) -> None:
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -94,7 +94,7 @@ class DockerRunIO(DockerIOBase):
         docker_run_command = self._build_command()
         self._start_docker_and_process(docker_run_command)
 
-    def _build_command(self):
+    def _build_command(self) -> str:
         docker_run_command = "docker run -it"
         if self._remove_container:
             docker_run_command += " --rm"
@@ -126,12 +126,12 @@ class DockerExecIO(DockerIOBase):
         docker_exec_config: DockerExecConfig,
         prompt: str = "",
         newline: str = "",
-    ):
+    ) -> None:
         super().__init__(start_command, prompt, newline)
         self._docker_container_name = docker_exec_config.container_name
         self._remove_container = docker_exec_config.remove_container
 
-    def start(self):
+    def start(self) -> None:
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -139,7 +139,7 @@ class DockerExecIO(DockerIOBase):
         docker_exec_command = f"docker exec -it {self._docker_container_name} bash"
         self._start_docker_and_process(docker_exec_command)
 
-    def stop(self):
+    def stop(self) -> None:
         super().stop()
 
         if not self._remove_container:

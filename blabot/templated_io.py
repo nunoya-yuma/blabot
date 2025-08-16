@@ -11,13 +11,13 @@ class TemplatedIO(ABC):
     for the target.
     """
 
-    def __init__(self, prompt: str = "", newline: str = ""):
-        self.process = None
+    def __init__(self, prompt: str = "", newline: str = "") -> None:
+        self.process: object | None = None
         self._prompt = prompt
         self._newline = newline
 
     @abstractmethod
-    def start(self):
+    def start(self) -> None:
         """
         This is the method used to initiate an incoming/outgoing call
         to/from a process
@@ -27,7 +27,7 @@ class TemplatedIO(ABC):
         """
 
     @abstractmethod
-    def stop(self):
+    def stop(self) -> None:
         """
         This is the method used to terminate the process.
 
@@ -45,7 +45,7 @@ class TemplatedIO(ABC):
         """
 
     @abstractmethod
-    def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str:
+    def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str | None:
         """
         This method is used to wait for the expected string to arrive
         from the process.
@@ -54,7 +54,7 @@ class TemplatedIO(ABC):
         for the target.
         """
 
-    def restart(self):
+    def restart(self) -> None:
         self.stop()
         self.start()
 
@@ -64,7 +64,7 @@ class TemplatedIO(ABC):
         expect: str = "",
         timeout_sec: float = 0.2,
         attempts: int = 1,
-    ) -> str:
+    ) -> str | None:
         """
         This is the method used to send the string to the process and wait
         for expected string
