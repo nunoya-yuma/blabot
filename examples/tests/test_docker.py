@@ -2,13 +2,13 @@ import subprocess
 
 import pytest
 
-from blabot.docker_io import (
+from blabot import (
     DockerExecConfig,
     DockerExecIO,
     DockerRunConfig,
     DockerRunIO,
+    ProcessIO,
 )
-from blabot.process_io import ProcessIO
 from examples.example_app import EXAMPLE_PROMPT
 from examples.example_cli import ExampleCli
 

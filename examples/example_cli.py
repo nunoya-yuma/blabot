@@ -1,6 +1,6 @@
 import re
 
-from blabot.templated_io import TemplatedIO
+from blabot import TemplatedIO
 
 
 class ExampleCliBase:

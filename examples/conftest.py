@@ -1,6 +1,6 @@
 import pytest
 
-from blabot.process_io import ProcessIO
+from blabot import ProcessIO
 
 from .example_app import EXAMPLE_PROMPT, EXAMPLE_START_COMMAND
 from .example_cli import ExampleCli
