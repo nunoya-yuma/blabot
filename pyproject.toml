@@ -30,12 +30,13 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "D",        # pydocstyle - docstring requirements
     "COM812",   # trailing comma conflicts with formatter
+    "D203",     # 1 blank line required before class docstring (conflicts with D211)
+    "D213",     # multi-line docstring summary should start at the second line (conflicts with D212)
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "S108", "ANN"]        # allow assert, temp files, and skip type annotations in tests
-"*/tests/*" = ["S101", "S108", "ANN"]      # allow assert, temp files, and skip type annotations in nested test directories
-"examples/*" = ["S101", "S603", "S108", "ANN"]  # allow assert, subprocess, temp files, and skip type annotations in example code
+"tests/*" = ["S101", "S108", "ANN", "D"]        # allow assert, temp files, skip type annotations and docstrings in tests
+"*/tests/*" = ["S101", "S108", "ANN", "D"]      # allow assert, temp files, skip type annotations and docstrings in nested test directories
+"examples/*" = ["S101", "S603", "S108", "ANN", "D"]  # allow assert, subprocess, temp files, skip type annotations and docstrings in example code
 "blabot/docker_io.py" = ["S603"]  # allow subprocess for docker commands
