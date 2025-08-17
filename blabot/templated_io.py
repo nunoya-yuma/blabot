@@ -120,7 +120,7 @@ class TemplatedIO(ABC):
 
         """
         # If prompt is not set, ignore it
-        if self._prompt is None:
+        if not self._prompt:
             return True
 
         first_timeout_sec = 0.5

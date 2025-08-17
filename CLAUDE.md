@@ -15,14 +15,14 @@ uv sync
 ### Testing
 ```bash
 # Run all tests
-pytest -v -s
+uv run pytest -v -s
 
 # Run specific test categories
-pytest -v -s -m "simple_process_test and easy" tests/
-pytest -v -s -m "simple_process_test and hard" tests/
-pytest -v -s -m "device_test" tests/
-pytest -v -s -m "docker_test" tests/
-pytest -v -s -m "ssh_test" tests/
+uv run pytest -v -s -m "simple_process_test and easy" tests/
+uv run pytest -v -s -m "simple_process_test and hard" tests/
+uv run pytest -v -s -m "device_test" tests/
+uv run pytest -v -s -m "docker_test" tests/
+uv run pytest -v -s -m "ssh_test" tests/
 
 # Docker-based testing
 docker compose build
@@ -40,6 +40,9 @@ pip install dist/blabot-0.1.0-py3-none-any.whl
 # Lint and format with ruff
 uv run ruff check .
 uv run ruff format .
+
+# Type checking with mypy
+uv run mypy blabot/
 ```
 
 ### Local CI Testing
