@@ -5,6 +5,7 @@ for communicating with serial devices such as USB-to-serial adapters.
 """
 
 import sys
+from typing import Any
 
 import pexpect
 import serial
@@ -125,10 +126,10 @@ class DeviceIO(TemplatedIO):
             msg = "Process not started"
             raise RuntimeError(msg)
 
-        expect_list = [
+        expect_list: list[Any] = [
             pexpect.TIMEOUT,
+            expect,
         ]
-        expect_list.append(expect)
         index = self.process.expect(expect_list, timeout=timeout_sec)
 
         match = None
@@ -136,7 +137,10 @@ class DeviceIO(TemplatedIO):
             # pexpect.TIMEOUT is output
             # This means that no matching string was output until the timeout.
             pass
-        else:
+        # process.after should be bytes when match is found
+        elif isinstance(self.process.after, bytes):
             match = self.process.after.decode("utf-8")
+        elif isinstance(self.process.after, str):
+            match = self.process.after
 
         return match
