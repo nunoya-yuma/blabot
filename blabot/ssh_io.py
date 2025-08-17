@@ -1,3 +1,9 @@
+"""SSH process communication implementation using pexpect.
+
+This module provides SSHProcessIO class that implements the TemplatedIO interface
+for communicating with processes on remote machines via SSH connections.
+"""
+
 import sys
 from dataclasses import dataclass
 
@@ -16,6 +22,12 @@ class SSHConfig:
 
 
 class SSHProcessIO(ProcessIO):
+    """SSH-based process communication using pexpect.
+
+    Extends ProcessIO to communicate with processes on remote machines
+    via SSH connections. Handles SSH login and command execution.
+    """
+
     def __init__(
         self,
         start_command: str,
@@ -23,12 +35,30 @@ class SSHProcessIO(ProcessIO):
         prompt: str = "",
         newline: str = "",
     ) -> None:
+        """Initialize SSHProcessIO instance.
+
+        Args:
+            start_command: Command to execute on the remote machine.
+            ssh_config: SSH connection configuration.
+            prompt: Expected prompt string to wait for.
+            newline: Newline character to append to commands.
+
+        """
         super().__init__(start_command, prompt, newline)
         self._user_name = ssh_config.user_name
         self._host_name = ssh_config.host_name
         self._key_path = ssh_config.key_path
 
     def start(self) -> None:
+        """Start SSH connection and remote process.
+
+        Establishes SSH connection to the remote host, waits for login
+        completion, then starts the configured command on the remote machine.
+
+        Raises:
+            RuntimeError: If process is already started or SSH login fails.
+
+        """
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
