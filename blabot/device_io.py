@@ -1,3 +1,9 @@
+"""Serial device communication implementation using pexpect_serial.
+
+This module provides DeviceIO class that implements the TemplatedIO interface
+for communicating with serial devices such as USB-to-serial adapters.
+"""
+
 import sys
 
 import pexpect
@@ -8,13 +14,11 @@ from .templated_io import TemplatedIO
 
 
 class DeviceIO(TemplatedIO):
-    """
-    This class provides the ability to exchange input and output
-    with other device(e.g. /dev/ttyUSB0).
+    """Serial device communication using pexpect_serial.
 
-    This class inherits from TemplatedIO class and implements the necessary
-    methods so that it can actually communicate with the target device.
-    This class uses `pexpect` to manage startup and input/output.
+    Implements the TemplatedIO interface for communicating with serial devices
+    such as USB-to-serial adapters. Uses pyserial for device connection and
+    pexpect_serial for interaction.
     """
 
     def __init__(
@@ -24,11 +28,29 @@ class DeviceIO(TemplatedIO):
         prompt: str = "",
         newline: str = "",
     ) -> None:
+        """Initialize DeviceIO instance.
+
+        Args:
+            port: Serial port path (e.g., '/dev/ttyUSB0', 'COM1').
+            baudrate: Serial communication speed in bits per second.
+            prompt: Expected prompt string to wait for.
+            newline: Newline character to append to commands.
+
+        """
         super().__init__(prompt, newline)
         self.process: SerialSpawn | None = None
         self.device = serial.Serial(port, baudrate, timeout=1)
 
     def start(self) -> None:
+        """Start serial device communication.
+
+        Opens the serial port if not already open and creates a SerialSpawn
+        instance for pexpect-style interaction.
+
+        Raises:
+            RuntimeError: If communication is already started.
+
+        """
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -40,6 +62,15 @@ class DeviceIO(TemplatedIO):
         self.process.logfile = sys.stdout.buffer
 
     def stop(self) -> None:
+        """Stop serial device communication.
+
+        Closes the SerialSpawn instance and the underlying serial port.
+        Cleans up the process reference.
+
+        Raises:
+            RuntimeError: If communication is not started or port is closed.
+
+        """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
@@ -53,6 +84,18 @@ class DeviceIO(TemplatedIO):
         self.process = None
 
     def send_command(self, command: str) -> None:
+        """Send a command to the serial device.
+
+        Appends the configured newline character and sends the command
+        to the device.
+
+        Args:
+            command: Command string to send.
+
+        Raises:
+            RuntimeError: If communication is not started.
+
+        """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
@@ -61,6 +104,23 @@ class DeviceIO(TemplatedIO):
         self.process.sendline(output_line)
 
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str | None:
+        """Wait for expected pattern from the serial device.
+
+        Uses pexpect to wait for the specified pattern to appear in the
+        device output stream.
+
+        Args:
+            expect: Regular expression pattern to wait for.
+            timeout_sec: Maximum time to wait in seconds.
+
+        Returns:
+            str: The matched string if pattern is found.
+            None: If timeout occurs before pattern is matched.
+
+        Raises:
+            RuntimeError: If communication is not started.
+
+        """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
