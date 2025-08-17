@@ -47,7 +47,7 @@ uv run mypy blabot/
 
 ### Local CI Testing
 ```bash
-act -j ruff_and_pytest
+act -j lint_typecheck_and_test
 ```
 
 ## Architecture
