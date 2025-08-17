@@ -1,3 +1,9 @@
+"""Local process communication implementation using pexpect.
+
+This module provides ProcessIO class that implements the TemplatedIO interface
+for communicating with local processes using the pexpect library.
+"""
+
 import sys
 
 import pexpect
@@ -6,17 +12,11 @@ from .templated_io import TemplatedIO
 
 
 class ProcessIO(TemplatedIO):
-    """
-    This class provides the ability to exchange input and output
-    with other processes in the same machine.
+    """Local process communication using pexpect.
 
-    This class inherits from TemplatedIO class and implements
-    the necessary methods so that it can actually communicate
-    with the target process.
-    This class uses `pexpect` to manage startup and input/output.
-    This class itself only interacts with processes in the same machine,
-    but may be applied to other targets by generating other classes that
-    inherit from this class.
+    Implements the TemplatedIO interface for communicating with local processes
+    using the pexpect library. Handles process startup, command execution,
+    and output parsing for command-line applications.
     """
 
     def __init__(
@@ -25,11 +25,28 @@ class ProcessIO(TemplatedIO):
         prompt: str = "",
         newline: str = "",
     ) -> None:
+        """Initialize ProcessIO instance.
+
+        Args:
+            start_command: Command to start the target process.
+            prompt: Expected prompt string to wait for.
+            newline: Newline character to append to commands.
+
+        """
         super().__init__(prompt, newline)
         self.process: pexpect.spawn | None = None
         self._start_command = start_command
 
     def start(self) -> None:
+        """Start the local process using pexpect.
+
+        Spawns the configured command as a new process and sets up
+        logging to stdout.
+
+        Raises:
+            RuntimeError: If process is already started.
+
+        """
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -38,6 +55,15 @@ class ProcessIO(TemplatedIO):
         self.process.logfile = sys.stdout.buffer
 
     def stop(self) -> None:
+        """Stop the local process.
+
+        Terminates the running process and waits for it to exit.
+        Cleans up the process reference.
+
+        Raises:
+            RuntimeError: If process is not started.
+
+        """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
@@ -47,6 +73,18 @@ class ProcessIO(TemplatedIO):
         self.process = None
 
     def send_command(self, command: str) -> None:
+        """Send a command to the process.
+
+        Appends the configured newline character and sends the command
+        to the process stdin.
+
+        Args:
+            command: Command string to send.
+
+        Raises:
+            RuntimeError: If process is not started.
+
+        """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
@@ -55,6 +93,23 @@ class ProcessIO(TemplatedIO):
         self.process.sendline(output_line)
 
     def wait_for(self, expect: str, timeout_sec: float = 3.0) -> str | None:
+        """Wait for expected pattern in process output.
+
+        Uses pexpect to wait for the specified pattern to appear in the
+        process output stream.
+
+        Args:
+            expect: Regular expression pattern to wait for.
+            timeout_sec: Maximum time to wait in seconds.
+
+        Returns:
+            str: The matched string if pattern is found.
+            None: If timeout occurs before pattern is matched.
+
+        Raises:
+            RuntimeError: If process is not started.
+
+        """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
