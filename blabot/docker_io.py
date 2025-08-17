@@ -1,12 +1,9 @@
-"""
-This module provides the ability to exchange input and output
-with other processes in the docker container
+"""Docker container process communication implementation.
 
-This module controls the input/output of processes in the container
-from the host PC.
-To realize this function, `DockerRunIO` using `docker run` command and
-`DockerExecIO` using `docker exec` command are available.
-Please use the appropriate class for your purpose.
+Provides classes for communicating with processes inside Docker containers
+from the host PC. Includes DockerRunIO for creating new containers with
+'docker run' and DockerExecIO for executing commands in existing containers
+with 'docker exec'. Choose the appropriate class for your use case.
 """
 
 import subprocess
@@ -36,17 +33,22 @@ class DockerExecConfig:
 
 
 class DockerIOBase(ProcessIO):
-    """
-    This class has parts in common with other classes in the same module.
+    """Base class for Docker container process communication.
 
-    In this module, there are classes `DockerRunIO` and `DockerExecIO`.
-    If there are common parts among them, this class will hold them
-    and share them by inheritance.
-    This class is intended to be used only within this module
-    and is not intended to be used externally.
+    Provides common functionality shared between DockerRunIO and DockerExecIO.
+    This class is intended for internal use only and should not be used directly.
     """
 
     def _start_docker_and_process(self, docker_activate_command: str) -> None:
+        """Start Docker container and initialize process communication.
+
+        Args:
+            docker_activate_command: Docker command to execute.
+
+        Raises:
+            RuntimeError: If Docker container fails to start.
+
+        """
         self.process = pexpect.spawn(docker_activate_command)
         self.process.logfile = sys.stdout.buffer
 
@@ -63,15 +65,11 @@ class DockerIOBase(ProcessIO):
 
 
 class DockerRunIO(DockerIOBase):
-    """
-    This class provides the ability to exchange input and output
-    with other processes in the docker container using `docker run` command.
+    """Docker container process communication using 'docker run'.
 
-    This class controls the input/output of processes in the container
-    from the host PC.
-    Although a docker image must be available on the host PC,
-    this class also has the ability to automatically launch containers.
-    If you need to work in the container in advance, use `DockerExecIO` class.
+    Creates and manages Docker containers using 'docker run' command.
+    Automatically handles container lifecycle including creation and cleanup.
+    Use DockerExecIO for pre-existing containers.
     """
 
     def __init__(
@@ -81,12 +79,30 @@ class DockerRunIO(DockerIOBase):
         prompt: str = "",
         newline: str = "",
     ) -> None:
+        """Initialize DockerRunIO instance.
+
+        Args:
+            start_command: Command to execute in the container.
+            docker_run_config: Docker run configuration.
+            prompt: Expected prompt string to wait for.
+            newline: Newline character to append to commands.
+
+        """
         super().__init__(start_command, prompt, newline)
         self._docker_image_name = docker_run_config.image_name
         self._docker_container_name = docker_run_config.container_name
         self._remove_container = docker_run_config.remove_container
 
     def start(self) -> None:
+        """Start Docker container and process communication.
+
+        Creates a new Docker container using 'docker run' and starts
+        the configured command inside it.
+
+        Raises:
+            RuntimeError: If process is already started or container fails to start.
+
+        """
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -95,6 +111,12 @@ class DockerRunIO(DockerIOBase):
         self._start_docker_and_process(docker_run_command)
 
     def _build_command(self) -> str:
+        """Build the docker run command string.
+
+        Returns:
+            Complete docker run command with configured options.
+
+        """
         docker_run_command = "docker run -it"
         if self._remove_container:
             docker_run_command += " --rm"
@@ -110,14 +132,10 @@ class DockerRunIO(DockerIOBase):
 
 
 class DockerExecIO(DockerIOBase):
-    """
-    This class provides the ability to exchange input and output
-    with other processes in the docker container using `docker exec` command.
+    """Docker container process communication using 'docker exec'.
 
-    This class controls the input/output of processes in the container
-    from the host PC.
-    Also, this class assumes that the container is running in advance,
-    so please start it before using this class.
+    Executes commands in existing Docker containers using 'docker exec'.
+    Requires the target container to be running before use.
     """
 
     def __init__(
@@ -127,11 +145,28 @@ class DockerExecIO(DockerIOBase):
         prompt: str = "",
         newline: str = "",
     ) -> None:
+        """Initialize DockerExecIO instance.
+
+        Args:
+            start_command: Command to execute in the container.
+            docker_exec_config: Docker exec configuration.
+            prompt: Expected prompt string to wait for.
+            newline: Newline character to append to commands.
+
+        """
         super().__init__(start_command, prompt, newline)
         self._docker_container_name = docker_exec_config.container_name
         self._remove_container = docker_exec_config.remove_container
 
     def start(self) -> None:
+        """Start process communication with existing Docker container.
+
+        Executes 'docker exec' to connect to the running container.
+
+        Raises:
+            RuntimeError: If process is already started or container connection fails.
+
+        """
         if self.process:
             msg = "Process has already started"
             raise RuntimeError(msg)
@@ -140,6 +175,14 @@ class DockerExecIO(DockerIOBase):
         self._start_docker_and_process(docker_exec_command)
 
     def stop(self) -> None:
+        """Stop process communication and optionally remove container.
+
+        Stops the process communication and removes the container if configured.
+
+        Raises:
+            RuntimeError: If container name is lost or removal fails.
+
+        """
         super().stop()
 
         if not self._remove_container:
