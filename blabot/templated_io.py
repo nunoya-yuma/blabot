@@ -15,6 +15,8 @@ class TemplatedIO(ABC):
     concrete implementations for specific process types.
     """
 
+    _FIRST_PROMPT_TIMEOUT_SEC = 0.5
+
     def __init__(self, prompt: str = "", newline: str = "") -> None:
         """Initialize the TemplatedIO instance.
 
@@ -97,7 +99,7 @@ class TemplatedIO(ABC):
             None: If timeout occurs or pattern not matched after all attempts.
 
         """
-        if self.wait_for_prompt() is False:
+        if not self.wait_for_prompt():
             msg = "Prompt does not appear"
             raise RuntimeError(msg)
 
@@ -123,8 +125,7 @@ class TemplatedIO(ABC):
         if not self._prompt:
             return True
 
-        first_timeout_sec = 0.5
-        res = self.wait_for(self._prompt, first_timeout_sec)
+        res = self.wait_for(self._prompt, self._FIRST_PROMPT_TIMEOUT_SEC)
         if res == self._prompt:
             return True
 
