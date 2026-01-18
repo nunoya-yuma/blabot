@@ -36,6 +36,9 @@ jobs:
       - name: Type check with mypy
         run: uv run mypy blabot/
 
+      - name: Run unit tests
+        run: uv run pytest -v -s -m "unit" tests/
+
       - name: Run example usage
         run: |
           cd examples/
