@@ -1,6 +1,6 @@
 [project]
 name = "blabot"
-version = "0.1.0"
+version = "0.2.0"
 description = "A sample project that communicates interactively with CLI process"
 authors = [
     { name = "Nunoya Yuma", email = "nuno.yu.3838@gmail.com" }
