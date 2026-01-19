@@ -32,7 +32,7 @@ class DockerExecConfig:
     remove_container: bool = True
 
 
-class DockerIOBase(ProcessIO):
+class _DockerIOBase(ProcessIO):
     """Base class for Docker container process communication.
 
     Provides common functionality shared between DockerRunIO and DockerExecIO.
@@ -64,7 +64,7 @@ class DockerIOBase(ProcessIO):
         self.send_command(self._start_command)
 
 
-class DockerRunIO(DockerIOBase):
+class DockerRunIO(_DockerIOBase):
     """Docker container process communication using 'docker run'.
 
     Creates and manages Docker containers using 'docker run' command.
@@ -131,7 +131,7 @@ class DockerRunIO(DockerIOBase):
         return docker_run_command
 
 
-class DockerExecIO(DockerIOBase):
+class DockerExecIO(_DockerIOBase):
     """Docker container process communication using 'docker exec'.
 
     Executes commands in existing Docker containers using 'docker exec'.
