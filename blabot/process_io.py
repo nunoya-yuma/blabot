@@ -5,7 +5,6 @@ for communicating with local processes using the pexpect library.
 """
 
 import sys
-from typing import Any
 
 import pexpect
 
@@ -109,27 +108,20 @@ class ProcessIO(TemplatedIO):
 
         Raises:
             RuntimeError: If process is not started.
+            TypeError: If the matched output is not bytes.
 
         """
         if not self.process:
             msg = "Process not started"
             raise RuntimeError(msg)
 
-        expect_list: list[Any] = [
-            pexpect.TIMEOUT,
-            expect,
-        ]
-        index = self.process.expect(expect_list, timeout=timeout_sec)
+        try:
+            self.process.expect(expect, timeout=timeout_sec)
+        except pexpect.TIMEOUT:
+            return None
 
-        match = None
-        if index == 0:
-            # pexpect.TIMEOUT is output
-            # This means that no matching string was output until the timeout.
-            pass
-        # process.after should be bytes when match is found
-        elif isinstance(self.process.after, bytes):
-            match = self.process.after.decode("utf-8")
-        elif isinstance(self.process.after, str):
-            match = self.process.after
+        if not isinstance(self.process.after, bytes):
+            err_msg = "Expected bytes from process.after"
+            raise TypeError(err_msg)
 
-        return match
+        return self.process.after.decode("utf-8")

@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
+import pexpect
 import pytest
 
 from blabot.ssh_io import SSHConfig, SSHProcessIO
@@ -27,7 +28,6 @@ def test_start_spawns_ssh_and_sends_command():
 
     with patch("blabot.ssh_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 1  # Pattern matched (login success)
         mock_process.after = b"$"
         mock_spawn.return_value = mock_process
 
@@ -51,7 +51,7 @@ def test_start_raises_when_login_fails():
 
     with patch("blabot.ssh_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 0  # Timeout (login failed)
+        mock_process.expect.side_effect = pexpect.TIMEOUT("timeout")
         mock_spawn.return_value = mock_process
 
         with pytest.raises(RuntimeError, match="Failed to login"):
