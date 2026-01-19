@@ -193,11 +193,12 @@ class DockerExecIO(_DockerIOBase):
             raise RuntimeError(msg)
 
         docker_remove_command = ["docker", "rm", "-f", self._docker_container_name]
-        res_remove = subprocess.run(
-            docker_remove_command,
-            check=False,
-            stdout=subprocess.DEVNULL,
-        )
-        if res_remove.returncode != 0:
+        try:
+            subprocess.run(
+                docker_remove_command,
+                check=True,
+                stdout=subprocess.DEVNULL,
+            )
+        except subprocess.CalledProcessError as e:
             msg = f"Failed to remove docker container '{self._docker_container_name}'"
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from e

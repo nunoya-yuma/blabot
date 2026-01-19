@@ -1,5 +1,6 @@
 """Unit tests for DockerRunIO and DockerExecIO classes."""
 
+import subprocess
 from unittest.mock import MagicMock, patch
 
 import pexpect
@@ -175,7 +176,7 @@ def test_docker_exec_stop_raises_when_removal_fails():
     io.process = mock_process
 
     with patch("blabot.docker_io.subprocess.run") as mock_run:
-        mock_run.return_value = MagicMock(returncode=1)  # Removal failed
+        mock_run.side_effect = subprocess.CalledProcessError(1, "docker rm")
 
         with pytest.raises(RuntimeError, match="Failed to remove docker container"):
             io.stop()
