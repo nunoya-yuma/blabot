@@ -59,10 +59,53 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # SSH Testing (run before docker compose tests to avoid permission issues)
+      - name: Generate SSH keys for testing
+        working-directory: ./examples
+        run: |
+          mkdir -p ssh-keys
+          ssh-keygen -t ed25519 -f ssh-keys/id_ed25519 -N "" -q
+          cp ssh-keys/id_ed25519.pub ssh-keys/authorized_keys
+          chmod 600 ssh-keys/id_ed25519
+
+      - name: Build SSH server image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./examples
+          file: examples/Dockerfile.ssh-server
+          load: true
+          tags: blabot/ssh-server:latest
+
+      - name: Start SSH server
+        working-directory: ./examples
+        run: |
+          docker compose up -d --wait ssh-server
+          docker exec ssh_test_server chown testuser:testuser /home/testuser/.ssh/authorized_keys
+
+      - name: Add SSH server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 2222 localhost >> ~/.ssh/known_hosts
+
+      - name: Run SSH tests
+        env:
+          REMOTE_USER_NAME: testuser
+          REMOTE_HOST_NAME: localhost
+          REMOTE_KEY_PATH: ${{ github.workspace }}/examples/ssh-keys/id_ed25519
+          REMOTE_PORT: "2222"
+        run: |
+          cd examples/
+          uv run pytest -v -s -m "ssh_test" tests/
+
+      - name: Stop SSH server
+        if: always()
+        working-directory: ./examples
+        run: docker compose down ssh-server
+
+      # Docker tests
       - name: Remove the previous docker container
         run: docker rm -f example_app || true
 
-      # Build Docker image with cache
       - name: Build docker containers with cache
         uses: docker/build-push-action@v6
         with:
@@ -82,9 +125,11 @@ jobs:
         run: |
           docker compose run --rm example-app uv run pytest -v -s -m docker_inner_test tests/
 
-      # Run device tests in container
       - name: Run serial device pytests
         working-directory: ./examples
         run: docker compose run --rm example-app bash scripts/run_device_test.sh
 
-      # TODO: Investigate how to do testing on GitHub Actions regarding SSH.
+      - name: Cleanup containers
+        if: always()
+        working-directory: ./examples
+        run: docker compose down

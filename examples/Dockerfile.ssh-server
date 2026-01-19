@@ -1,0 +1,18 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openssh-server python3 && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /var/run/sshd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
+    sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+
+RUN useradd -m -s /bin/bash testuser && \
+    mkdir -p /home/testuser/.ssh && \
+    chmod 700 /home/testuser/.ssh && \
+    chown -R testuser:testuser /home/testuser/.ssh
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
