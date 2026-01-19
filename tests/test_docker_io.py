@@ -44,6 +44,24 @@ def test_docker_run_start_spawns_with_correct_command():
 
 
 @pytest.mark.unit
+def test_docker_run_start_raises_when_docker_fails():
+    """start() should raise RuntimeError when docker container fails to start."""
+    config = DockerRunConfig(
+        image_name="myimage:latest",
+        container_name="mycontainer",
+    )
+    io = DockerRunIO(start_command="python app.py", docker_run_config=config)
+
+    with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
+        mock_process = MagicMock()
+        mock_process.expect.return_value = 0  # Timeout (docker failed)
+        mock_spawn.return_value = mock_process
+
+        with pytest.raises(RuntimeError, match="Failed to start docker"):
+            io.start()
+
+
+@pytest.mark.unit
 def test_docker_run_start_without_rm():
     """start() should not include --rm when remove_container is False."""
     config = DockerRunConfig(
@@ -92,6 +110,21 @@ def test_docker_exec_start_spawns_with_correct_command():
         mock_spawn.assert_called_once_with("docker exec -it mycontainer bash")
 
 
+@pytest.mark.unit
+def test_docker_exec_start_raises_when_docker_fails():
+    """start() should raise RuntimeError when docker exec fails."""
+    config = DockerExecConfig(container_name="mycontainer")
+    io = DockerExecIO(start_command="python app.py", docker_exec_config=config)
+
+    with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
+        mock_process = MagicMock()
+        mock_process.expect.return_value = 0  # Timeout (docker failed)
+        mock_spawn.return_value = mock_process
+
+        with pytest.raises(RuntimeError, match="Failed to start docker"):
+            io.start()
+
+
 # =============================================================================
 # DockerExecIO.stop() tests
 # =============================================================================
@@ -132,3 +165,19 @@ def test_docker_exec_stop_skips_removal_when_disabled():
 
         mock_process.terminate.assert_called_once()
         mock_run.assert_not_called()
+
+
+@pytest.mark.unit
+def test_docker_exec_stop_raises_when_removal_fails():
+    """stop() should raise RuntimeError when container removal fails."""
+    config = DockerExecConfig(container_name="mycontainer", remove_container=True)
+    io = DockerExecIO(start_command="python app.py", docker_exec_config=config)
+
+    mock_process = MagicMock()
+    io.process = mock_process
+
+    with patch("blabot.docker_io.subprocess.run") as mock_run:
+        mock_run.return_value = MagicMock(returncode=1)  # Removal failed
+
+        with pytest.raises(RuntimeError, match="Failed to remove docker container"):
+            io.stop()
