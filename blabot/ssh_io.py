@@ -19,6 +19,7 @@ class SSHConfig:
     user_name: str
     host_name: str
     key_path: str
+    port: int = 22
 
 
 class SSHProcessIO(ProcessIO):
@@ -48,6 +49,7 @@ class SSHProcessIO(ProcessIO):
         self._user_name = ssh_config.user_name
         self._host_name = ssh_config.host_name
         self._key_path = ssh_config.key_path
+        self._port = ssh_config.port
 
     def start(self) -> None:
         """Start SSH connection and remote process.
@@ -63,7 +65,10 @@ class SSHProcessIO(ProcessIO):
             msg = "Process has already started"
             raise RuntimeError(msg)
 
-        ssh_login_cmd = f"ssh -i {self._key_path} {self._user_name}@{self._host_name}"
+        ssh_login_cmd = (
+            f"ssh -i {self._key_path} -p {self._port} "
+            f"{self._user_name}@{self._host_name}"
+        )
         self.process = pexpect.spawn(ssh_login_cmd)
         self.process.logfile = sys.stdout.buffer
 

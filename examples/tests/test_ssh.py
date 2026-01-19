@@ -17,6 +17,7 @@ def ssh_config():
     ssh_config["user_name"] = os.environ.get("REMOTE_USER_NAME")
     ssh_config["host_name"] = os.environ.get("REMOTE_HOST_NAME")
     ssh_config["key_path"] = os.environ.get("REMOTE_KEY_PATH")
+    ssh_config["port"] = int(os.environ.get("REMOTE_PORT", "22"))
 
     assert ssh_config["user_name"] is not None, (
         "Set environment variable REMOTE_USER_NAME"
@@ -34,9 +35,11 @@ def ssh_config():
 @pytest.fixture
 def transfer_example(ssh_config):
     # e.g.)
-    # scp -i path/to/key/id_fugafuga path/to/example_app.py hoge@192.168.100.2:/tmp/ # noqa: E501
+    # scp -P 22 -i path/to/key/id_fugafuga example_app.py user@host:/tmp/
     transfer_cmd = [
         "scp",
+        "-P",
+        str(ssh_config["port"]),
         "-i",
         ssh_config["key_path"],
         EXAMPLE_FILE_PATH,
@@ -53,6 +56,7 @@ def ssh_io_cli(ssh_config):
         user_name=ssh_config["user_name"],
         host_name=ssh_config["host_name"],
         key_path=ssh_config["key_path"],
+        port=ssh_config["port"],
     )
     io_interact = SSHProcessIO(
         start_command,
