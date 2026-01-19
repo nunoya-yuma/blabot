@@ -48,7 +48,7 @@ jobs:
     needs: [validate, test]
     uses: ./.github/workflows/docker-build.yaml
     with:
-      tags: ${{ needs.validate.outputs.docker_tags }}
+      image_tags: ${{ needs.validate.outputs.docker_tags }}
 
   github-release:
     needs: [validate, docker]

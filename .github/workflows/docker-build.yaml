@@ -3,8 +3,8 @@ name: Docker Build and Push
 on:
   workflow_call:
     inputs:
-      tags:
-        description: 'Comma-separated list of Docker image tags to push'
+      image_tags:
+        description: 'Comma-separated list of full image references to push (e.g., ghcr.io/org/repo:tag)'
         required: true
         type: string
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Tag and push
         run: |
-          IFS=',' read -ra TAGS <<< "${{ inputs.tags }}"
+          IFS=',' read -ra TAGS <<< "${{ inputs.image_tags }}"
           for tag in "${TAGS[@]}"; do
             docker tag ghcr.io/nunoya-yuma/blabot/example-app:latest "$tag"
             docker push "$tag"
