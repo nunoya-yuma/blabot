@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
+import pexpect
 import pytest
 
 from blabot.process_io import ProcessIO
@@ -72,7 +73,6 @@ def test_wait_for_returns_match_when_found():
     """wait_for() should return matched string when pattern is found."""
     io = ProcessIO(start_command="python app.py")
     mock_process = MagicMock()
-    mock_process.expect.return_value = 1  # Index 1 = pattern matched
     mock_process.after = b"expected"
     io.process = mock_process
 
@@ -83,10 +83,10 @@ def test_wait_for_returns_match_when_found():
 
 @pytest.mark.unit
 def test_wait_for_returns_none_on_timeout():
-    """wait_for() should return None when timeout occurs."""
+    """wait_for() should return None when pexpect.TIMEOUT is raised."""
     io = ProcessIO(start_command="python app.py")
     mock_process = MagicMock()
-    mock_process.expect.return_value = 0  # Index 0 = TIMEOUT
+    mock_process.expect.side_effect = pexpect.TIMEOUT("timeout")
     io.process = mock_process
 
     result = io.wait_for("expected", timeout_sec=1.0)

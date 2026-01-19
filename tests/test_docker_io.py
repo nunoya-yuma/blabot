@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
+import pexpect
 import pytest
 
 from blabot.docker_io import (
@@ -31,7 +32,6 @@ def test_docker_run_start_spawns_with_correct_command():
 
     with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 1  # Pattern matched (not timeout)
         mock_process.after = b"#"
         mock_spawn.return_value = mock_process
 
@@ -54,7 +54,7 @@ def test_docker_run_start_raises_when_docker_fails():
 
     with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 0  # Timeout (docker failed)
+        mock_process.expect.side_effect = pexpect.TIMEOUT("timeout")
         mock_spawn.return_value = mock_process
 
         with pytest.raises(RuntimeError, match="Failed to start docker"):
@@ -73,7 +73,6 @@ def test_docker_run_start_without_rm():
 
     with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 1
         mock_process.after = b"#"
         mock_spawn.return_value = mock_process
 
@@ -101,7 +100,6 @@ def test_docker_exec_start_spawns_with_correct_command():
 
     with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 1  # Pattern matched
         mock_process.after = b"#"
         mock_spawn.return_value = mock_process
 
@@ -118,7 +116,7 @@ def test_docker_exec_start_raises_when_docker_fails():
 
     with patch("blabot.docker_io.pexpect.spawn") as mock_spawn:
         mock_process = MagicMock()
-        mock_process.expect.return_value = 0  # Timeout (docker failed)
+        mock_process.expect.side_effect = pexpect.TIMEOUT("timeout")
         mock_spawn.return_value = mock_process
 
         with pytest.raises(RuntimeError, match="Failed to start docker"):
