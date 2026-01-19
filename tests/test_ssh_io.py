@@ -34,7 +34,7 @@ def test_start_spawns_ssh_and_sends_command():
         io.start()
 
         mock_spawn.assert_called_once_with(
-            "ssh -i /home/user/.ssh/id_rsa testuser@192.168.1.100"
+            "ssh -i /home/user/.ssh/id_rsa -p 22 testuser@192.168.1.100"
         )
         mock_process.sendline.assert_called_with("python app.py\n")
 
