@@ -6,10 +6,10 @@ for communicating with serial devices such as USB-to-serial adapters.
 
 import sys
 
-import pexpect
 import serial
 from pexpect_serial import SerialSpawn
 
+from ._pexpect_helpers import wait_for_pattern
 from .templated_io import TemplatedIO
 
 
@@ -122,13 +122,4 @@ class DeviceIO(TemplatedIO):
             msg = "Process not started"
             raise RuntimeError(msg)
 
-        try:
-            self.process.expect(expect, timeout=timeout_sec)
-        except pexpect.TIMEOUT:
-            return None
-
-        if not isinstance(self.process.after, bytes):
-            err_msg = "Expected bytes from process.after"
-            raise TypeError(err_msg)
-
-        return self.process.after.decode("utf-8")
+        return wait_for_pattern(self.process, expect, timeout_sec)
