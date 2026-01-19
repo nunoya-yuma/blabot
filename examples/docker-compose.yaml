@@ -10,3 +10,19 @@ services:
     working_dir: /app/work/examples
     tty: true # for interactive testing
     stdin_open: true # for interactive testing
+
+  ssh-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.ssh-server
+    image: blabot/ssh-server:latest
+    container_name: ssh_test_server
+    ports:
+      - "2222:22"
+    volumes:
+      - ./ssh-keys/authorized_keys:/home/testuser/.ssh/authorized_keys
+    healthcheck:
+      test: ["CMD", "pgrep", "sshd"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
