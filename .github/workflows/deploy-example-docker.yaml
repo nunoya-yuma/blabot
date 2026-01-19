@@ -21,7 +21,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      tags: ${{ steps.tags.outputs.tags }}
+      image_tags: ${{ steps.tags.outputs.image_tags }}
     steps:
       - uses: actions/checkout@v6
 
@@ -30,10 +30,10 @@ jobs:
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           IMAGE=ghcr.io/nunoya-yuma/blabot/example-app
-          echo "tags=${IMAGE}:dev,${IMAGE}:dev-${COMMIT_HASH}" >> $GITHUB_OUTPUT
+          echo "image_tags=${IMAGE}:dev,${IMAGE}:dev-${COMMIT_HASH}" >> $GITHUB_OUTPUT
 
   docker:
     needs: prepare
     uses: ./.github/workflows/docker-build.yaml
     with:
-      tags: ${{ needs.prepare.outputs.tags }}
+      image_tags: ${{ needs.prepare.outputs.image_tags }}
