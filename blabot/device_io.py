@@ -69,15 +69,11 @@ class DeviceIO(TemplatedIO):
         Cleans up the process reference.
 
         Raises:
-            RuntimeError: If communication is not started or port is closed.
+            RuntimeError: If communication is not started.
 
         """
         if not self.process:
             msg = "Process not started"
-            raise RuntimeError(msg)
-
-        if not self.device.is_open:
-            msg = "Device port is already closed"
             raise RuntimeError(msg)
 
         self.process.close()
