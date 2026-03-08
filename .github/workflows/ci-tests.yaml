@@ -69,7 +69,7 @@ jobs:
           chmod 600 ssh-keys/id_ed25519
 
       - name: Build SSH server image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./examples
           file: examples/Dockerfile.ssh-server
@@ -107,7 +107,7 @@ jobs:
         run: docker rm -f example_app || true
 
       - name: Build docker containers with cache
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: examples/Dockerfile
