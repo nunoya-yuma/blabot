@@ -16,7 +16,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       docker_tags: ${{ steps.tags.outputs.tags }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Extract and validate version
         id: version
@@ -54,7 +54,7 @@ jobs:
     needs: [validate, docker]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: softprops/action-gh-release@v2
