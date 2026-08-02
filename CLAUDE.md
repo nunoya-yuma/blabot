@@ -43,6 +43,12 @@ uv run ruff format .
 
 # Type checking with mypy
 uv run mypy blabot/
+
+# Lint YAML files (config: .yamllint.yaml)
+uv run yamllint .
+
+# Lint GitHub Actions workflows (no local install; runs in an ephemeral container)
+docker run --rm -v "$PWD":/repo -w /repo rhysd/actionlint:latest -color
 ```
 
 ### Local CI Testing

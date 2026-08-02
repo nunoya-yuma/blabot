@@ -81,7 +81,7 @@ An overview description of each class is also available there, so I recommend ta
 ## CI
 
 Currently, GitHub Actions is executed at the time the PR is created.
-In this flow, the format is checked and pytest is performed.
+In this flow, the format is checked, YAML files (including the workflows themselves) are linted, and pytest is performed.
 
 If you want to run GitHub Actions in your local environment, you can use [act command](https://github.com/nektos/act)
 
