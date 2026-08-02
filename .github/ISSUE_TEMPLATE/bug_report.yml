@@ -10,7 +10,9 @@ body:
     attributes:
       label: Bug Behavior
       description: What is the bug? What is currently happening?
-      placeholder: "Example: 'When I try to upload a file (over 100MB), the process fails with a timeout error. This disrupts my workflow and causes delays in my project.'"
+      placeholder: >-
+        Example: 'When I try to upload a file (over 100MB), the process fails with
+        a timeout error. This disrupts my workflow and causes delays in my project.'
     validations:
       required: true
 
@@ -47,14 +49,14 @@ body:
       label: Steps to Reproduce
       description: How can we reproduce the bug?
       placeholder: |
-        Example: 
+        Example:
         1. Go to "Upload"
         2. Click on "Select File"
         3. Choose a large file (over 100MB)
         4. Click "Upload"
         5. See error
       value: |
-        1. 
+        1.
     validations:
       required: true
 
@@ -104,11 +106,13 @@ body:
     id: browser
     attributes:
       label: Browser
+      # yamllint disable rule:line-length
       description: |
         Describe your browser.
         - For Chrome, "Chrome, Version 126.0.6478.127 (Official Build) (arm64)". Check in "3 dots" on the top right > "Help" > "About Google Chrome".
         - For Safari, "Safari, Version 17.5 (19618.2.12.11.6)". Check in "Safari" on the top left > "About Safari".
         - For non-browser issues, type "Server-side" or "Mobile App".
+      # yamllint enable rule:line-length
       placeholder: "Chrome, Version 126.0.6478.127 (Official Build) (arm64)"
     validations:
       required: true
