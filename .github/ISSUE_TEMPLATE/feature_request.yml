@@ -10,7 +10,10 @@ body:
     attributes:
       label: Problem
       description: What issue are you facing?
-      placeholder: "Example: 'When I try to upload large files (over 100MB), the process succeeds but takes more than 10 minutes. This disrupts my workflow and causes delays in my project.'"
+      placeholder: >-
+        Example: 'When I try to upload large files (over 100MB), the process succeeds
+        but takes more than 10 minutes. This disrupts my workflow and causes delays
+        in my project.'
     validations:
       required: true
 
@@ -19,7 +22,10 @@ body:
     attributes:
       label: Current Solution
       description: How are you currently solving this problem?
-      placeholder: "Example: 'To work around this, I'm splitting the files into smaller parts (less than 50MB each) and uploading them individually. This is time-consuming and mistake-prone.'"
+      placeholder: >-
+        Example: 'To work around this, I'm splitting the files into smaller parts
+        (less than 50MB each) and uploading them individually. This is time-consuming
+        and mistake-prone.'
     validations:
       required: true
 
@@ -28,7 +34,10 @@ body:
     attributes:
       label: Proposed Solution
       description: What do you want to happen?
-      placeholder: "Example: 'I would like a feature that supports seamless uploading of large files, more than 100MB, without any timeouts or delays. This will help me save time and improve my productivity.'"
+      placeholder: >-
+        Example: 'I would like a feature that supports seamless uploading of large
+        files, more than 100MB, without any timeouts or delays. This will help me
+        save time and improve my productivity.'
     validations:
       required: true
 

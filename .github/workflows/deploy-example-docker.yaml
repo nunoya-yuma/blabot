@@ -30,7 +30,7 @@ jobs:
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           IMAGE=ghcr.io/nunoya-yuma/blabot/example-app
-          echo "image_tags=${IMAGE}:dev,${IMAGE}:dev-${COMMIT_HASH}" >> $GITHUB_OUTPUT
+          echo "image_tags=${IMAGE}:dev,${IMAGE}:dev-${COMMIT_HASH}" >> "$GITHUB_OUTPUT"
 
   docker:
     needs: prepare

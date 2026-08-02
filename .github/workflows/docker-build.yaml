@@ -29,7 +29,7 @@ jobs:
         run: |
           # Extract branch name and sanitize for use as cache tag
           BRANCH_NAME="${GITHUB_REF_NAME:-main}"
-          CACHE_TAG=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9._-]/-/g')
+          CACHE_TAG="${BRANCH_NAME//[^a-zA-Z0-9._-]/-}"
           echo "cache_tag=$CACHE_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker image
@@ -42,4 +42,4 @@ jobs:
           cache-from: |
             type=registry,ref=ghcr.io/nunoya-yuma/blabot/example-app:cache-${{ steps.meta.outputs.cache_tag }}
             type=registry,ref=ghcr.io/nunoya-yuma/blabot/example-app:cache-main
-          cache-to: type=registry,ref=ghcr.io/nunoya-yuma/blabot/example-app:cache-${{ steps.meta.outputs.cache_tag }},mode=max
+          cache-to: type=registry,ref=ghcr.io/nunoya-yuma/blabot/example-app:cache-${{ steps.meta.outputs.cache_tag }},mode=max  # yamllint disable-line rule:line-length
