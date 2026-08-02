@@ -6,8 +6,18 @@ on:
 jobs:
   lint_typecheck_and_test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      packages: read
     steps:
       - uses: actions/checkout@v7
+      - name: Lint GitHub Actions workflows with actionlint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-check
+          fail_level: error
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
@@ -25,6 +35,8 @@ jobs:
         run: |
           uv sync
 
+      - name: Lint YAML files with yamllint
+        run: uv run yamllint .
       - name: Check code formatting with ruff
         run: uv run ruff format --check .
       - name: Lint code with ruff
