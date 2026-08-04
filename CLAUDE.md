@@ -51,6 +51,21 @@ uv run yamllint .
 docker run --rm -v "$PWD":/repo -w /repo rhysd/actionlint:latest -color
 ```
 
+### Pre-commit Hooks (optional, local only)
+```bash
+# One-time setup: installs both pre-commit and pre-push git hooks
+uv run pre-commit install
+
+# Run manually against all files
+uv run pre-commit run --all-files              # pre-commit stage (ruff format)
+uv run pre-commit run --all-files --hook-stage pre-push  # pre-push stage (ruff check, mypy, yamllint)
+```
+`ruff format` runs on every commit; `ruff check`, `mypy`, and `yamllint` run on push, so frequent
+small commits stay fast. This is a local convenience layer only — CI (`ci-tests.yaml`) is still the
+source of truth and runs independently of whether hooks are installed. actionlint is intentionally
+not part of pre-commit; it stays as a CI-only step (`reviewdog/action-actionlint`) for inline PR
+annotations.
+
 ### Local CI Testing
 ```bash
 act -j lint_typecheck_and_test
