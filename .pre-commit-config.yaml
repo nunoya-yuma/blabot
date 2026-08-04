@@ -1,0 +1,33 @@
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check
+        language: system
+        types: [python]
+        stages: [pre-push]
+
+      - id: mypy
+        name: mypy
+        entry: uv run mypy blabot/
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: yamllint
+        name: yamllint
+        entry: uv run yamllint .
+        language: system
+        types: [yaml]
+        pass_filenames: false
+        stages: [pre-push]

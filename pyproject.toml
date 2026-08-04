@@ -26,6 +26,7 @@ dev = [
     "types-pexpect>=4.9.0.20260408",
     "types-pyserial>=3.5.0.20260408",
     "yamllint>=1.38.0",
+    "pre-commit>=4.6.1",
 ]
 
 [tool.pytest.ini_options]
