@@ -2,100 +2,30 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Development Setup
+Full project documentation — setup, the complete test/lint/build command reference, pre-commit
+hooks, CI details, and architecture — lives in [README.md](./README.md) and
+[examples/README.md](./examples/README.md). This file only adds what's specific to working here
+as Claude Code; keep it short and let the READMEs stay the single source of truth for commands.
 
-This project uses uv for dependency management:
+## Quick Commands
 
 ```bash
-uv sync
-```
-
-## Common Commands
-
-### Testing
-```bash
-# Run all tests
-uv run pytest -v -s
-
-# Run specific test categories
-uv run pytest -v -s -m "simple_process_test and easy" tests/
-uv run pytest -v -s -m "simple_process_test and hard" tests/
-uv run pytest -v -s -m "device_test" tests/
-uv run pytest -v -s -m "docker_test" tests/
-uv run pytest -v -s -m "ssh_test" tests/
-
-# Docker-based testing
-docker compose build
-docker compose run --rm example-app pytest -v -s -m docker_inner_test tests/
-```
-
-### Building and Installation
-```bash
-uv build
-pip install dist/blabot-0.1.0-py3-none-any.whl
-```
-
-### Code Quality
-```bash
-# Lint and format with ruff
-uv run ruff check .
-uv run ruff format .
-
-# Type checking with mypy
+uv sync                             # install dependencies
+uv run pytest -v -s                 # run all tests
+uv run ruff check . && uv run ruff format .
 uv run mypy blabot/
-
-# Lint YAML files (config: .yamllint.yaml)
-uv run yamllint .
-
-# Lint GitHub Actions workflows (no local install; runs in an ephemeral container)
-docker run --rm -v "$PWD":/repo -w /repo rhysd/actionlint:latest -color
 ```
 
-### Pre-commit Hooks (optional, local only)
-```bash
-# One-time setup: installs both pre-commit and pre-push git hooks
-uv run pre-commit install
-
-# Run manually against all files
-uv run pre-commit run --all-files              # pre-commit stage (ruff format)
-uv run pre-commit run --all-files --hook-stage pre-push  # pre-push stage (ruff check, mypy, yamllint)
-```
-`ruff format` runs on every commit; `ruff check`, `mypy`, and `yamllint` run on push, so frequent
-small commits stay fast. This is a local convenience layer only — CI (`ci-tests.yaml`) is still the
-source of truth and runs independently of whether hooks are installed. actionlint is intentionally
-not part of pre-commit; it stays as a CI-only step (`reviewdog/action-actionlint`) for inline PR
-annotations.
-
-### Local CI Testing
-```bash
-act -j lint_typecheck_and_test
-```
+For the full test marker list (device/SSH/Docker tests and their env var requirements), code
+quality tooling, pre-commit hook setup, and CI job details, see README.md's "Development" section.
 
 ## Architecture
 
-**blabot** is a Python library for automated CLI testing and process interaction. It provides a unified interface through a template method pattern:
-
-- **TemplatedIO** (base class in `blabot/templated_io.py`) - Abstract interface for all I/O operations
-- **ProcessIO** (`blabot/process_io.py`) - Local process communication
-- **DeviceIO** (`blabot/device_io.py`) - Serial device communication
-- **SSHProcessIO** (`blabot/ssh_io.py`) - Remote SSH process communication
-- **DockerRunIO/DockerExecIO** (`blabot/docker_io.py`) - Container process communication
-
-## Test Environment Setup
-
-### SSH Testing
-Requires environment variables:
-```bash
-export REMOTE_USER_NAME="username"
-export REMOTE_HOST_NAME="192.168.100.2"
-export REMOTE_KEY_PATH="${HOME}/.ssh/id_key"
-```
-
-### Device Testing
-Requires `socat` for virtual device simulation:
-```bash
-sudo apt install socat
-```
+blabot is a Python library for automated CLI testing and process interaction, built around a
+template method pattern: `TemplatedIO` (`blabot/templated_io.py`) is the abstract base, implemented
+by `ProcessIO`, `DeviceIO`, `SSHProcessIO`, and `DockerRunIO`/`DockerExecIO`. See README.md's
+"Architecture" section for the one-line summary of each, or examples/README.md for a full
+walkthrough.
 
 ## Key Files
 
