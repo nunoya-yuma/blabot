@@ -92,6 +92,10 @@ See [examples/README.md](./examples/README.md) for a walkthrough of each.
 
 ## Development
 
+A [`Justfile`](./Justfile) is provided as a shortcut for the commands below. Install
+[`just`](https://github.com/casey/just), then run `just` (or `just --list`) to see all available
+recipes (e.g. `just test`, `just lint`, `just check`).
+
 ### Testing
 
 This project uses `pytest` with markers to separate test categories.

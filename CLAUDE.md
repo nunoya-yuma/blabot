@@ -16,6 +16,9 @@ uv run ruff check . && uv run ruff format .
 uv run mypy blabot/
 ```
 
+A `Justfile` wraps these and more (`just test`, `just lint`, `just check`, ...) — run `just --list`
+for the full recipe list.
+
 For the full test marker list (device/SSH/Docker tests and their env var requirements), code
 quality tooling, pre-commit hook setup, and CI job details, see README.md's "Development" section.
 
