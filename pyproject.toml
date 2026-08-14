@@ -31,8 +31,16 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--strict-markers"
 markers = [
     "unit: Unit tests for individual classes and methods",
+    "simple_process_test: Tests using ProcessIO against a local example app",
+    "device_test: Tests using DeviceIO against a virtual serial device (requires socat)",
+    "ssh_test: Tests using SSHProcessIO against a remote host (requires REMOTE_USER_NAME/REMOTE_HOST_NAME/REMOTE_KEY_PATH)",
+    "docker_test: Tests using DockerRunIO/DockerExecIO from the host",
+    "docker_inner_test: Tests run from inside a Docker container",
+    "easy: Simple/fast test scenarios",
+    "hard: Complex/slow test scenarios",
 ]
 
 [tool.ruff]
