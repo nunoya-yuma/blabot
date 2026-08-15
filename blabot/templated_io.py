@@ -92,13 +92,21 @@ class TemplatedIO(ABC):
             command: Command string to send.
             expect: Expected response pattern to wait for.
             timeout_sec: Maximum time to wait for response.
-            attempts: Number of retry attempts.
+            attempts: Number of retry attempts. Must be at least 1.
 
         Returns:
             str: The matched string if expected pattern is found.
             None: If timeout occurs or pattern not matched after all attempts.
 
+        Raises:
+            ValueError: If attempts is less than 1.
+            RuntimeError: If the prompt does not appear.
+
         """
+        if attempts < 1:
+            msg = f"attempts must be at least 1, got {attempts}"
+            raise ValueError(msg)
+
         if not self.wait_for_prompt():
             msg = "Prompt does not appear"
             raise RuntimeError(msg)

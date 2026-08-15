@@ -140,6 +140,25 @@ def test_run_command_returns_none_after_all_attempts_fail():
     assert result is None
 
 
+@pytest.mark.unit
+@pytest.mark.parametrize("attempts", [0, -1], ids=["zero", "negative"])
+def test_run_command_raises_value_error_when_attempts_is_invalid(attempts):
+    """run_command() should raise ValueError when attempts is less than 1."""
+    io = StubIO(prompt="")
+    with pytest.raises(ValueError, match="attempts"):
+        io.run_command("cmd", expect="success", attempts=attempts)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("attempts", [0, -1], ids=["zero", "negative"])
+def test_run_command_does_not_send_command_when_attempts_is_invalid(attempts):
+    """run_command() should not send any command when attempts is invalid."""
+    io = StubIO(prompt="")
+    with pytest.raises(ValueError, match="attempts"):
+        io.run_command("cmd", expect="success", attempts=attempts)
+    assert io.commands_sent == []
+
+
 # =============================================================================
 # wait_and_consume_logs() tests
 # =============================================================================
