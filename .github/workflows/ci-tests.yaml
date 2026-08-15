@@ -34,18 +34,20 @@ jobs:
       - name: Install dependencies for example tests
         run: |
           uv sync
+      - name: Install just
+        uses: extractions/setup-just@v4
 
       - name: Lint YAML files with yamllint
-        run: uv run yamllint .
+        run: just yamllint
       - name: Check code formatting with ruff
         run: uv run ruff format --check .
       - name: Lint code with ruff
-        run: uv run ruff check .
+        run: just lint
       - name: Type check with mypy
-        run: uv run mypy blabot/
+        run: just typecheck
 
       - name: Run unit tests
-        run: uv run pytest -v -s -m "unit" tests/
+        run: just test
 
       - name: Run example usage
         run: |
@@ -53,13 +55,9 @@ jobs:
           uv run python example_usage.py
 
       - name: Run example pytests(easy)
-        run: |
-          cd examples/
-          uv run pytest -v -s -m "simple_process_test and easy" tests/
+        run: just test-easy
       - name: Run example pytests(hard)
-        run: |
-          cd examples/
-          uv run pytest -v -s -m "simple_process_test and hard" tests/
+        run: just test-hard
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -105,9 +103,7 @@ jobs:
           REMOTE_HOST_NAME: localhost
           REMOTE_KEY_PATH: ${{ github.workspace }}/examples/ssh-keys/id_ed25519
           REMOTE_PORT: "2222"
-        run: |
-          cd examples/
-          uv run pytest -v -s -m "ssh_test" tests/
+        run: just test-ssh
 
       - name: Stop SSH server
         if: always()
@@ -129,8 +125,7 @@ jobs:
             type=registry,ref=ghcr.io/nunoya-yuma/blabot/example-app:cache-main
 
       - name: Run docker tests (from outside)
-        working-directory: ./examples
-        run: uv run pytest -v -s -m "docker_test" tests/
+        run: just test-docker
 
       - name: Run docker tests (from inside)
         working-directory: ./examples
