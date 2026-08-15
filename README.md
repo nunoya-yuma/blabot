@@ -169,3 +169,26 @@ If you want to run GitHub Actions in your local environment, you can use [act co
 # e.g.)
 act -j lint_typecheck_and_test
 ```
+
+## Release
+
+Releases are triggered by pushing a `vX.Y.Z` tag; `.github/workflows/release.yaml` validates that the
+tag matches `pyproject.toml`'s `version`, runs the full CI test suite, builds and pushes the example
+app's Docker image to GHCR, and creates a GitHub Release with auto-generated notes.
+
+1. Pick the next version following [SemVer](https://semver.org/) / the
+   [Conventional Commits](https://www.conventionalcommits.org/) types used in commit messages since
+   the last tag (`git log vX.Y.Z..HEAD --oneline`):
+   - Only `fix:` (and non-user-facing `chore:`/`docs:`/`ci:`/`refactor:`/`test:`) → bump **patch**
+   - Any `feat:` present → bump **minor**
+   - Any breaking change (`!` suffix or `BREAKING CHANGE:` footer) → bump **major**
+   - This project is still pre-1.0 (see [SemVer's spec on 0.y.z](https://semver.org/#spec-item-4)), so
+     there's no need to rush to `1.0.0`; do that once the public API is expected to stay stable.
+2. On a new branch, bump `version` in `pyproject.toml` and run `uv sync` to update `uv.lock`, then open
+   a PR and merge it.
+3. On `main`, tag the merge commit and push the tag:
+
+   ```shell
+   git tag vX.Y.Z
+   git push origin vX.Y.Z
+   ```
