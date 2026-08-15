@@ -1,0 +1,3 @@
+# Assigns this repo's owner as a reviewer on every PR (including Dependabot's),
+# so review-request notifications land as GitHub email alerts.
+* @nunoya-yuma
