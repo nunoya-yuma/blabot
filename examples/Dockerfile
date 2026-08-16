@@ -16,7 +16,7 @@ COPY uv.lock ./
 COPY ./blabot blabot/
 
 # 4. Install dependencies
-RUN uv sync
+RUN uv sync --locked
 
 # 5. Cleanup
 RUN rm -rf blabot/ pyproject.toml uv.lock
