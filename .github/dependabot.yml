@@ -10,6 +10,11 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 5
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+      semver-minor-days: 3
+      semver-patch-days: 3
     groups:
       pip-patch-minor:
         update-types:
@@ -26,6 +31,11 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+      semver-minor-days: 3
+      semver-patch-days: 3
     groups:
       github-actions-patch-minor:
         update-types:
