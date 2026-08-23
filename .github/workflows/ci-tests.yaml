@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
       - name: Lint GitHub Actions workflows with actionlint
-        uses: reviewdog/action-actionlint@2d3ea120f3f296da9b8b748e00c5e11f36db1f4d  # v1
+        uses: reviewdog/action-actionlint@dbe5299849118fd6f099ba563d263d770955a64a  # v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-check
